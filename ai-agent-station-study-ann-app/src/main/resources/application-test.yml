@@ -1,0 +1,35 @@
+﻿server:
+  port: 8091
+
+# 绾跨▼姹犻厤缃?
+thread:
+  pool:
+    executor:
+      config:
+        core-pool-size: 20
+        max-pool-size: 50
+        keep-alive-time: 5000
+        block-queue-size: 5000
+        policy: CallerRunsPolicy
+
+# 绠€鍖栭厤缃紝绂佺敤鏁版嵁搴撹嚜鍔ㄩ厤缃?
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration
+  ai:
+    openai:
+      base-url: https://apis.itedus.cn
+      api-key: ${OPENAI_API_KEY:}
+    agent:
+      auto-config:
+        enabled: true
+
+# 鏃ュ織
+logging:
+  level:
+    root: info
+  config: classpath:logback-spring.xml
+

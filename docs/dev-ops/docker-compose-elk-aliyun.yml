@@ -1,0 +1,66 @@
+﻿version: '3.9'
+# 鎵ц鑴氭湰锛沝ocker-compose -f docker-compose-elk-aliyun.yml up -d
+# mkdir -p {config,data,logs,plugins}
+# 鎺у埗鍙帮紱GET _cat/indices - 鏌ョ湅 springboot-logstash- 鏄惁瀛樺湪锛屼笂鎶ュ悗瀛樺湪锛屽垯琛ㄧず鎺ュ叆鎴愬姛
+services:
+  elasticsearch:
+    image: registry.cn-hangzhou.aliyuncs.com/xfg-studio/elasticsearch:7.17.28
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - 'cluster.name=elasticsearch' # 璁剧疆闆嗙兢鍚嶇О涓篹lasticsearch
+      - 'discovery.type=single-node' # 浠ュ崟涓€鑺傜偣妯″紡鍚姩
+      - "cluster.name=docker-cluster" # 璁剧疆鍚嶇О
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m' # 璁剧疆浣跨敤jvm鍐呭瓨澶у皬
+    networks:
+      - my-network
+
+  logstash:
+    image: registry.cn-hangzhou.aliyuncs.com/xfg-studio/logstash:7.17.28
+    container_name: logstash
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    ports:
+      - '4560:4560'
+      - '50000:50000/tcp'
+      - '50000:50000/udp'
+      - '9600:9600'
+    environment:
+      LS_JAVA_OPTS: -Xms1024m -Xmx1024m
+      TZ: Asia/Shanghai
+      MONITORING_ENABLED: false
+    links:
+      - elasticsearch:es # 鍙互鐢╡s杩欎釜鍩熷悕璁块棶elasticsearch鏈嶅姟
+    networks:
+      - my-network
+    depends_on:
+      - elasticsearch # 渚濊禆elasticsearch鍚姩鍚庡湪鍚姩logstash
+
+  kibana:
+    image: registry.cn-hangzhou.aliyuncs.com/xfg-studio/kibana:7.17.28
+    container_name: kibana
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - '5601:5601'
+    links:
+      - elasticsearch:es #鍙互鐢╡s杩欎釜鍩熷悕璁块棶elasticsearch鏈嶅姟
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200 #璁剧疆璁块棶elasticsearch鐨勫湴鍧€
+      - 'elasticsearch.hosts=http://es:9200' #璁剧疆璁块棶elasticsearch鐨勫湴鍧€
+      - I18N_LOCALE=zh-CN
+    networks:
+      - my-network
+    depends_on:
+      - elasticsearch
+
+networks:
+  my-network:
+    driver: bridge

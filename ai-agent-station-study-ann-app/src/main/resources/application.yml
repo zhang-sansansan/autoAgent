@@ -1,0 +1,6 @@
+﻿spring:
+  config:
+    name: ai-agent-station-study-ann-app
+  profiles:
+    active: dev
+
