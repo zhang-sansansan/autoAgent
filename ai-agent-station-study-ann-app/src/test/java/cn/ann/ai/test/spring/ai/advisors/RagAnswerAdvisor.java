@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.test.spring.ai.advisors;
+package cn.ann.ai.test.spring.ai.advisors;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.ai.chat.client.ChatClientRequest;
@@ -44,7 +44,8 @@ public class RagAnswerAdvisor implements BaseAdvisor {
         String userText = chatClientRequest.prompt().getUserMessage().getText();
         String advisedUserText = userText + System.lineSeparator() + this.userTextAdvise;
 
-        String query = userText; // 鐩存帴浣跨敤鐢ㄦ埛鏂囨湰浣滀负鏌ヨ锛岄伩鍏嶆ā鏉胯В鏋愰敊璇?
+        String query = userText; // 直接使用用户文本作为查询，避免模板解析错误
+
 
         SearchRequest searchRequestToUse = SearchRequest.from(this.searchRequest).query(query).filterExpression(this.doGetFilterExpression(context)).build();
         List<Document> documents = this.vectorStore.similaritySearch(searchRequestToUse);
@@ -98,4 +99,3 @@ public class RagAnswerAdvisor implements BaseAdvisor {
     }
 
 }
-

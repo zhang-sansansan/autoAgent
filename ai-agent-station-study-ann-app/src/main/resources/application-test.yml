@@ -1,7 +1,7 @@
-﻿server:
+server:
   port: 8091
 
-# 绾跨▼姹犻厤缃?
+# 线程池配置
 thread:
   pool:
     executor:
@@ -12,7 +12,7 @@ thread:
         block-queue-size: 5000
         policy: CallerRunsPolicy
 
-# 绠€鍖栭厤缃紝绂佺敤鏁版嵁搴撹嚜鍔ㄩ厤缃?
+# 简化配置，禁用数据库自动配置
 spring:
   autoconfigure:
     exclude:
@@ -22,14 +22,13 @@ spring:
   ai:
     openai:
       base-url: https://apis.itedus.cn
-      api-key: ${OPENAI_API_KEY:}
+      api-key: sk-Q2DN9nQOVld9FDRg3c68012f1d6642B2882d425cAa70649f
     agent:
       auto-config:
         enabled: true
 
-# 鏃ュ織
+# 日志
 logging:
   level:
     root: info
   config: classpath:logback-spring.xml
-

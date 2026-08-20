@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.test.spring.ai;
+package cn.ann.ai.test.spring.ai;
 
 import io.modelcontextprotocol.client.McpClient;
 import io.modelcontextprotocol.client.McpSyncClient;
@@ -34,7 +34,7 @@ public class FlowAgentMCPTest {
         OpenAiChatModel chatModel = OpenAiChatModel.builder()
                 .openAiApi(OpenAiApi.builder()
                         .baseUrl("https://apis.itedus.cn")
-                        .apiKey(System.getenv("OPENAI_API_KEY"))
+                        .apiKey("sk-k6dvxKUVTtjuRquKF6B1E15574794cF9B6006b9cA61bBaD2")
                         .completionsPath("v1/chat/completions")
                         .embeddingsPath("v1/embeddings")
                         .build())
@@ -48,7 +48,7 @@ public class FlowAgentMCPTest {
     }
 
     public McpSyncClient stdioMcpClientElasticsearch(){
-        //閰嶇疆涓€涓嬭繍琛岀殑鐜
+        //配置一下运行的环境
         Map<String, String> env = new HashMap<>();
         env.put("ES_HOST", "http://192.168.1.110:9200");
         env.put("ES_API_KEY", "none");
@@ -65,4 +65,3 @@ public class FlowAgentMCPTest {
     }
 
 }
-

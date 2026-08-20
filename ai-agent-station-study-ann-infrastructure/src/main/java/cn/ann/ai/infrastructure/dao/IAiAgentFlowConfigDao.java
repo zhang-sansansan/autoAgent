@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao;
+package cn.ann.ai.infrastructure.dao;
 
 import cn.ann.ai.infrastructure.dao.po.AiAgentFlowConfig;
 import org.apache.ibatis.annotations.Mapper;
@@ -6,61 +6,74 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * 鏅鸿兘浣?瀹㈡埛绔叧鑱旇〃 DAO
- * @author bugstack铏礊鏍? * @description 鏅鸿兘浣?瀹㈡埛绔叧鑱旇〃鏁版嵁璁块棶瀵硅薄
+ * 智能体-客户端关联表 DAO
+ * @author bugstack虫洞栈
+ * @description 智能体-客户端关联表数据访问对象
  */
 @Mapper
 public interface IAiAgentFlowConfigDao {
 
     /**
-     * 鎻掑叆鏅鸿兘浣?瀹㈡埛绔叧鑱旈厤缃?     * @param aiAgentFlowConfig 鏅鸿兘浣?瀹㈡埛绔叧鑱旈厤缃璞?     * @return 褰卞搷琛屾暟
+     * 插入智能体-客户端关联配置
+     * @param aiAgentFlowConfig 智能体-客户端关联配置对象
+     * @return 影响行数
      */
     int insert(AiAgentFlowConfig aiAgentFlowConfig);
 
     /**
-     * 鏍规嵁ID鏇存柊鏅鸿兘浣?瀹㈡埛绔叧鑱旈厤缃?     * @param aiAgentFlowConfig 鏅鸿兘浣?瀹㈡埛绔叧鑱旈厤缃璞?     * @return 褰卞搷琛屾暟
+     * 根据ID更新智能体-客户端关联配置
+     * @param aiAgentFlowConfig 智能体-客户端关联配置对象
+     * @return 影响行数
      */
     int updateById(AiAgentFlowConfig aiAgentFlowConfig);
 
     /**
-     * 鏍规嵁ID鍒犻櫎鏅鸿兘浣?瀹㈡埛绔叧鑱旈厤缃?     * @param id 涓婚敭ID
-     * @return 褰卞搷琛屾暟
+     * 根据ID删除智能体-客户端关联配置
+     * @param id 主键ID
+     * @return 影响行数
      */
     int deleteById(String id);
 
     /**
-     * 鏍规嵁鏅鸿兘浣揑D鍒犻櫎鍏宠仈閰嶇疆
-     * @param agentId 鏅鸿兘浣揑D
-     * @return 褰卞搷琛屾暟
+     * 根据智能体ID删除关联配置
+     * @param agentId 智能体ID
+     * @return 影响行数
      */
     int deleteByAgentId(String agentId);
 
     /**
-     * 鏍规嵁ID鏌ヨ鏅鸿兘浣?瀹㈡埛绔叧鑱旈厤缃?     * @param id 涓婚敭ID
-     * @return 鏅鸿兘浣?瀹㈡埛绔叧鑱旈厤缃璞?     */
+     * 根据ID查询智能体-客户端关联配置
+     * @param id 主键ID
+     * @return 智能体-客户端关联配置对象
+     */
     AiAgentFlowConfig queryById(String id);
 
     /**
-     * 鏍规嵁鏅鸿兘浣揑D鏌ヨ鍏宠仈閰嶇疆鍒楄〃
-     * @param agentId 鏅鸿兘浣揑D
-     * @return 鏅鸿兘浣?瀹㈡埛绔叧鑱旈厤缃垪琛?     */
+     * 根据智能体ID查询关联配置列表
+     * @param agentId 智能体ID
+     * @return 智能体-客户端关联配置列表
+     */
     List<AiAgentFlowConfig> queryByAgentId(String agentId);
 
     /**
-     * 鏍规嵁瀹㈡埛绔疘D鏌ヨ鍏宠仈閰嶇疆鍒楄〃
-     * @param clientId 瀹㈡埛绔疘D
-     * @return 鏅鸿兘浣?瀹㈡埛绔叧鑱旈厤缃垪琛?     */
+     * 根据客户端ID查询关联配置列表
+     * @param clientId 客户端ID
+     * @return 智能体-客户端关联配置列表
+     */
     List<AiAgentFlowConfig> queryByClientId(String clientId);
 
     /**
-     * 鏍规嵁鏅鸿兘浣揑D鍜屽鎴风ID鏌ヨ鍏宠仈閰嶇疆
-     * @param agentId 鏅鸿兘浣揑D
-     * @param clientId 瀹㈡埛绔疘D
-     * @return 鏅鸿兘浣?瀹㈡埛绔叧鑱旈厤缃璞?     */
+     * 根据智能体ID和客户端ID查询关联配置
+     * @param agentId 智能体ID
+     * @param clientId 客户端ID
+     * @return 智能体-客户端关联配置对象
+     */
     AiAgentFlowConfig queryByAgentIdAndClientId(String agentId, String clientId);
 
     /**
-     * 鏌ヨ鎵€鏈夋櫤鑳戒綋-瀹㈡埛绔叧鑱旈厤缃?     * @return 鏅鸿兘浣?瀹㈡埛绔叧鑱旈厤缃垪琛?     */
+     * 查询所有智能体-客户端关联配置
+     * @return 智能体-客户端关联配置列表
+     */
     List<AiAgentFlowConfig> queryAll();
 
 }

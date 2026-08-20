@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao;
+package cn.ann.ai.infrastructure.dao;
 
 import cn.ann.ai.infrastructure.dao.po.AiClientConfig;
 import org.apache.ibatis.annotations.Mapper;
@@ -7,83 +7,110 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * AI瀹㈡埛绔粺涓€鍏宠仈閰嶇疆琛?DAO
- * @author bugstack铏礊鏍? * @description AI瀹㈡埛绔粺涓€鍏宠仈閰嶇疆琛ㄦ暟鎹闂璞? */
+ * AI客户端统一关联配置表 DAO
+ * @author bugstack虫洞栈
+ * @description AI客户端统一关联配置表数据访问对象
+ */
 @Mapper
 public interface IAiClientConfigDao {
 
     /**
-     * 鎻掑叆AI瀹㈡埛绔厤缃?     * @param aiClientConfig AI瀹㈡埛绔厤缃璞?     * @return 褰卞搷琛屾暟
+     * 插入AI客户端配置
+     * @param aiClientConfig AI客户端配置对象
+     * @return 影响行数
      */
     int insert(AiClientConfig aiClientConfig);
 
     /**
-     * 鏍规嵁ID鏇存柊AI瀹㈡埛绔厤缃?     * @param aiClientConfig AI瀹㈡埛绔厤缃璞?     * @return 褰卞搷琛屾暟
+     * 根据ID更新AI客户端配置
+     * @param aiClientConfig AI客户端配置对象
+     * @return 影响行数
      */
     int updateById(AiClientConfig aiClientConfig);
 
     /**
-     * 鏍规嵁婧怚D鏇存柊AI瀹㈡埛绔厤缃?     * @param aiClientConfig AI瀹㈡埛绔厤缃璞?     * @return 褰卞搷琛屾暟
+     * 根据源ID更新AI客户端配置
+     * @param aiClientConfig AI客户端配置对象
+     * @return 影响行数
      */
     int updateBySourceId(AiClientConfig aiClientConfig);
 
     /**
-     * 鏍规嵁ID鍒犻櫎AI瀹㈡埛绔厤缃?     * @param id 涓婚敭ID
-     * @return 褰卞搷琛屾暟
+     * 根据ID删除AI客户端配置
+     * @param id 主键ID
+     * @return 影响行数
      */
     int deleteById(Long id);
 
     /**
-     * 鏍规嵁婧怚D鍒犻櫎AI瀹㈡埛绔厤缃?     * @param sourceId 婧怚D
-     * @return 褰卞搷琛屾暟
+     * 根据源ID删除AI客户端配置
+     * @param sourceId 源ID
+     * @return 影响行数
      */
     int deleteBySourceId(String sourceId);
 
     int deleteBySourceTypeAndId(@Param("sourceType") String sourceType, @Param("sourceId") String sourceId);
 
     /**
-     * 鏍规嵁ID鏌ヨAI瀹㈡埛绔厤缃?     * @param id 涓婚敭ID
-     * @return AI瀹㈡埛绔厤缃璞?     */
+     * 根据ID查询AI客户端配置
+     * @param id 主键ID
+     * @return AI客户端配置对象
+     */
     AiClientConfig queryById(Long id);
 
     /**
-     * 鏍规嵁婧怚D鏌ヨAI瀹㈡埛绔厤缃?     * @param sourceId 婧怚D
-     * @return AI瀹㈡埛绔厤缃璞″垪琛?     */
+     * 根据源ID查询AI客户端配置
+     * @param sourceId 源ID
+     * @return AI客户端配置对象列表
+     */
     List<AiClientConfig> queryBySourceId(String sourceId);
 
     /**
-     * 鏍规嵁鐩爣ID鏌ヨAI瀹㈡埛绔厤缃?     * @param targetId 鐩爣ID
-     * @return AI瀹㈡埛绔厤缃璞″垪琛?     */
+     * 根据目标ID查询AI客户端配置
+     * @param targetId 目标ID
+     * @return AI客户端配置对象列表
+     */
     List<AiClientConfig> queryByTargetId(String targetId);
 
     /**
-     * 鏍规嵁婧愮被鍨嬪拰婧怚D鏌ヨAI瀹㈡埛绔厤缃?     * @param sourceType 婧愮被鍨?     * @param sourceId 婧怚D
-     * @return AI瀹㈡埛绔厤缃璞″垪琛?     */
+     * 根据源类型和源ID查询AI客户端配置
+     * @param sourceType 源类型
+     * @param sourceId 源ID
+     * @return AI客户端配置对象列表
+     */
     List<AiClientConfig> queryBySourceTypeAndId(@Param("sourceType") String sourceType, @Param("sourceId")String sourceId);
 
     /**
-     * 鏍规嵁鐩爣绫诲瀷鍜岀洰鏍嘔D鏌ヨAI瀹㈡埛绔厤缃?     * @param targetType 鐩爣绫诲瀷
-     * @param targetId 鐩爣ID
-     * @return AI瀹㈡埛绔厤缃璞″垪琛?     */
+     * 根据目标类型和目标ID查询AI客户端配置
+     * @param targetType 目标类型
+     * @param targetId 目标ID
+     * @return AI客户端配置对象列表
+     */
     List<AiClientConfig> queryByTargetTypeAndId(@Param("targetType") String targetType, @Param("targetId") String targetId);
 
     /**
-     * 鏍规嵁婧愮被鍨嬨€佹簮ID銆佺洰鏍囩被鍨嬨€佺洰鏍嘔D鏌ヨAI瀹㈡埛绔厤缃?     * @param sourceType 婧愮被鍨?     * @param sourceId 婧怚D
-     * @param targetType 鐩爣绫诲瀷
-     * @param targetId 鐩爣ID
-     * @return AI瀹㈡埛绔厤缃璞″垪琛?     */
+     * 根据源类型、源ID、目标类型、目标ID查询AI客户端配置
+     * @param sourceType 源类型
+     * @param sourceId 源ID
+     * @param targetType 目标类型
+     * @param targetId 目标ID
+     * @return AI客户端配置对象列表
+     */
     List<AiClientConfig> queryByConditions(@Param("sourceType") String sourceType, 
                                           @Param("sourceId") String sourceId,
                                           @Param("targetType") String targetType, 
                                           @Param("targetId") String targetId);
 
     /**
-     * 鏌ヨ鍚敤鐘舵€佺殑AI瀹㈡埛绔厤缃?     * @return AI瀹㈡埛绔厤缃璞″垪琛?     */
+     * 查询启用状态的AI客户端配置
+     * @return AI客户端配置对象列表
+     */
     List<AiClientConfig> queryEnabledConfigs();
 
     /**
-     * 鏌ヨ鎵€鏈堿I瀹㈡埛绔厤缃?     * @return AI瀹㈡埛绔厤缃璞″垪琛?     */
+     * 查询所有AI客户端配置
+     * @return AI客户端配置对象列表
+     */
     List<AiClientConfig> queryAll();
 
 }
-

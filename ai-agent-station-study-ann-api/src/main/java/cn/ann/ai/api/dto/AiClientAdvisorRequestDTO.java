@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.dto;
+package cn.ann.ai.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,10 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 椤鹃棶閰嶇疆璇锋眰 DTO
+ * 顾问配置请求 DTO
  *
- * @author bugstack铏礊鏍? * @description 椤鹃棶閰嶇疆璇锋眰鏁版嵁浼犺緭瀵硅薄
+ * @author bugstack虫洞栈
+ * @description 顾问配置请求数据传输对象
  */
 @Data
 @Builder
@@ -23,35 +24,37 @@ public class AiClientAdvisorRequestDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 涓婚敭ID锛堟洿鏂版椂浣跨敤锛?     */
+     * 主键ID（更新时使用）
+     */
     private Long id;
 
     /**
-     * 椤鹃棶ID
+     * 顾问ID
      */
     private String advisorId;
 
     /**
-     * 椤鹃棶鍚嶇О
+     * 顾问名称
      */
     private String advisorName;
 
     /**
-     * 椤鹃棶绫诲瀷(PromptChatMemory/RagAnswer/SimpleLoggerAdvisor绛?
+     * 顾问类型(PromptChatMemory/RagAnswer/SimpleLoggerAdvisor等)
      */
     private String advisorType;
 
     /**
-     * 椤哄簭鍙?     */
+     * 顺序号
+     */
     private Integer orderNum;
 
     /**
-     * 鎵╁睍鍙傛暟閰嶇疆锛宩son 璁板綍
+     * 扩展参数配置，json 记录
      */
     private String extParam;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 

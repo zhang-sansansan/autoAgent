@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.entity;
+package cn.ann.ai.domain.agent.model.entity;
 
 import cn.ann.ai.domain.agent.model.valobj.enums.AiAgentEnumVO;
 import lombok.AllArgsConstructor;
@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * 瑁呴厤鍛戒护
+ * 装配命令
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/6/27 07:26
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/6/27 07:26
  */
 @Data
 @Builder
@@ -20,23 +21,26 @@ import java.util.List;
 public class ArmoryCommandEntity {
 
     /**
-     * 鍛戒护绫诲瀷 AiAgentEnumVO.getCode
+     * 命令类型 AiAgentEnumVO.getCode
      */
     private String commandType;
 
     /**
-     * 鍛戒护绱㈠紩锛坈lientId銆乵odelId銆乤piId...锛?     */
+     * 命令索引（clientId、modelId、apiId...）
+     */
     private List<String> commandIdList;
 
     /**
-     * 鏍规嵁 commandType 鑾峰彇瀵瑰簲鐨勬暟鎹姞杞界瓥鐣ュ瓧绗︿覆銆?     * 閫氳繃璋冪敤 AiAgentEnumVO 鏋氫妇绫荤殑 getByCode 鏂规硶锛岃幏鍙栨灇涓惧疄渚嬶紝
-     * 鐒跺悗杩斿洖璇ュ疄渚嬬殑 loadDataStrategy 瀛楁鍊笺€?     * <p>
-     * 娉ㄦ剰锛歝ommandType 蹇呴』鏄湁鏁堢殑鏋氫妇缂栫爜锛屽惁鍒欏彲鑳藉紩鍙戝紓甯搞€?     *
-     * @return 杩斿洖瀵瑰簲鐨勫姞杞芥暟鎹瓥鐣ュ瓧绗︿覆
+     * 根据 commandType 获取对应的数据加载策略字符串。
+     * 通过调用 AiAgentEnumVO 枚举类的 getByCode 方法，获取枚举实例，
+     * 然后返回该实例的 loadDataStrategy 字段值。
+     * <p>
+     * 注意：commandType 必须是有效的枚举编码，否则可能引发异常。
+     *
+     * @return 返回对应的加载数据策略字符串
      */
     public String getLoadDataStrategy() {
         return AiAgentEnumVO.getByCode(commandType).getLoadDataStrategy();
     }
 
 }
-

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao;
+package cn.ann.ai.infrastructure.dao;
 
 import cn.ann.ai.infrastructure.dao.po.AiClientSystemPrompt;
 import org.apache.ibatis.annotations.Mapper;
@@ -6,51 +6,58 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * 绯荤粺鎻愮ず璇嶉厤缃〃 DAO
+ * 系统提示词配置表 DAO
  */
 @Mapper
 public interface IAiClientSystemPromptDao {
 
     /**
-     * 鎻掑叆绯荤粺鎻愮ず璇嶉厤缃?     */
+     * 插入系统提示词配置
+     */
     void insert(AiClientSystemPrompt aiClientSystemPrompt);
 
     /**
-     * 鏍规嵁ID鏇存柊绯荤粺鎻愮ず璇嶉厤缃?     */
+     * 根据ID更新系统提示词配置
+     */
     int updateById(AiClientSystemPrompt aiClientSystemPrompt);
 
     /**
-     * 鏍规嵁鎻愮ず璇岻D鏇存柊绯荤粺鎻愮ず璇嶉厤缃?     */
+     * 根据提示词ID更新系统提示词配置
+     */
     int updateByPromptId(AiClientSystemPrompt aiClientSystemPrompt);
 
     /**
-     * 鏍规嵁ID鍒犻櫎绯荤粺鎻愮ず璇嶉厤缃?     */
+     * 根据ID删除系统提示词配置
+     */
     int deleteById(Long id);
 
     /**
-     * 鏍规嵁鎻愮ず璇岻D鍒犻櫎绯荤粺鎻愮ず璇嶉厤缃?     */
+     * 根据提示词ID删除系统提示词配置
+     */
     int deleteByPromptId(String promptId);
 
     /**
-     * 鏍规嵁ID鏌ヨ绯荤粺鎻愮ず璇嶉厤缃?     */
+     * 根据ID查询系统提示词配置
+     */
     AiClientSystemPrompt queryById(Long id);
 
     /**
-     * 鏍规嵁鎻愮ず璇岻D鏌ヨ绯荤粺鎻愮ず璇嶉厤缃?     */
+     * 根据提示词ID查询系统提示词配置
+     */
     AiClientSystemPrompt queryByPromptId(String promptId);
 
     /**
-     * 鏌ヨ鍚敤鐨勭郴缁熸彁绀鸿瘝閰嶇疆
+     * 查询启用的系统提示词配置
      */
     List<AiClientSystemPrompt> queryEnabledPrompts();
 
     /**
-     * 鏍规嵁鎻愮ず璇嶅悕绉版煡璇㈢郴缁熸彁绀鸿瘝閰嶇疆
+     * 根据提示词名称查询系统提示词配置
      */
     List<AiClientSystemPrompt> queryByPromptName(String promptName);
 
     /**
-     * 鏌ヨ鎵€鏈夌郴缁熸彁绀鸿瘝閰嶇疆
+     * 查询所有系统提示词配置
      */
     List<AiClientSystemPrompt> queryAll();
 

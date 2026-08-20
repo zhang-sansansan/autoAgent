@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.types.exception;
+package cn.ann.ai.types.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -6,8 +6,9 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 
 /**
- * 涓氬姟寮傚父
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/9/2 07:10
+ * 业务异常
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/9/2 07:10
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,10 +17,10 @@ public class BizException extends RuntimeException{
     @Serial
     private static final long serialVersionUID = 5317680961212299217L;
 
-    /** 寮傚父鐮?*/
+    /** 异常码 */
     private String code;
 
-    /** 寮傚父淇℃伅 */
+    /** 异常信息 */
     private String info;
 
     public BizException(String code) {
@@ -51,4 +52,3 @@ public class BizException extends RuntimeException{
     }
     
 }
-

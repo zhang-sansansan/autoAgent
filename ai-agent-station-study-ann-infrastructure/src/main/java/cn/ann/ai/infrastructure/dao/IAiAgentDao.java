@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao;
+package cn.ann.ai.infrastructure.dao;
 
 
 import cn.ann.ai.infrastructure.dao.po.AiAgent;
@@ -7,60 +7,79 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * AI鏅鸿兘浣撻厤缃〃 DAO
- * @author bugstack铏礊鏍? * @description AI鏅鸿兘浣撻厤缃〃鏁版嵁璁块棶瀵硅薄
+ * AI智能体配置表 DAO
+ * @author bugstack虫洞栈
+ * @description AI智能体配置表数据访问对象
  */
 @Mapper
 public interface IAiAgentDao {
 
     /**
-     * 鎻掑叆AI鏅鸿兘浣撻厤缃?     * @param aiAgent AI鏅鸿兘浣撻厤缃璞?     * @return 褰卞搷琛屾暟
+     * 插入AI智能体配置
+     * @param aiAgent AI智能体配置对象
+     * @return 影响行数
      */
     int insert(AiAgent aiAgent);
 
     /**
-     * 鏍规嵁ID鏇存柊AI鏅鸿兘浣撻厤缃?     * @param aiAgent AI鏅鸿兘浣撻厤缃璞?     * @return 褰卞搷琛屾暟
+     * 根据ID更新AI智能体配置
+     * @param aiAgent AI智能体配置对象
+     * @return 影响行数
      */
     int updateById(AiAgent aiAgent);
 
     /**
-     * 鏍规嵁鏅鸿兘浣揑D鏇存柊AI鏅鸿兘浣撻厤缃?     * @param aiAgent AI鏅鸿兘浣撻厤缃璞?     * @return 褰卞搷琛屾暟
+     * 根据智能体ID更新AI智能体配置
+     * @param aiAgent AI智能体配置对象
+     * @return 影响行数
      */
     int updateByAgentId(AiAgent aiAgent);
 
     /**
-     * 鏍规嵁ID鍒犻櫎AI鏅鸿兘浣撻厤缃?     * @param id 涓婚敭ID
-     * @return 褰卞搷琛屾暟
+     * 根据ID删除AI智能体配置
+     * @param id 主键ID
+     * @return 影响行数
      */
     int deleteById(Long id);
 
     /**
-     * 鏍规嵁鏅鸿兘浣揑D鍒犻櫎AI鏅鸿兘浣撻厤缃?     * @param agentId 鏅鸿兘浣揑D
-     * @return 褰卞搷琛屾暟
+     * 根据智能体ID删除AI智能体配置
+     * @param agentId 智能体ID
+     * @return 影响行数
      */
     int deleteByAgentId(String agentId);
 
     /**
-     * 鏍规嵁ID鏌ヨAI鏅鸿兘浣撻厤缃?     * @param id 涓婚敭ID
-     * @return AI鏅鸿兘浣撻厤缃璞?     */
+     * 根据ID查询AI智能体配置
+     * @param id 主键ID
+     * @return AI智能体配置对象
+     */
     AiAgent queryById(Long id);
 
     /**
-     * 鏍规嵁鏅鸿兘浣揑D鏌ヨAI鏅鸿兘浣撻厤缃?     * @param agentId 鏅鸿兘浣揑D
-     * @return AI鏅鸿兘浣撻厤缃璞?     */
+     * 根据智能体ID查询AI智能体配置
+     * @param agentId 智能体ID
+     * @return AI智能体配置对象
+     */
     AiAgent queryByAgentId(String agentId);
 
     /**
-     * 鏌ヨ鎵€鏈夊惎鐢ㄧ殑AI鏅鸿兘浣撻厤缃?     * @return AI鏅鸿兘浣撻厤缃垪琛?     */
+     * 查询所有启用的AI智能体配置
+     * @return AI智能体配置列表
+     */
     List<AiAgent> queryEnabledAgents();
 
     /**
-     * 鏍规嵁娓犻亾绫诲瀷鏌ヨAI鏅鸿兘浣撻厤缃?     * @param channel 娓犻亾绫诲瀷
-     * @return AI鏅鸿兘浣撻厤缃垪琛?     */
+     * 根据渠道类型查询AI智能体配置
+     * @param channel 渠道类型
+     * @return AI智能体配置列表
+     */
     List<AiAgent> queryByChannel(String channel);
 
     /**
-     * 鏌ヨ鎵€鏈堿I鏅鸿兘浣撻厤缃?     * @return AI鏅鸿兘浣撻厤缃垪琛?     */
+     * 查询所有AI智能体配置
+     * @return AI智能体配置列表
+     */
     List<AiAgent> queryAll();
 
 }

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.test;
+package cn.ann.ai.test;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class FlowAgentMCPTest {
             OpenAiChatModel chatModel = OpenAiChatModel.builder()
                     .openAiApi(OpenAiApi.builder()
                             .baseUrl("https://apis.itedus.cn")
-                        .apiKey(System.getenv("OPENAI_API_KEY"))
+                        .apiKey("sk-uzT8fdbgqb6SIZQF69469bFdFcD34a618bAd2d8e3d9a06E7")
                             .completionsPath("v1/chat/completions")
                             .embeddingsPath("v1/embeddings")
                             .build())
@@ -42,8 +42,8 @@ public class FlowAgentMCPTest {
                         .toolCallbacks(new SyncMcpToolCallbackProvider(stdioMcpClientElasticsearch()).getToolCallbacks())
                             .build())
                     .build();
-            ChatResponse call = chatModel.call(Prompt.builder().messages(new UserMessage("鏈夊摢浜涘伐鍏峰彲浠ヤ娇鐢?)).build());
-            log.info("娴嬭瘯缁撴灉:{}", JSON.toJSONString(call.getResult().getOutput().getText()));
+            ChatResponse call = chatModel.call(Prompt.builder().messages(new UserMessage("有哪些工具可以使用")).build());
+            log.info("测试结果:{}", JSON.toJSONString(call.getResult().getOutput().getText()));
         }
                                     
         /**

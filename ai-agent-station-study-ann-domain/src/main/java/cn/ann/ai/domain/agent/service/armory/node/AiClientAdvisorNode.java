@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.armory.node;
+package cn.ann.ai.domain.agent.service.armory.node;
 
 import cn.ann.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import cn.ann.ai.domain.agent.model.valobj.AiAgentEnumVO;
@@ -32,12 +32,12 @@ public class AiClientAdvisorNode extends AbstractArmorySupport {
 
     @Override
     protected String doApply(ArmoryCommandEntity requestParameter, DefaultArmoryStrategyFactory.DynamicContext dynamicContext) throws Exception {
-        log.info("Ai Agent 鏋勫缓鑺傜偣锛孉dvisor 椤鹃棶瑙掕壊{}", JSON.toJSONString(requestParameter));
-        //灏嗗姩鎬佽儗鍖呬腑鏌ヨ鍒扮殑鍊煎璞″彇鍑烘潵锛屽苟浠ユ瀛樹负bean
+        log.info("Ai Agent 构建节点，Advisor 顾问角色{}", JSON.toJSONString(requestParameter));
+        //将动态背包中查询到的值对象取出来，并以此存为bean
         List<AiClientAdvisorVO> aiClientAdvisorList = dynamicContext.getValue(dataName());
 
         if (aiClientAdvisorList == null || aiClientAdvisorList.isEmpty()) {
-            log.warn("娌℃湁闇€瑕佽鍒濆鍖栫殑 ai client advisor");
+            log.warn("没有需要被初始化的 ai client advisor");
             return router(requestParameter, dynamicContext);
         }
 
@@ -49,7 +49,7 @@ public class AiClientAdvisorNode extends AbstractArmorySupport {
         return router(requestParameter, dynamicContext);
     }
 
-    @Override//涓嬩竴涓妭鐐规槸瀹㈡埛绔妭鐐?
+    @Override//下一个节点是客户端节点
     public StrategyHandler<ArmoryCommandEntity, DefaultArmoryStrategyFactory.DynamicContext, String> get(ArmoryCommandEntity requestParameter, DefaultArmoryStrategyFactory.DynamicContext dynamicContext) throws Exception {
         return aiClientNode;
     }
@@ -64,9 +64,8 @@ public class AiClientAdvisorNode extends AbstractArmorySupport {
 
 
     public Advisor createAdvisor(AiClientAdvisorVO aiClientAdvisorVO, VectorStore vectorStore) {
-        //鏍规嵁浼犺繘鏉ョ殑鍊煎璞¤幏鍙栧搴旂殑鑾峰彇鏋氫妇绫伙紝鑾峰彇鏋氫妇绫讳箣鍚庡垱寤洪【闂?
+        //根据传进来的值对象获取对应的获取枚举类，获取枚举类之后创建顾问
         AiClientAdvisorTypeEnumVO aiClientAdvisorTypeEnumVO = AiClientAdvisorTypeEnumVO.getByCode(aiClientAdvisorVO.getAdvisorType());
         return aiClientAdvisorTypeEnumVO.createAdvisor(aiClientAdvisorVO, vectorStore);
     }
 }
-

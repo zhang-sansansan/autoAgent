@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.dto;
+package cn.ann.ai.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,10 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * ArmoryAgent 瑁呴厤璇锋眰 DTO
+ * ArmoryAgent 装配请求 DTO
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/1/15 10:00
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/1/15 10:00
  */
 @Data
 @Builder
@@ -23,7 +24,7 @@ public class ArmoryAgentRequestDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * AI鏅鸿兘浣揑D
+     * AI智能体ID
      */
     private String agentId;
 

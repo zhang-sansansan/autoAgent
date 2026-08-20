@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.valobj;
+package cn.ann.ai.domain.agent.model.valobj;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,8 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 椤鹃棶閰嶇疆锛屽€煎璞? *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/6/27 18:42
+ * 顾问配置，值对象
+ *
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/6/27 18:42
  */
 @Data
 @Builder
@@ -16,30 +18,32 @@ import lombok.NoArgsConstructor;
 public class AiClientAdvisorVO {
 
     /**
-     * 椤鹃棶ID
+     * 顾问ID
      */
     private String advisorId;
 
     /**
-     * 椤鹃棶鍚嶇О
+     * 顾问名称
      */
     private String advisorName;
 
     /**
-     * 椤鹃棶绫诲瀷(PromptChatMemory/RagAnswer/SimpleLoggerAdvisor绛?
+     * 顾问类型(PromptChatMemory/RagAnswer/SimpleLoggerAdvisor等)
      */
     private String advisorType;
 
     /**
-     * 椤哄簭鍙?     */
+     * 顺序号
+     */
     private Integer orderNum;
 
     /**
-     * 鎵╁睍锛涜蹇?     */
+     * 扩展；记忆
+     */
     private ChatMemory chatMemory;
 
     /**
-     * 鎵╁睍锛況ag 闂瓟
+     * 扩展；rag 问答
      */
     private RagAnswer ragAnswer;
 
@@ -61,4 +65,3 @@ public class AiClientAdvisorVO {
     }
 
 }
-

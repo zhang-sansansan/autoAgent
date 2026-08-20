@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.valobj;
+package cn.ann.ai.domain.agent.model.valobj;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * MCP瀹㈡埛绔厤缃紝鍊煎璞? *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/6/27 18:29
+ * MCP客户端配置，值对象
+ *
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/6/27 18:29
  */
 @Data
 @Builder
@@ -24,32 +26,32 @@ public class AiClientToolMcpVO {
     private String mcpId;
 
     /**
-     * MCP鍚嶇О
+     * MCP名称
      */
     private String mcpName;
 
     /**
-     * 浼犺緭绫诲瀷(sse/stdio)
+     * 传输类型(sse/stdio)
      */
     private String transportType;
 
     /**
-     * 浼犺緭閰嶇疆(sse/stdio)
+     * 传输配置(sse/stdio)
      */
     private String transportConfig;
 
     /**
-     * 璇锋眰瓒呮椂鏃堕棿(鍒嗛挓)
+     * 请求超时时间(分钟)
      */
     private Integer requestTimeout;
 
     /**
-     * 浼犺緭閰嶇疆 - sse
+     * 传输配置 - sse
      */
     private TransportConfigSse transportConfigSse;
 
     /**
-     * 浼犺緭閰嶇疆 - stdio
+     * 传输配置 - stdio
      */
     private TransportConfigStdio transportConfigStdio;
 
@@ -57,10 +59,11 @@ public class AiClientToolMcpVO {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class TransportConfigSse {//闈欐€佸唴閮ㄧ被锛屽ぇ绫讳笓闂ㄤ负灏忕被鏈嶅姟  鏂逛究JSON鏄犲皠
-        // 鍔犱簡static涔嬪悗鍙互涓嶇敤棰勫厛鍒涘缓澶х被锛屽彲浠ョ洿鎺ュ垱寤哄唴閮ㄧ被
-        private String baseUri;//杩滅▼鏈嶅姟鍣ㄧ殑鍦板潃
-        private String sseEndpoint;//绔偣锛?    }
+    public static class TransportConfigSse {//静态内部类，大类专门为小类服务  方便JSON映射
+        // 加了static之后可以不用预先创建大类，可以直接创建内部类
+        private String baseUri;//远程服务器的地址
+        private String sseEndpoint;//端点？
+    }
 
     @Data
     @Builder
@@ -68,13 +71,14 @@ public class AiClientToolMcpVO {
     @NoArgsConstructor
     public static class TransportConfigStdio {
 
-        private Map<String, Stdio> stdio;//澶氬伐鍏烽厤缃?
+        private Map<String, Stdio> stdio;//多工具配置
+
         @Data
-        public static class Stdio {//Stdio锛氭弿杩板叿浣撴€庝箞杩愯涓€涓懡浠?            private String command;
+        public static class Stdio {//Stdio：描述具体怎么运行一个命令
+            private String command;
             private List<String> args;
             private Map<String, String> env;
         }
     }
 
 }
-

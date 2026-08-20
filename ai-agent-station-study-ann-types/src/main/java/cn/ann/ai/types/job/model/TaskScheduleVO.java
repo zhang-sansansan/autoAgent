@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.types.job.model;
+package cn.ann.ai.types.job.model;
 
 import lombok.Data;
 
@@ -6,39 +6,41 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 /**
- * 浠诲姟璋冨害鍊煎璞? * @author @灏忓倕鍝? */
+ * 任务调度值对象
+ * @author @小傅哥
+ */
 @Data
 public class TaskScheduleVO {
 
-    /** 浠诲姟ID */
+    /** 任务ID */
     private Long id;
     
-    /** 浠诲姟鎻忚堪 */
+    /** 任务描述 */
     private String description;
     
-    /** Cron琛ㄨ揪寮?*/
+    /** Cron表达式 */
     private String cronExpression;
     
-    /** 浠诲姟鍙傛暟 */
+    /** 任务参数 */
     private String taskParam;
     
-    /** 浠诲姟鎵ц鍣ㄥ嚱鏁板紡鎺ュ彛 */
+    /** 任务执行器函数式接口 */
     private Supplier<Runnable> taskExecutor;
 
     public TaskScheduleVO() {
     }
 
     /**
-     * 渚挎嵎鏂规硶锛氳缃换鍔℃墽琛岄€昏緫
-     * @param taskLogic 浠诲姟鎵ц閫昏緫
+     * 便捷方法：设置任务执行逻辑
+     * @param taskLogic 任务执行逻辑
      */
     public void setTaskLogic(Runnable taskLogic) {
         this.taskExecutor = () -> taskLogic;
     }
     
     /**
-     * 渚挎嵎鏂规硶锛氳缃甫鍙傛暟鐨勪换鍔℃墽琛岄€昏緫
-     * @param taskLogic 浠诲姟鎵ц閫昏緫锛屾帴鏀秚askId鍜宼askParam
+     * 便捷方法：设置带参数的任务执行逻辑
+     * @param taskLogic 任务执行逻辑，接收taskId和taskParam
      */
     public void setTaskLogic(BiConsumer<Long, String> taskLogic) {
         this.taskExecutor = () -> () -> taskLogic.accept(this.id, this.taskParam);

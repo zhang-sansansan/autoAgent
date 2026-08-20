@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao.po;
+package cn.ann.ai.infrastructure.dao.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * AI鏅鸿兘浣撴嫋鎷夋嫿閰嶇疆鍘嗗彶琛? * @author bugstack铏礊鏍? * @description AI鏅鸿兘浣撴嫋鎷夋嫿閰嶇疆鍘嗗彶琛?PO 瀵硅薄
+ * AI智能体拖拉拽配置历史表
+ * @author bugstack虫洞栈
+ * @description AI智能体拖拉拽配置历史表 PO 对象
  */
 @Data
 @Builder
@@ -17,38 +19,42 @@ import java.time.LocalDateTime;
 public class AiAgentDrawHistory {
 
     /**
-     * 涓婚敭ID
+     * 主键ID
      */
     private Long id;
 
     /**
-     * 閰嶇疆ID锛堝叧鑱攁i_agent_draw_config锛?     */
+     * 配置ID（关联ai_agent_draw_config）
+     */
     private String configId;
 
     /**
-     * 鐗堟湰鍙?     */
+     * 版本号
+     */
     private Integer version;
 
     /**
-     * 鍘嗗彶閰嶇疆JSON鏁版嵁
+     * 历史配置JSON数据
      */
     private String configData;
 
     /**
-     * 鍙樻洿绫诲瀷锛坈reate銆乽pdate銆乨elete锛?     */
+     * 变更类型（create、update、delete）
+     */
     private String changeType;
 
     /**
-     * 鍙樻洿鎻忚堪
+     * 变更描述
      */
     private String changeDesc;
 
     /**
-     * 鍙樻洿浜?     */
+     * 变更人
+     */
     private String changeBy;
 
     /**
-     * 鍒涘缓鏃堕棿
+     * 创建时间
      */
     private LocalDateTime createTime;
 

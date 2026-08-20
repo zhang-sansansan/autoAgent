@@ -1,11 +1,11 @@
-﻿package cn.ann.ai.domain.agent.model.valobj.enums;
+package cn.ann.ai.domain.agent.model.valobj.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * @author xiaofuge bugstack.cn @灏忓倕鍝?
+ * @author xiaofuge bugstack.cn @小傅哥
  * 2025/7/27 17:25
  */
 @Getter
@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum AiClientTypeEnumVO {
 
-    DEFAULT("DEFAULT", "閫氱敤鐨?),
-    TASK_ANALYZER_CLIENT("TASK_ANALYZER_CLIENT", "浠诲姟鍒嗘瀽鍜岀姸鎬佸垽鏂?),
-    PRECISION_EXECUTOR_CLIENT("PRECISION_EXECUTOR_CLIENT", "鍏蜂綋浠诲姟鎵ц"),
-    QUALITY_SUPERVISOR_CLIENT("QUALITY_SUPERVISOR_CLIENT", "璐ㄩ噺妫€鏌ュ拰浼樺寲"),
-    RESPONSE_ASSISTANT("RESPONSE_ASSISTANT", "鏅鸿兘鍝嶅簲鍔╂墜"),
+    DEFAULT("DEFAULT", "通用的"),
+    TASK_ANALYZER_CLIENT("TASK_ANALYZER_CLIENT", "任务分析和状态判断"),
+    PRECISION_EXECUTOR_CLIENT("PRECISION_EXECUTOR_CLIENT", "具体任务执行"),
+    QUALITY_SUPERVISOR_CLIENT("QUALITY_SUPERVISOR_CLIENT", "质量检查和优化"),
+    RESPONSE_ASSISTANT("RESPONSE_ASSISTANT", "智能响应助手"),
 
-    TOOL_MCP_CLIENT("TOOL_MCP_CLIENT", "宸ュ叿鍒嗘瀽"),
-    PLANNING_CLIENT("PLANNING_CLIENT","浠诲姟瑙勫垝"),
-    EXECUTOR_CLIENT("EXECUTOR_CLIENT", "浠诲姟鎵ц")
+    TOOL_MCP_CLIENT("TOOL_MCP_CLIENT", "工具分析"),
+    PLANNING_CLIENT("PLANNING_CLIENT","任务规划"),
+    EXECUTOR_CLIENT("EXECUTOR_CLIENT", "任务执行")
 
     ;
 
@@ -29,4 +29,3 @@ public enum AiClientTypeEnumVO {
     private String info;
 
 }
-

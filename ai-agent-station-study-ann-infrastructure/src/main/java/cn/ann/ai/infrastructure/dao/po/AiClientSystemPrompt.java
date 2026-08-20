@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao.po;
+package cn.ann.ai.infrastructure.dao.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 绯荤粺鎻愮ず璇嶉厤缃〃
+ * 系统提示词配置表
  */
 @Data
 @Builder
@@ -17,40 +17,42 @@ import java.time.LocalDateTime;
 public class AiClientSystemPrompt {
 
     /**
-     * 涓婚敭ID
+     * 主键ID
      */
     private Long id;
 
     /**
-     * 鎻愮ず璇岻D
+     * 提示词ID
      */
     private String promptId;
 
     /**
-     * 鎻愮ず璇嶅悕绉?     */
+     * 提示词名称
+     */
     private String promptName;
 
     /**
-     * 鎻愮ず璇嶅唴瀹?     */
+     * 提示词内容
+     */
     private String promptContent;
 
     /**
-     * 鎻忚堪
+     * 描述
      */
     private String description;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 
     /**
-     * 鍒涘缓鏃堕棿
+     * 创建时间
      */
     private LocalDateTime createTime;
 
     /**
-     * 鏇存柊鏃堕棿
+     * 更新时间
      */
     private LocalDateTime updateTime;
 

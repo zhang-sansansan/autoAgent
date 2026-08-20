@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.response;
+package cn.ann.ai.api.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,4 +20,3 @@ public class Response<T> implements Serializable {
     private T data;
 
 }
-

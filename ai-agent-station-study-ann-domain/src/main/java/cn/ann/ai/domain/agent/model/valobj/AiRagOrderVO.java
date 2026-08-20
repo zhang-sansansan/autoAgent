@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.valobj;
+package cn.ann.ai.domain.agent.model.valobj;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 鐭ヨ瘑搴撹鍗?
- * @author Fuzhengwei bugstack.cn @灏忓倕鍝?
+ * 知识库订单
+ * @author Fuzhengwei bugstack.cn @小傅哥
  * 2025-05-05 20:02
  */
 @Data
@@ -17,14 +17,13 @@ import lombok.NoArgsConstructor;
 public class AiRagOrderVO {
 
     /**
-     * 鐭ヨ瘑搴撳悕绉?
+     * 知识库名称
      */
     private String ragName;
 
     /**
-     * 鐭ヨ瘑鏍囩
+     * 知识标签
      */
     private String knowledgeTag;
 
 }
-

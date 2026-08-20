@@ -1,4 +1,4 @@
-﻿/**
- * 瀹炵幇瀵瑰閮ㄧ殑api璋冪敤锛岀被鐨勫悕绉颁负 XxxPort 鎺ュ彛瀹氫箟鍦?domain 涓?
+/**
+ * 实现对外部的api调用，类的名称为 XxxPort 接口定义在 domain 中
  */
 package cn.ann.ai.infrastructure.adapter.port;

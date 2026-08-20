@@ -1,4 +1,4 @@
-﻿/**
- * 鎸佷箙鍖栧璞★紱XxxPO 鏈€鍚庣殑 PO 鏄ぇ鍐欙紝UserPO
+/**
+ * 持久化对象；XxxPO 最后的 PO 是大写，UserPO
  */
 package cn.ann.ai.infrastructure.dao.po;

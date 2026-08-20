@@ -1,0 +1,147 @@
+:root {
+  --ann-bg-canvas: #070910;
+  --ann-bg-surface: #0c0f19;
+  --ann-bg-elevated: #121624;
+  --ann-bg-raised: #171b2b;
+  --ann-text-primary: #f7f7ff;
+  --ann-text-secondary: #a7aec4;
+  --ann-text-placeholder: #7f879f;
+  --ann-border: rgba(151, 160, 198, 0.18);
+  --ann-border-subtle: rgba(151, 160, 198, 0.11);
+  --ann-accent: #8b5cf6;
+  color-scheme: dark;
+  font-family: Inter, "SF Pro Display", "Segoe UI", "PingFang SC", sans-serif;
+  color: #f7f7ff;
+  background: #070910;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { width: 100%; min-width: 0; min-height: 100%; margin: 0; }
+body {
+  min-width: 1080px;
+  overflow-x: auto;
+  background:
+    radial-gradient(circle at 78% -20%, rgba(139, 92, 246, 0.16), transparent 38%),
+    radial-gradient(circle at 5% 85%, rgba(34, 211, 238, 0.08), transparent 32%),
+    #070910;
+}
+button, input, textarea, select { font: inherit; }
+button, a, [role='button'] { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid #22d3ee; outline-offset: 2px; }
+::selection { color: #fff; background: rgba(139, 92, 246, 0.55); }
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: #0a0d15; }
+::-webkit-scrollbar-thumb { background: #2b3043; border: 2px solid #0a0d15; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #3a4260; }
+
+.semi-portal, .semi-modal, .semi-sidesheet, .semi-dropdown, .semi-popover { color-scheme: dark; }
+.semi-modal-content, .semi-sidesheet-inner, .semi-popover-content, .semi-dropdown-menu {
+  color: #f7f7ff !important;
+  background: #121624 !important;
+  border: 1px solid rgba(151, 160, 198, 0.18) !important;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.5) !important;
+}
+.semi-input-wrapper, .semi-select, .semi-textarea-wrapper {
+  color: var(--ann-text-primary) !important;
+  background: var(--ann-bg-surface) !important;
+  border-color: var(--ann-border) !important;
+}
+.semi-input, .semi-input-textarea, .semi-select-selection-text, .semi-select-selection-placeholder {
+  color: var(--ann-text-primary) !important;
+}
+.semi-input::placeholder, .semi-input-textarea::placeholder, .semi-textarea::placeholder {
+  color: var(--ann-text-placeholder) !important;
+  opacity: 1;
+}
+.semi-table-container, .semi-table-row, .semi-table-thead > .semi-table-row > .semi-table-row-head {
+  color: #dfe2f2 !important;
+  background: transparent !important;
+  border-color: rgba(151, 160, 198, 0.12) !important;
+}
+.semi-card {
+  color: #dfe2f2 !important;
+  background: linear-gradient(145deg, rgba(18, 22, 36, .96), rgba(10, 13, 22, .98)) !important;
+  border: 1px solid rgba(151, 160, 198, .14) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, .18) !important;
+}
+.semi-table-tbody > .semi-table-row:hover > .semi-table-row-cell { background: rgba(139, 92, 246, .055) !important; }
+.semi-table-row-cell { border-color: rgba(151, 160, 198, .1) !important; }
+.semi-table-thead > .semi-table-row > .semi-table-cell-fixed-left,
+.semi-table-thead > .semi-table-row > .semi-table-cell-fixed-right,
+.semi-table-tbody > .semi-table-row > .semi-table-cell-fixed-left,
+.semi-table-tbody > .semi-table-row > .semi-table-cell-fixed-right {
+  color: var(--ann-text-primary) !important;
+  background: var(--ann-bg-surface) !important;
+}
+.semi-table-tbody > .semi-table-row:hover > .semi-table-cell-fixed-left,
+.semi-table-tbody > .semi-table-row:hover > .semi-table-cell-fixed-right {
+  background: #13172a !important;
+}
+.semi-table-cell-fixed-left-first::after,
+.semi-table-cell-fixed-right-first::after {
+  box-shadow: 0 0 18px rgba(0, 0, 0, .52) !important;
+}
+.semi-page-item, .semi-page-prev, .semi-page-next {
+  color: var(--ann-text-secondary) !important;
+  background: var(--ann-bg-surface) !important;
+  border-color: var(--ann-border-subtle) !important;
+}
+.semi-page-item:hover, .semi-page-prev:hover, .semi-page-next:hover {
+  color: var(--ann-text-primary) !important;
+  background: var(--ann-bg-elevated) !important;
+}
+.semi-page-item-active, .semi-page-item-active:hover {
+  color: #fff !important;
+  background: linear-gradient(135deg, #8b5cf6, #6d5dfc) !important;
+  border-color: rgba(167, 139, 250, .72) !important;
+  box-shadow: 0 7px 20px rgba(139, 92, 246, .22);
+}
+.ann-page-enter h1, .ann-page-enter h2, .ann-page-enter h3,
+.ann-page-enter .semi-typography-primary {
+  color: var(--ann-text-primary) !important;
+}
+.semi-button-primary.semi-button-solid { box-shadow: 0 8px 24px rgba(139, 92, 246, .18); }
+.semi-modal-header, .semi-sidesheet-header { border-bottom-color: rgba(151, 160, 198, .13) !important; }
+.semi-modal-footer, .semi-sidesheet-footer { border-top-color: rgba(151, 160, 198, .13) !important; }
+.semi-toast-content { color: #f7f7ff !important; background: #171b2b !important; border: 1px solid rgba(151, 160, 198, 0.18); }
+
+.ann-workflow-theme,
+.ann-workflow-theme .doc-free-feature-overview,
+.ann-workflow-theme .demo-container,
+.ann-workflow-theme .demo-editor,
+.ann-workflow-theme .gedit-playground {
+  color: var(--ann-text-primary);
+  background-color: #090c16 !important;
+}
+.ann-workflow-theme .gedit-playground {
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(139, 92, 246, .05), transparent 38%),
+    radial-gradient(rgba(135, 145, 180, .14) .65px, transparent .65px) !important;
+  background-size: auto, 42px 42px !important;
+}
+.ann-workflow-theme .workflow-bg-circle,
+.ann-workflow-theme .minimap-panel,
+.ann-workflow-theme .node-placeholder,
+.ann-workflow-theme .node-placeholder-skeleton {
+  color: var(--ann-text-primary) !important;
+  background: var(--ann-bg-elevated) !important;
+  border-color: var(--ann-border) !important;
+}
+.ann-workflow-theme .form-item-type-tag {
+  color: var(--ann-text-secondary) !important;
+  background: rgba(151, 160, 198, .12) !important;
+  border-color: var(--ann-border-subtle) !important;
+}
+.ann-workflow-theme .semi-select-selection-placeholder,
+.ann-workflow-theme .semi-input::placeholder,
+.ann-workflow-theme .semi-input-textarea::placeholder {
+  color: var(--ann-text-placeholder) !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ann-page-enter { animation: ann-page-enter 200ms cubic-bezier(0.22, 1, 0.36, 1); }
+}
+@keyframes ann-page-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai;
+package cn.ann.ai;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.SpringApplication;
@@ -15,4 +15,3 @@ public class Application {
     }
 
 }
-

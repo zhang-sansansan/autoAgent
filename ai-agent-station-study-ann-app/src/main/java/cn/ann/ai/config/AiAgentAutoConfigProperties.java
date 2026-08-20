@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.config;
+package cn.ann.ai.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -10,14 +10,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @description
  * @create 2026/2/3 15:08
  */
-//鑷姩瑁呴厤缃睘鎬?
+//自动装配置属性
 @Data
 @ConfigurationProperties(prefix = "spring.ai.agent.auto-config")
 public class AiAgentAutoConfigProperties {
     /**
-     * 鏄惁鍚敤AI Agent鑷姩瑁呴厤
+     * 是否启用AI Agent自动装配
      */
     private boolean enabled = false;
 
 }
-

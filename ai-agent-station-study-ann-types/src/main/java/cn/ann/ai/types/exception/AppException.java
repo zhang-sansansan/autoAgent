@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.types.exception;
+package cn.ann.ai.types.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,10 +12,10 @@ public class AppException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 5317680961212299217L;
 
-    /** 寮傚父鐮?*/
+    /** 异常码 */
     private String code;
 
-    /** 寮傚父淇℃伅 */
+    /** 异常信息 */
     private String info;
 
     public AppException(String code) {
@@ -47,4 +47,3 @@ public class AppException extends RuntimeException {
     }
 
 }
-

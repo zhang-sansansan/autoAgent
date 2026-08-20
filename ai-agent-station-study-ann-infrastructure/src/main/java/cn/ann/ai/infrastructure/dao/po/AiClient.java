@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao.po;
+package cn.ann.ai.infrastructure.dao.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * AI瀹㈡埛绔厤缃〃
- * @author bugstack铏礊鏍? * @description AI瀹㈡埛绔厤缃〃 PO 瀵硅薄
+ * AI客户端配置表
+ * @author bugstack虫洞栈
+ * @description AI客户端配置表 PO 对象
  */
 @Data
 @Builder
@@ -18,36 +19,37 @@ import java.time.LocalDateTime;
 public class AiClient {
 
     /**
-     * 涓婚敭ID
+     * 主键ID
      */
     private Long id;
 
     /**
-     * 瀹㈡埛绔疘D
+     * 客户端ID
      */
     private String clientId;
 
     /**
-     * 瀹㈡埛绔悕绉?     */
+     * 客户端名称
+     */
     private String clientName;
 
     /**
-     * 鎻忚堪
+     * 描述
      */
     private String description;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 
     /**
-     * 鍒涘缓鏃堕棿
+     * 创建时间
      */
     private LocalDateTime createTime;
 
     /**
-     * 鏇存柊鏃堕棿
+     * 更新时间
      */
     private LocalDateTime updateTime;
 

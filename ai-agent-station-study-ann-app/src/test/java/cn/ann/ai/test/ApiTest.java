@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.test;
+package cn.ann.ai.test;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +14,7 @@ public class ApiTest {
 
     @Test
     public void test() {
-        log.info("娴嬭瘯瀹屾垚");
+        log.info("测试完成");
     }
 
 }
-

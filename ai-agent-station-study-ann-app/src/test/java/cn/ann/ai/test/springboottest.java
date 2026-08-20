@@ -1,6 +1,5 @@
-﻿package cn.ann.ai.test;
+package cn.ann.ai.test;
 
 public @interface springboottest {
 
 }
-

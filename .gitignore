@@ -36,10 +36,3 @@ build/
 
 ### Mac OS ###
 .DS_Store
-
-### Runtime / generated ###
-*.log
-data/
-node_modules/
-dist/
-.idea/

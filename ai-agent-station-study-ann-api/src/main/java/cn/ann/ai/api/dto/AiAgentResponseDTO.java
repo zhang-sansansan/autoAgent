@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.dto;
+package cn.ann.ai.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,11 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * AI鏅鸿兘浣撳搷搴?DTO
+ * AI智能体响应 DTO
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * @description AI鏅鸿兘浣撳搷搴旀暟鎹紶杈撳璞? */
+ * @author xiaofuge bugstack.cn @小傅哥
+ * @description AI智能体响应数据传输对象
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -22,31 +24,32 @@ public class AiAgentResponseDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 鏅鸿兘浣揑D
+     * 智能体ID
      */
     private String agentId;
 
     /**
-     * 鏅鸿兘浣撳悕绉?     */
+     * 智能体名称
+     */
     private String agentName;
 
     /**
-     * 鎻忚堪
+     * 描述
      */
     private String description;
 
     /**
-     * 娓犻亾绫诲瀷(agent锛宑hat_stream)
+     * 渠道类型(agent，chat_stream)
      */
     private String channel;
 
     /**
-     * 鎵ц绛栫暐(auto銆乫low)
+     * 执行策略(auto、flow)
      */
     private String strategy;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 

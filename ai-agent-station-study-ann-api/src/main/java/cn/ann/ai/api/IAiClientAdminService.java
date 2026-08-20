@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api;
+package cn.ann.ai.api;
 
 import cn.ann.ai.api.dto.AiClientQueryRequestDTO;
 import cn.ann.ai.api.dto.AiClientRequestDTO;
@@ -8,58 +8,79 @@ import cn.ann.ai.api.response.Response;
 import java.util.List;
 
 /**
- * AI瀹㈡埛绔鐞嗘湇鍔℃帴鍙? *
- * @author bugstack铏礊鏍? * @description AI瀹㈡埛绔厤缃鐞嗘湇鍔℃帴鍙? */
+ * AI客户端管理服务接口
+ *
+ * @author bugstack虫洞栈
+ * @description AI客户端配置管理服务接口
+ */
 public interface IAiClientAdminService {
 
     /**
-     * 鍒涘缓AI瀹㈡埛绔厤缃?     * @param request AI瀹㈡埛绔厤缃姹傚璞?     * @return 鎿嶄綔缁撴灉
+     * 创建AI客户端配置
+     * @param request AI客户端配置请求对象
+     * @return 操作结果
      */
     Response<Boolean> createAiClient(AiClientRequestDTO request);
 
     /**
-     * 鏍规嵁ID鏇存柊AI瀹㈡埛绔厤缃?     * @param request AI瀹㈡埛绔厤缃姹傚璞?     * @return 鎿嶄綔缁撴灉
+     * 根据ID更新AI客户端配置
+     * @param request AI客户端配置请求对象
+     * @return 操作结果
      */
     Response<Boolean> updateAiClientById(AiClientRequestDTO request);
 
     /**
-     * 鏍规嵁瀹㈡埛绔疘D鏇存柊AI瀹㈡埛绔厤缃?     * @param request AI瀹㈡埛绔厤缃姹傚璞?     * @return 鎿嶄綔缁撴灉
+     * 根据客户端ID更新AI客户端配置
+     * @param request AI客户端配置请求对象
+     * @return 操作结果
      */
     Response<Boolean> updateAiClientByClientId(AiClientRequestDTO request);
 
     /**
-     * 鏍规嵁ID鍒犻櫎AI瀹㈡埛绔厤缃?     * @param id 涓婚敭ID
-     * @return 鎿嶄綔缁撴灉
+     * 根据ID删除AI客户端配置
+     * @param id 主键ID
+     * @return 操作结果
      */
     Response<Boolean> deleteAiClientById(Long id);
 
     /**
-     * 鏍规嵁瀹㈡埛绔疘D鍒犻櫎AI瀹㈡埛绔厤缃?     * @param clientId 瀹㈡埛绔疘D
-     * @return 鎿嶄綔缁撴灉
+     * 根据客户端ID删除AI客户端配置
+     * @param clientId 客户端ID
+     * @return 操作结果
      */
     Response<Boolean> deleteAiClientByClientId(String clientId);
 
     /**
-     * 鏍规嵁ID鏌ヨAI瀹㈡埛绔厤缃?     * @param id 涓婚敭ID
-     * @return AI瀹㈡埛绔厤缃璞?     */
+     * 根据ID查询AI客户端配置
+     * @param id 主键ID
+     * @return AI客户端配置对象
+     */
     Response<AiClientResponseDTO> queryAiClientById(Long id);
 
     /**
-     * 鏍规嵁瀹㈡埛绔疘D鏌ヨAI瀹㈡埛绔厤缃?     * @param clientId 瀹㈡埛绔疘D
-     * @return AI瀹㈡埛绔厤缃璞?     */
+     * 根据客户端ID查询AI客户端配置
+     * @param clientId 客户端ID
+     * @return AI客户端配置对象
+     */
     Response<AiClientResponseDTO> queryAiClientByClientId(String clientId);
 
     /**
-     * 鏌ヨ鎵€鏈夊惎鐢ㄧ殑AI瀹㈡埛绔厤缃?     * @return AI瀹㈡埛绔厤缃垪琛?     */
+     * 查询所有启用的AI客户端配置
+     * @return AI客户端配置列表
+     */
     Response<List<AiClientResponseDTO>> queryEnabledAiClients();
 
     /**
-     * 鏍规嵁鏉′欢鏌ヨAI瀹㈡埛绔厤缃垪琛?     * @param request 鏌ヨ鏉′欢
-     * @return AI瀹㈡埛绔厤缃垪琛?     */
+     * 根据条件查询AI客户端配置列表
+     * @param request 查询条件
+     * @return AI客户端配置列表
+     */
     Response<List<AiClientResponseDTO>> queryAiClientList(AiClientQueryRequestDTO request);
 
     /**
-     * 鏌ヨ鎵€鏈堿I瀹㈡埛绔厤缃?     * @return AI瀹㈡埛绔厤缃垪琛?     */
+     * 查询所有AI客户端配置
+     * @return AI客户端配置列表
+     */
     Response<List<AiClientResponseDTO>> queryAllAiClients();
 
 }

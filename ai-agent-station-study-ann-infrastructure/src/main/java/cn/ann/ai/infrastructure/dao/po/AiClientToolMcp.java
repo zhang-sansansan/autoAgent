@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao.po;
+package cn.ann.ai.infrastructure.dao.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * MCP瀹㈡埛绔厤缃〃
- * @author bugstack铏礊鏍? * @description MCP瀹㈡埛绔厤缃〃 PO 瀵硅薄
+ * MCP客户端配置表
+ * @author bugstack虫洞栈
+ * @description MCP客户端配置表 PO 对象
  */
 @Data
 @Builder
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 public class AiClientToolMcp {
 
     /**
-     * 涓婚敭ID
+     * 主键ID
      */
     private Long id;
 
@@ -28,37 +29,37 @@ public class AiClientToolMcp {
     private String mcpId;
 
     /**
-     * MCP鍚嶇О
+     * MCP名称
      */
     private String mcpName;
 
     /**
-     * 浼犺緭绫诲瀷(sse/stdio)
+     * 传输类型(sse/stdio)
      */
     private String transportType;
 
     /**
-     * 浼犺緭閰嶇疆(sse/stdio)
+     * 传输配置(sse/stdio)
      */
     private String transportConfig;
 
     /**
-     * 璇锋眰瓒呮椂鏃堕棿(鍒嗛挓)
+     * 请求超时时间(分钟)
      */
     private Integer requestTimeout;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 
     /**
-     * 鍒涘缓鏃堕棿
+     * 创建时间
      */
     private LocalDateTime createTime;
 
     /**
-     * 鏇存柊鏃堕棿
+     * 更新时间
      */
     private LocalDateTime updateTime;
 

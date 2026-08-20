@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.test.spring.ai;
+package cn.ann.ai.test.spring.ai;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -61,13 +61,13 @@ public class OpenAiTest {
                 OpenAiChatOptions.builder()
                         .model("gpt-4o")
                         .build()));
-        log.info("娴嬭瘯缁撴灉(call):{}", JSON.toJSONString(response));
+        log.info("测试结果(call):{}", JSON.toJSONString(response));
     }
 
     @Test
     public void test_call_images() {
         UserMessage userMessage = UserMessage.builder()
-                .text("璇锋弿杩拌繖寮犲浘鐗囩殑涓昏鍐呭锛屽苟璇存槑鍥句腑鐗╁搧鐨勫彲鑳界敤閫斻€?)
+                .text("请描述这张图片的主要内容，并说明图中物品的可能用途。")
                 .media(org.springframework.ai.content.Media.builder()
                         .mimeType(MimeType.valueOf(MimeTypeUtils.IMAGE_PNG_VALUE))
                         .data(imageResource)
@@ -80,7 +80,7 @@ public class OpenAiTest {
                         .model("gpt-4o")
                         .build()));
 
-        log.info("娴嬭瘯缁撴灉(images):{}", JSON.toJSONString(response));
+        log.info("测试结果(images):{}", JSON.toJSONString(response));
     }
 
     @Test
@@ -96,12 +96,12 @@ public class OpenAiTest {
         stream.subscribe(
                 chatResponse -> {
                     AssistantMessage output = chatResponse.getResult().getOutput();
-                    log.info("娴嬭瘯缁撴灉(stream): {}", JSON.toJSONString(output));
+                    log.info("测试结果(stream): {}", JSON.toJSONString(output));
                 },
                 Throwable::printStackTrace,
                 () -> {
                     countDownLatch.countDown();
-                    log.info("娴嬭瘯缁撴灉(stream): done!");
+                    log.info("测试结果(stream): done!");
                 }
         );
 
@@ -110,7 +110,7 @@ public class OpenAiTest {
 
     @Test
     public void upload() {
-        // textResource銆乤rticlePromptWordsResource
+        // textResource、articlePromptWordsResource
         TikaDocumentReader reader = new TikaDocumentReader(articlePromptWordsResource);
 
         List<Document> documents = reader.get();
@@ -120,12 +120,12 @@ public class OpenAiTest {
 
         pgVectorStore.accept(documentSplitterList);
 
-        log.info("涓婁紶瀹屾垚");
+        log.info("上传完成");
     }
 
     @Test
     public void chat() {
-        String message = "鐜嬪ぇ鐡滀粖骞村嚑宀?;
+        String message = "王大瓜今年几岁";
 
         String SYSTEM_PROMPT = """
                 Use the information from the DOCUMENTS section to provide accurate answers but act as if you knew this information innately.
@@ -138,7 +138,7 @@ public class OpenAiTest {
         SearchRequest request = SearchRequest.builder()
                 .query(message)
                 .topK(5)
-                .filterExpression("knowledge == '鐭ヨ瘑搴撳悕绉?v4'")
+                .filterExpression("knowledge == '知识库名称-v4'")
                 .build();
 
         List<Document> documents = pgVectorStore.similaritySearch(request);
@@ -157,8 +157,7 @@ public class OpenAiTest {
                         .model("gpt-4o")
                         .build()));
 
-        log.info("娴嬭瘯缁撴灉:{}", JSON.toJSONString(chatResponse));
+        log.info("测试结果:{}", JSON.toJSONString(chatResponse));
     }
 
 }
-

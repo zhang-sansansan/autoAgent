@@ -1,7 +1,7 @@
-﻿server:
+server:
   port: 8091
 
-# 绾跨▼姹犻厤缃?
+# 线程池配置
 thread:
   pool:
     executor:
@@ -12,28 +12,28 @@ thread:
         block-queue-size: 5000
         policy: CallerRunsPolicy
 
-# 鏁版嵁搴撻厤缃紱鍚姩鏃堕厤缃暟鎹簱璧勬簮淇℃伅
+# 数据库配置；启动时配置数据库资源信息
 spring:
   datasource:
     mysql:
       username: root
-      password: ${MYSQL_password: ${MYSQL_PASSWORD:123456}}
+      password: 123456
       url: jdbc:mysql://127.0.0.1:13306/ai-agent-station-study?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
       driver-class-name: com.mysql.cj.jdbc.Driver
       type: com.zaxxer.hikari.HikariDataSource
       hikari:
         pool-name: Retail_HikariCP
-        minimum-idle: 15 #鏈€灏忕┖闂茶繛鎺ユ暟閲?
-        idle-timeout: 180000 #绌洪棽杩炴帴瀛樻椿鏈€澶ф椂闂达紝榛樿600000锛?0鍒嗛挓锛?
-        maximum-pool-size: 25 #杩炴帴姹犳渶澶ц繛鎺ユ暟锛岄粯璁ゆ槸10
-        auto-commit: true  #姝ゅ睘鎬ф帶鍒朵粠姹犺繑鍥炵殑杩炴帴鐨勯粯璁よ嚜鍔ㄦ彁浜よ涓?榛樿鍊硷細true
-        max-lifetime: 1800000 #姝ゅ睘鎬ф帶鍒舵睜涓繛鎺ョ殑鏈€闀跨敓鍛藉懆鏈燂紝鍊?琛ㄧず鏃犻檺鐢熷懡鍛ㄦ湡锛岄粯璁?800000鍗?0鍒嗛挓
-        connection-timeout: 30000 #鏁版嵁搴撹繛鎺ヨ秴鏃舵椂闂?榛樿30绉掞紝鍗?0000
+        minimum-idle: 15 #最小空闲连接数量
+        idle-timeout: 180000 #空闲连接存活最大时间，默认600000（10分钟）
+        maximum-pool-size: 25 #连接池最大连接数，默认是10
+        auto-commit: true  #此属性控制从池返回的连接的默认自动提交行为,默认值：true
+        max-lifetime: 1800000 #此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+        connection-timeout: 30000 #数据库连接超时时间,默认30秒，即30000
         connection-test-query: SELECT 1
     pgvector:
       driver-class-name: org.postgresql.Driver
       username: postgres
-      password: ${PGVECTOR_password: ${PGVECTOR_PASSWORD:postgres}}
+      password: postgres
       url: jdbc:postgresql://127.0.0.1:15432/ai-rag-knowledge
       type: com.zaxxer.hikari.HikariDataSource
       hikari:
@@ -44,28 +44,27 @@ spring:
   ai:
     openai:
       base-url: https://codex.tokenshop.pro
-      api-key: ${OPENAI_API_KEY:}
+      api-key: sk-560369246ef3f84aa64abf786a5e6e18cb11b6be9785cdea9a7f1845291b6036
     agent:
       auto-config:
         enabled: true
 
 xfg:
   wrench:
-    # 浠诲姟璋冨害閰嶇疆
+    # 任务调度配置
     task:
       job:
         enabled: true
         pool-size: 5
-        thread-name-prefix: "test-ta${OPENAI_API_KEY}"
+        thread-name-prefix: "test-task-scheduler-"
         wait-for-tasks-to-complete-on-shutdown: true
         await-termination-seconds: 30
         refresh-interval: 30000
         clean-invalid-tasks-cron: "0 0/5 * * * ?"
 
 
-# 鏃ュ織
+# 日志
 logging:
   level:
     root: info
   config: classpath:logback-spring.xml
-

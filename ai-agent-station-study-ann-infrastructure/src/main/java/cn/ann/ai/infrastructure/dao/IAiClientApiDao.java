@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao;
+package cn.ann.ai.infrastructure.dao;
 
 import cn.ann.ai.infrastructure.dao.po.AiClientApi;
 import org.apache.ibatis.annotations.Mapper;
@@ -6,69 +6,71 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * AI瀹㈡埛绔疉PI閰嶇疆琛?DAO
- * @author bugstack铏礊鏍? * @description AI瀹㈡埛绔疉PI閰嶇疆琛ㄦ暟鎹闂璞? */
+ * AI客户端API配置表 DAO
+ * @author bugstack虫洞栈
+ * @description AI客户端API配置表数据访问对象
+ */
 @Mapper
 public interface IAiClientApiDao {
 
     /**
-     * 鎻掑叆AI瀹㈡埛绔疉PI閰嶇疆
-     * @param aiClientApi AI瀹㈡埛绔疉PI閰嶇疆瀵硅薄
-     * @return 褰卞搷琛屾暟
+     * 插入AI客户端API配置
+     * @param aiClientApi AI客户端API配置对象
+     * @return 影响行数
      */
     int insert(AiClientApi aiClientApi);
 
     /**
-     * 鏍规嵁ID鏇存柊AI瀹㈡埛绔疉PI閰嶇疆
-     * @param aiClientApi AI瀹㈡埛绔疉PI閰嶇疆瀵硅薄
-     * @return 褰卞搷琛屾暟
+     * 根据ID更新AI客户端API配置
+     * @param aiClientApi AI客户端API配置对象
+     * @return 影响行数
      */
     int updateById(AiClientApi aiClientApi);
 
     /**
-     * 鏍规嵁API ID鏇存柊AI瀹㈡埛绔疉PI閰嶇疆
-     * @param aiClientApi AI瀹㈡埛绔疉PI閰嶇疆瀵硅薄
-     * @return 褰卞搷琛屾暟
+     * 根据API ID更新AI客户端API配置
+     * @param aiClientApi AI客户端API配置对象
+     * @return 影响行数
      */
     int updateByApiId(AiClientApi aiClientApi);
 
     /**
-     * 鏍规嵁ID鍒犻櫎AI瀹㈡埛绔疉PI閰嶇疆
-     * @param id 涓婚敭ID
-     * @return 褰卞搷琛屾暟
+     * 根据ID删除AI客户端API配置
+     * @param id 主键ID
+     * @return 影响行数
      */
     int deleteById(Long id);
 
     /**
-     * 鏍规嵁API ID鍒犻櫎AI瀹㈡埛绔疉PI閰嶇疆
+     * 根据API ID删除AI客户端API配置
      * @param apiId API ID
-     * @return 褰卞搷琛屾暟
+     * @return 影响行数
      */
     int deleteByApiId(String apiId);
 
     /**
-     * 鏍规嵁ID鏌ヨAI瀹㈡埛绔疉PI閰嶇疆
-     * @param id 涓婚敭ID
-     * @return AI瀹㈡埛绔疉PI閰嶇疆瀵硅薄
+     * 根据ID查询AI客户端API配置
+     * @param id 主键ID
+     * @return AI客户端API配置对象
      */
     AiClientApi queryById(Long id);
 
     /**
-     * 鏍规嵁API ID鏌ヨAI瀹㈡埛绔疉PI閰嶇疆
+     * 根据API ID查询AI客户端API配置
      * @param apiId API ID
-     * @return AI瀹㈡埛绔疉PI閰嶇疆瀵硅薄
+     * @return AI客户端API配置对象
      */
     AiClientApi queryByApiId(String apiId);
 
     /**
-     * 鏌ヨ鎵€鏈夊惎鐢ㄧ殑AI瀹㈡埛绔疉PI閰嶇疆
-     * @return AI瀹㈡埛绔疉PI閰嶇疆鍒楄〃
+     * 查询所有启用的AI客户端API配置
+     * @return AI客户端API配置列表
      */
     List<AiClientApi> queryEnabledApis();
 
     /**
-     * 鏌ヨ鎵€鏈堿I瀹㈡埛绔疉PI閰嶇疆
-     * @return AI瀹㈡埛绔疉PI閰嶇疆鍒楄〃
+     * 查询所有AI客户端API配置
+     * @return AI客户端API配置列表
      */
     List<AiClientApi> queryAll();
 

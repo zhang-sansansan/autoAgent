@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao;
+package cn.ann.ai.infrastructure.dao;
 
 import cn.ann.ai.infrastructure.dao.po.AiClientRagOrder;
 import org.apache.ibatis.annotations.Mapper;
@@ -6,62 +6,79 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * 鐭ヨ瘑搴撻厤缃〃 DAO
- * @author bugstack铏礊鏍? * @description 鐭ヨ瘑搴撻厤缃〃鏁版嵁璁块棶瀵硅薄
+ * 知识库配置表 DAO
+ * @author bugstack虫洞栈
+ * @description 知识库配置表数据访问对象
  */
 @Mapper
 public interface IAiClientRagOrderDao {
 
     /**
-     * 鎻掑叆鐭ヨ瘑搴撻厤缃?     * @param aiClientRagOrder 鐭ヨ瘑搴撻厤缃璞?     * @return 褰卞搷琛屾暟
+     * 插入知识库配置
+     * @param aiClientRagOrder 知识库配置对象
+     * @return 影响行数
      */
     int insert(AiClientRagOrder aiClientRagOrder);
 
     /**
-     * 鏍规嵁ID鏇存柊鐭ヨ瘑搴撻厤缃?     * @param aiClientRagOrder 鐭ヨ瘑搴撻厤缃璞?     * @return 褰卞搷琛屾暟
+     * 根据ID更新知识库配置
+     * @param aiClientRagOrder 知识库配置对象
+     * @return 影响行数
      */
     int updateById(AiClientRagOrder aiClientRagOrder);
 
     /**
-     * 鏍规嵁鐭ヨ瘑搴揑D鏇存柊鐭ヨ瘑搴撻厤缃?     * @param aiClientRagOrder 鐭ヨ瘑搴撻厤缃璞?     * @return 褰卞搷琛屾暟
+     * 根据知识库ID更新知识库配置
+     * @param aiClientRagOrder 知识库配置对象
+     * @return 影响行数
      */
     int updateByRagId(AiClientRagOrder aiClientRagOrder);
 
     /**
-     * 鏍规嵁ID鍒犻櫎鐭ヨ瘑搴撻厤缃?     * @param id 涓婚敭ID
-     * @return 褰卞搷琛屾暟
+     * 根据ID删除知识库配置
+     * @param id 主键ID
+     * @return 影响行数
      */
     int deleteById(Long id);
 
     /**
-     * 鏍规嵁鐭ヨ瘑搴揑D鍒犻櫎鐭ヨ瘑搴撻厤缃?     * @param ragId 鐭ヨ瘑搴揑D
-     * @return 褰卞搷琛屾暟
+     * 根据知识库ID删除知识库配置
+     * @param ragId 知识库ID
+     * @return 影响行数
      */
     int deleteByRagId(String ragId);
 
     /**
-     * 鏍规嵁ID鏌ヨ鐭ヨ瘑搴撻厤缃?     * @param id 涓婚敭ID
-     * @return 鐭ヨ瘑搴撻厤缃璞?     */
+     * 根据ID查询知识库配置
+     * @param id 主键ID
+     * @return 知识库配置对象
+     */
     AiClientRagOrder queryById(Long id);
 
     /**
-     * 鏍规嵁鐭ヨ瘑搴揑D鏌ヨ鐭ヨ瘑搴撻厤缃?     * @param ragId 鐭ヨ瘑搴揑D
-     * @return 鐭ヨ瘑搴撻厤缃璞?     */
+     * 根据知识库ID查询知识库配置
+     * @param ragId 知识库ID
+     * @return 知识库配置对象
+     */
     AiClientRagOrder queryByRagId(String ragId);
 
     /**
-     * 鏌ヨ鍚敤鐨勭煡璇嗗簱閰嶇疆
-     * @return 鐭ヨ瘑搴撻厤缃垪琛?     */
+     * 查询启用的知识库配置
+     * @return 知识库配置列表
+     */
     List<AiClientRagOrder> queryEnabledRagOrders();
 
     /**
-     * 鏍规嵁鐭ヨ瘑鏍囩鏌ヨ鐭ヨ瘑搴撻厤缃?     * @param knowledgeTag 鐭ヨ瘑鏍囩
-     * @return 鐭ヨ瘑搴撻厤缃垪琛?     */
+     * 根据知识标签查询知识库配置
+     * @param knowledgeTag 知识标签
+     * @return 知识库配置列表
+     */
     List<AiClientRagOrder> queryByKnowledgeTag(String knowledgeTag);
 
     /**
-     * 鏌ヨ鎵€鏈夌煡璇嗗簱閰嶇疆
-     * @return 鐭ヨ瘑搴撻厤缃垪琛?     */
+     * 查询所有知识库配置
+     * @return 知识库配置列表
+     */
     List<AiClientRagOrder> queryAll();
 
 }

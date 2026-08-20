@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.config;
+package cn.ann.ai.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -18,7 +18,7 @@ public class ThreadPoolConfig {
     @Bean
     @ConditionalOnMissingBean(ThreadPoolExecutor.class)
     public ThreadPoolExecutor threadPoolExecutor(ThreadPoolConfigProperties properties) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        // 瀹炰緥鍖栫瓥鐣?
+        // 实例化策略
         RejectedExecutionHandler handler;
         switch (properties.getPolicy()){
             case "AbortPolicy":
@@ -37,7 +37,7 @@ public class ThreadPoolConfig {
                 handler = new ThreadPoolExecutor.AbortPolicy();
                 break;
         }
-        // 鍒涘缓绾跨▼姹?
+        // 创建线程池
         return new ThreadPoolExecutor(properties.getCorePoolSize(),
                 properties.getMaxPoolSize(),
                 properties.getKeepAliveTime(),
@@ -48,4 +48,3 @@ public class ThreadPoolConfig {
     }
 
 }
-

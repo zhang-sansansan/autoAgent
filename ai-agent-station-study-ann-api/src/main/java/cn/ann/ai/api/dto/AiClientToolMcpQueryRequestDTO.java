@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.dto;
+package cn.ann.ai.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,11 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * MCP瀹㈡埛绔厤缃煡璇㈣姹?DTO
+ * MCP客户端配置查询请求 DTO
  *
- * @author bugstack铏礊鏍? * @description MCP瀹㈡埛绔厤缃煡璇㈣姹傛暟鎹紶杈撳璞? */
+ * @author bugstack虫洞栈
+ * @description MCP客户端配置查询请求数据传输对象
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -27,27 +29,27 @@ public class AiClientToolMcpQueryRequestDTO implements Serializable {
     private String mcpId;
 
     /**
-     * MCP鍚嶇О锛堟ā绯婃煡璇級
+     * MCP名称（模糊查询）
      */
     private String mcpName;
 
     /**
-     * 浼犺緭绫诲瀷(sse/stdio)
+     * 传输类型(sse/stdio)
      */
     private String transportType;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 
     /**
-     * 椤电爜锛堝垎椤垫煡璇級
+     * 页码（分页查询）
      */
     private Integer pageNum;
 
     /**
-     * 姣忛〉澶у皬锛堝垎椤垫煡璇級
+     * 每页大小（分页查询）
      */
     private Integer pageSize;
 

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api;
+package cn.ann.ai.api;
 
 import cn.ann.ai.api.dto.AiClientToolMcpQueryRequestDTO;
 import cn.ann.ai.api.dto.AiClientToolMcpRequestDTO;
@@ -8,67 +8,93 @@ import cn.ann.ai.api.response.Response;
 import java.util.List;
 
 /**
- * MCP瀹㈡埛绔厤缃鐞嗘湇鍔℃帴鍙? *
- * @author bugstack铏礊鏍? * @description MCP瀹㈡埛绔厤缃鐞嗘湇鍔℃帴鍙? */
+ * MCP客户端配置管理服务接口
+ *
+ * @author bugstack虫洞栈
+ * @description MCP客户端配置管理服务接口
+ */
 public interface IAiClientToolMcpAdminService {
 
     /**
-     * 鍒涘缓MCP瀹㈡埛绔厤缃?     * @param request MCP瀹㈡埛绔厤缃姹傚璞?     * @return 鎿嶄綔缁撴灉
+     * 创建MCP客户端配置
+     * @param request MCP客户端配置请求对象
+     * @return 操作结果
      */
     Response<Boolean> createAiClientToolMcp(AiClientToolMcpRequestDTO request);
 
     /**
-     * 鏍规嵁ID鏇存柊MCP瀹㈡埛绔厤缃?     * @param request MCP瀹㈡埛绔厤缃姹傚璞?     * @return 鎿嶄綔缁撴灉
+     * 根据ID更新MCP客户端配置
+     * @param request MCP客户端配置请求对象
+     * @return 操作结果
      */
     Response<Boolean> updateAiClientToolMcpById(AiClientToolMcpRequestDTO request);
 
     /**
-     * 鏍规嵁MCP ID鏇存柊MCP瀹㈡埛绔厤缃?     * @param request MCP瀹㈡埛绔厤缃姹傚璞?     * @return 鎿嶄綔缁撴灉
+     * 根据MCP ID更新MCP客户端配置
+     * @param request MCP客户端配置请求对象
+     * @return 操作结果
      */
     Response<Boolean> updateAiClientToolMcpByMcpId(AiClientToolMcpRequestDTO request);
 
     /**
-     * 鏍规嵁ID鍒犻櫎MCP瀹㈡埛绔厤缃?     * @param id 涓婚敭ID
-     * @return 鎿嶄綔缁撴灉
+     * 根据ID删除MCP客户端配置
+     * @param id 主键ID
+     * @return 操作结果
      */
     Response<Boolean> deleteAiClientToolMcpById(Long id);
 
     /**
-     * 鏍规嵁MCP ID鍒犻櫎MCP瀹㈡埛绔厤缃?     * @param mcpId MCP ID
-     * @return 鎿嶄綔缁撴灉
+     * 根据MCP ID删除MCP客户端配置
+     * @param mcpId MCP ID
+     * @return 操作结果
      */
     Response<Boolean> deleteAiClientToolMcpByMcpId(String mcpId);
 
     /**
-     * 鏍规嵁ID鏌ヨMCP瀹㈡埛绔厤缃?     * @param id 涓婚敭ID
-     * @return MCP瀹㈡埛绔厤缃璞?     */
+     * 根据ID查询MCP客户端配置
+     * @param id 主键ID
+     * @return MCP客户端配置对象
+     */
     Response<AiClientToolMcpResponseDTO> queryAiClientToolMcpById(Long id);
 
     /**
-     * 鏍规嵁MCP ID鏌ヨMCP瀹㈡埛绔厤缃?     * @param mcpId MCP ID
-     * @return MCP瀹㈡埛绔厤缃璞?     */
+     * 根据MCP ID查询MCP客户端配置
+     * @param mcpId MCP ID
+     * @return MCP客户端配置对象
+     */
     Response<AiClientToolMcpResponseDTO> queryAiClientToolMcpByMcpId(String mcpId);
 
     /**
-     * 鏌ヨ鎵€鏈塎CP瀹㈡埛绔厤缃?     * @return MCP瀹㈡埛绔厤缃垪琛?     */
+     * 查询所有MCP客户端配置
+     * @return MCP客户端配置列表
+     */
     Response<List<AiClientToolMcpResponseDTO>> queryAllAiClientToolMcps();
 
     /**
-     * 鏍规嵁鐘舵€佹煡璇CP瀹㈡埛绔厤缃?     * @param status 鐘舵€?     * @return MCP瀹㈡埛绔厤缃垪琛?     */
+     * 根据状态查询MCP客户端配置
+     * @param status 状态
+     * @return MCP客户端配置列表
+     */
     Response<List<AiClientToolMcpResponseDTO>> queryAiClientToolMcpsByStatus(Integer status);
 
     /**
-     * 鏍规嵁浼犺緭绫诲瀷鏌ヨMCP瀹㈡埛绔厤缃?     * @param transportType 浼犺緭绫诲瀷
-     * @return MCP瀹㈡埛绔厤缃垪琛?     */
+     * 根据传输类型查询MCP客户端配置
+     * @param transportType 传输类型
+     * @return MCP客户端配置列表
+     */
     Response<List<AiClientToolMcpResponseDTO>> queryAiClientToolMcpsByTransportType(String transportType);
 
     /**
-     * 鏌ヨ鍚敤鐨凪CP瀹㈡埛绔厤缃?     * @return MCP瀹㈡埛绔厤缃垪琛?     */
+     * 查询启用的MCP客户端配置
+     * @return MCP客户端配置列表
+     */
     Response<List<AiClientToolMcpResponseDTO>> queryEnabledAiClientToolMcps();
 
     /**
-     * 鏍规嵁鏌ヨ鏉′欢鏌ヨMCP瀹㈡埛绔厤缃垪琛?     * @param request 鏌ヨ璇锋眰瀵硅薄
-     * @return MCP瀹㈡埛绔厤缃垪琛?     */
+     * 根据查询条件查询MCP客户端配置列表
+     * @param request 查询请求对象
+     * @return MCP客户端配置列表
+     */
     Response<List<AiClientToolMcpResponseDTO>> queryAiClientToolMcpList(AiClientToolMcpQueryRequestDTO request);
 
 }

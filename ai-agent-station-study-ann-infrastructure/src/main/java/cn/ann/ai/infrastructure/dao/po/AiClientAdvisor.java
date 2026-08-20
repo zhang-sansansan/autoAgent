@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao.po;
+package cn.ann.ai.infrastructure.dao.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 椤鹃棶閰嶇疆琛? * @author bugstack铏礊鏍? * @description 椤鹃棶閰嶇疆琛?PO 瀵硅薄
+ * 顾问配置表
+ * @author bugstack虫洞栈
+ * @description 顾问配置表 PO 对象
  */
 @Data
 @Builder
@@ -17,46 +19,47 @@ import java.time.LocalDateTime;
 public class AiClientAdvisor {
 
     /**
-     * 涓婚敭ID
+     * 主键ID
      */
     private Long id;
 
     /**
-     * 椤鹃棶ID
+     * 顾问ID
      */
     private String advisorId;
 
     /**
-     * 椤鹃棶鍚嶇О
+     * 顾问名称
      */
     private String advisorName;
 
     /**
-     * 椤鹃棶绫诲瀷(PromptChatMemory/RagAnswer/SimpleLoggerAdvisor绛?
+     * 顾问类型(PromptChatMemory/RagAnswer/SimpleLoggerAdvisor等)
      */
     private String advisorType;
 
     /**
-     * 椤哄簭鍙?     */
+     * 顺序号
+     */
     private Integer orderNum;
 
     /**
-     * 鎵╁睍鍙傛暟閰嶇疆锛宩son 璁板綍
+     * 扩展参数配置，json 记录
      */
     private String extParam;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 
     /**
-     * 鍒涘缓鏃堕棿
+     * 创建时间
      */
     private LocalDateTime createTime;
 
     /**
-     * 鏇存柊鏃堕棿
+     * 更新时间
      */
     private LocalDateTime updateTime;
 

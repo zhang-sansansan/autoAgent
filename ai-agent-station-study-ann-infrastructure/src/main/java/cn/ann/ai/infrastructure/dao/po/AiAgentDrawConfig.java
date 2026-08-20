@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao.po;
+package cn.ann.ai.infrastructure.dao.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * AI鏅鸿兘浣撴嫋鎷夋嫿閰嶇疆涓昏〃
- * @author bugstack铏礊鏍? * @description AI鏅鸿兘浣撴嫋鎷夋嫿閰嶇疆涓昏〃 PO 瀵硅薄
+ * AI智能体拖拉拽配置主表
+ * @author bugstack虫洞栈
+ * @description AI智能体拖拉拽配置主表 PO 对象
  */
 @Data
 @Builder
@@ -18,57 +19,62 @@ import java.time.LocalDateTime;
 public class AiAgentDrawConfig {
 
     /**
-     * 涓婚敭ID
+     * 主键ID
      */
     private Long id;
 
     /**
-     * 閰嶇疆ID锛堝敮涓€鏍囪瘑锛?     */
+     * 配置ID（唯一标识）
+     */
     private String configId;
 
     /**
-     * 閰嶇疆鍚嶇О
+     * 配置名称
      */
     private String configName;
 
     /**
-     * 閰嶇疆鎻忚堪
+     * 配置描述
      */
     private String description;
 
     /**
-     * 鍏宠仈鐨勬櫤鑳戒綋ID锛堟潵鑷猘i_agent琛級
+     * 关联的智能体ID（来自ai_agent表）
      */
     private String agentId;
 
     /**
-     * 瀹屾暣鐨勬嫋鎷夋嫿閰嶇疆JSON鏁版嵁锛堝寘鍚玭odes鍜宔dges锛?     */
+     * 完整的拖拉拽配置JSON数据（包含nodes和edges）
+     */
     private String configData;
 
     /**
-     * 閰嶇疆鐗堟湰鍙?     */
+     * 配置版本号
+     */
     private Integer version;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 
     /**
-     * 鍒涘缓浜?     */
+     * 创建人
+     */
     private String createBy;
 
     /**
-     * 鏇存柊浜?     */
+     * 更新人
+     */
     private String updateBy;
 
     /**
-     * 鍒涘缓鏃堕棿
+     * 创建时间
      */
     private LocalDateTime createTime;
 
     /**
-     * 鏇存柊鏃堕棿
+     * 更新时间
      */
     private LocalDateTime updateTime;
 

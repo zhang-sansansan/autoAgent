@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.adapter.repository;
+package cn.ann.ai.domain.agent.adapter.repository;
 
 import cn.ann.ai.domain.agent.model.valobj.*;
 
@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * AiAgent 浠撳偍鎺ュ彛  鎺ユ敹Infrastructure鏌ヨ鍒扮殑鏁版嵁搴撲俊鎭? *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/6/27 16:48
+ * AiAgent 仓储接口  接收Infrastructure查询到的数据库信息
+ *
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/6/27 16:48
  */
 public interface IAgentRepository {
 
@@ -42,9 +44,8 @@ public interface IAgentRepository {
     void createTagOrder(AiRagOrderVO aiRagOrderVO);
 
     /**
-     * 鏌ヨ鍙敤鐨勬櫤鑳戒綋鍒楄〃
-     * @return 鍙敤鐨勬櫤鑳戒綋鍒楄〃
+     * 查询可用的智能体列表
+     * @return 可用的智能体列表
      */
     List<AiAgentVO> queryAvailableAgents();
 }
-

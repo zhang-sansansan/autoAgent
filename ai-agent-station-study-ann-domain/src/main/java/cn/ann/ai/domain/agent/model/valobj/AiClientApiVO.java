@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.valobj;
+package cn.ann.ai.domain.agent.model.valobj;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,8 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * OpenAI API閰嶇疆锛屽€煎璞? *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/6/27 17:29
+ * OpenAI API配置，值对象
+ *
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/6/27 17:29
  */
 @Data
 @Builder
@@ -21,24 +23,23 @@ public class AiClientApiVO {
     private String apiId;
 
     /**
-     * 鍩虹URL
+     * 基础URL
      */
     private String baseUrl;
 
     /**
-     * API瀵嗛挜
+     * API密钥
      */
     private String apiKey;
 
     /**
-     * 瀵硅瘽琛ュ叏璺緞
+     * 对话补全路径
      */
     private String completionsPath;
 
     /**
-     * 宓屽叆鍚戦噺璺緞
+     * 嵌入向量路径
      */
     private String embeddingsPath;
 
 }
-

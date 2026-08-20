@@ -1,0 +1,41 @@
+26-01-15.11:31:44.350 [main            ] INFO  AiAgentDaoTest         - Starting AiAgentDaoTest using Java 17.0.14 with PID 33548 (started by 31017 in E:\code\java\ai-agent-station-study-ann\ai-agent-station-study-ann-app)
+26-01-15.11:31:44.353 [main            ] INFO  AiAgentDaoTest         - The following 1 profile is active: "dev"
+26-01-15.11:31:48.298 [main            ] INFO  PgVectorStore          - Using the vector table name: vector_store_openai. Is empty: false
+26-01-15.11:31:48.312 [main            ] INFO  PgVectorStore          - Initializing PGVectorStore schema for table: vector_store_openai in schema: public
+26-01-15.11:31:48.312 [main            ] INFO  PgVectorStore          - vectorTableValidationsEnabled false
+26-01-15.11:31:49.826 [main            ] INFO  OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+26-01-15.11:31:51.045 [main            ] INFO  AiAgentDaoTest         - Started AiAgentDaoTest in 7.58 seconds (process running for 9.336)
+26-01-15.11:31:52.128 [main            ] INFO  HikariDataSource       - MainHikariPool - Starting...
+26-01-15.11:31:52.313 [main            ] INFO  HikariPool             - MainHikariPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@53ecea57
+26-01-15.11:31:52.314 [main            ] INFO  HikariDataSource       - MainHikariPool - Start completed.
+26-01-15.11:31:52.394 [main            ] INFO  AiAgentDaoTest         - 根据AgentId查询结果: AiAgent(id=6, agentId=1, agentName=智能对话体（Flow）, description=自动自主规划（CSDN发帖+通知）, channel=agent, status=0, createTime=2025-06-14T12:41:20, updateTime=2025-10-04T21:59:14)
+26-01-15.11:31:52.428 [main            ] INFO  AiAgentDaoTest         - 根据ID查询结果: null
+26-01-15.11:31:52.462 [main            ] INFO  AiAgentDaoTest         - 更新结果: 0
+26-01-15.11:31:52.477 [main            ] INFO  AiAgentDaoTest         - 根据AgentId删除结果: 0
+26-01-15.11:31:52.526 [main            ] INFO  AiAgentDaoTest         - 插入结果: 1, 生成ID: 43
+26-01-15.11:31:52.540 [main            ] INFO  AiAgentDaoTest         - 根据渠道查询结果数量: 8
+26-01-15.11:31:52.541 [main            ] INFO  AiAgentDaoTest         - 渠道智能体: AiAgent(id=43, agentId=test_001, agentName=测试智能体, description=这是一个测试智能体, channel=agent, status=1, createTime=2026-01-15T11:31:52, updateTime=2026-01-15T11:31:52)
+26-01-15.11:31:52.542 [main            ] INFO  AiAgentDaoTest         - 渠道智能体: AiAgent(id=42, agentId=20099179, agentName=111-测试model, description=111, channel=agent, status=1, createTime=2025-10-05T07:21:39, updateTime=2025-10-05T07:21:39)
+26-01-15.11:31:52.542 [main            ] INFO  AiAgentDaoTest         - 渠道智能体: AiAgent(id=41, agentId=85374287, agentName=测试Agent, description=测试Agent, channel=agent, status=1, createTime=2025-10-04T21:42:54, updateTime=2025-10-04T21:42:54)
+26-01-15.11:31:52.543 [main            ] INFO  AiAgentDaoTest         - 渠道智能体: AiAgent(id=6, agentId=1, agentName=智能对话体（Flow）, description=自动自主规划（CSDN发帖+通知）, channel=agent, status=0, createTime=2025-06-14T12:41:20, updateTime=2025-10-04T21:59:14)
+26-01-15.11:31:52.543 [main            ] INFO  AiAgentDaoTest         - 渠道智能体: AiAgent(id=8, agentId=3, agentName=智能对话体（Auto）, description=文本调研自动分析和执行任务, channel=agent, status=0, createTime=2025-06-14T12:41:20, updateTime=2025-10-04T21:59:18)
+26-01-15.11:31:52.543 [main            ] INFO  AiAgentDaoTest         - 渠道智能体: AiAgent(id=9, agentId=4, agentName=智能对话体（Auto）, description=ES日志文件检索, channel=agent, status=0, createTime=2025-06-14T12:41:20, updateTime=2025-10-04T21:59:19)
+26-01-15.11:31:52.543 [main            ] INFO  AiAgentDaoTest         - 渠道智能体: AiAgent(id=10, agentId=5, agentName=智能对话体（Auto）-监控分析, description=智能监控分析服务, channel=agent, status=0, createTime=2025-06-14T12:41:20, updateTime=2025-10-04T21:59:21)
+26-01-15.11:31:52.543 [main            ] INFO  AiAgentDaoTest         - 渠道智能体: AiAgent(id=11, agentId=6, agentName=智能对话体（Fixed）, description=智能执行体, channel=agent, status=0, createTime=2025-06-14T12:41:20, updateTime=2025-10-04T21:59:22)
+26-01-15.11:31:52.568 [main            ] INFO  AiAgentDaoTest         - 通过AgentId更新结果: 1
+26-01-15.11:31:52.575 [main            ] INFO  AiAgentDaoTest         - 根据ID删除结果: 0
+26-01-15.11:31:52.582 [main            ] INFO  AiAgentDaoTest         - 查询启用的智能体数量: 2
+26-01-15.11:31:52.583 [main            ] INFO  AiAgentDaoTest         - 启用的智能体: AiAgent(id=42, agentId=20099179, agentName=111-测试model, description=111, channel=agent, status=1, createTime=2025-10-05T07:21:39, updateTime=2025-10-05T07:21:39)
+26-01-15.11:31:52.583 [main            ] INFO  AiAgentDaoTest         - 启用的智能体: AiAgent(id=41, agentId=85374287, agentName=测试Agent, description=测试Agent, channel=agent, status=1, createTime=2025-10-04T21:42:54, updateTime=2025-10-04T21:42:54)
+26-01-15.11:31:52.595 [main            ] INFO  AiAgentDaoTest         - 查询所有智能体数量: 9
+26-01-15.11:31:52.595 [main            ] INFO  AiAgentDaoTest         - 智能体: AiAgent(id=43, agentId=test_001, agentName=通过AgentId更新的智能体, description=通过AgentId更新的描述, channel=agent, status=0, createTime=2026-01-15T11:31:52, updateTime=2026-01-15T11:31:53)
+26-01-15.11:31:52.597 [main            ] INFO  AiAgentDaoTest         - 智能体: AiAgent(id=42, agentId=20099179, agentName=111-测试model, description=111, channel=agent, status=1, createTime=2025-10-05T07:21:39, updateTime=2025-10-05T07:21:39)
+26-01-15.11:31:52.597 [main            ] INFO  AiAgentDaoTest         - 智能体: AiAgent(id=41, agentId=85374287, agentName=测试Agent, description=测试Agent, channel=agent, status=1, createTime=2025-10-04T21:42:54, updateTime=2025-10-04T21:42:54)
+26-01-15.11:31:52.597 [main            ] INFO  AiAgentDaoTest         - 智能体: AiAgent(id=6, agentId=1, agentName=智能对话体（Flow）, description=自动自主规划（CSDN发帖+通知）, channel=agent, status=0, createTime=2025-06-14T12:41:20, updateTime=2025-10-04T21:59:14)
+26-01-15.11:31:52.597 [main            ] INFO  AiAgentDaoTest         - 智能体: AiAgent(id=7, agentId=2, agentName=智能对话体（MCP）, description=自动发帖，工具服务, channel=chat_stream, status=0, createTime=2025-06-14T12:41:20, updateTime=2025-10-04T21:59:16)
+26-01-15.11:31:52.597 [main            ] INFO  AiAgentDaoTest         - 智能体: AiAgent(id=8, agentId=3, agentName=智能对话体（Auto）, description=文本调研自动分析和执行任务, channel=agent, status=0, createTime=2025-06-14T12:41:20, updateTime=2025-10-04T21:59:18)
+26-01-15.11:31:52.597 [main            ] INFO  AiAgentDaoTest         - 智能体: AiAgent(id=9, agentId=4, agentName=智能对话体（Auto）, description=ES日志文件检索, channel=agent, status=0, createTime=2025-06-14T12:41:20, updateTime=2025-10-04T21:59:19)
+26-01-15.11:31:52.597 [main            ] INFO  AiAgentDaoTest         - 智能体: AiAgent(id=10, agentId=5, agentName=智能对话体（Auto）-监控分析, description=智能监控分析服务, channel=agent, status=0, createTime=2025-06-14T12:41:20, updateTime=2025-10-04T21:59:21)
+26-01-15.11:31:52.597 [main            ] INFO  AiAgentDaoTest         - 智能体: AiAgent(id=11, agentId=6, agentName=智能对话体（Fixed）, description=智能执行体, channel=agent, status=0, createTime=2025-06-14T12:41:20, updateTime=2025-10-04T21:59:22)
+26-01-15.11:31:52.610 [SpringApplicationShutdownHook] INFO  HikariDataSource       - MainHikariPool - Shutdown initiated...
+26-01-15.11:31:52.622 [SpringApplicationShutdownHook] INFO  HikariDataSource       - MainHikariPool - Shutdown completed.

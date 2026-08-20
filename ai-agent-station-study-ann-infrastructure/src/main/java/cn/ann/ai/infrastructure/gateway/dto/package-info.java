@@ -1,1 +1,1 @@
-﻿package cn.ann.ai.infrastructure.gateway.dto;
+package cn.ann.ai.infrastructure.gateway.dto;

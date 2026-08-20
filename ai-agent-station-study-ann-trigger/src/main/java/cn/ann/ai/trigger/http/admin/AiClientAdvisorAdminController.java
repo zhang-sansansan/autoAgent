@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.trigger.http.admin;
+package cn.ann.ai.trigger.http.admin;
 
 import cn.ann.ai.api.IAiClientAdvisorAdminService;
 import cn.ann.ai.api.dto.AiClientAdvisorQueryRequestDTO;
@@ -19,8 +19,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 椤鹃棶閰嶇疆绠＄悊鎺у埗鍣? *
- * @author bugstack铏礊鏍? * @description 椤鹃棶閰嶇疆绠＄悊鎺у埗鍣? */
+ * 顾问配置管理控制器
+ *
+ * @author bugstack虫洞栈
+ * @description 顾问配置管理控制器
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/admin/ai-client-advisor")
@@ -34,9 +37,9 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     @PostMapping("/create")
     public Response<Boolean> createAiClientAdvisor(@RequestBody AiClientAdvisorRequestDTO request) {
         try {
-            log.info("鍒涘缓椤鹃棶閰嶇疆璇锋眰锛歿}", request);
+            log.info("创建顾问配置请求：{}", request);
             
-            // DTO杞琍O
+            // DTO转PO
             AiClientAdvisor aiClientAdvisor = convertToAiClientAdvisor(request);
             aiClientAdvisor.setCreateTime(LocalDateTime.now());
             aiClientAdvisor.setUpdateTime(LocalDateTime.now());
@@ -49,7 +52,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鍒涘缓椤鹃棶閰嶇疆澶辫触", e);
+            log.error("创建顾问配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -62,17 +65,17 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     @PutMapping("/update-by-id")
     public Response<Boolean> updateAiClientAdvisorById(@RequestBody AiClientAdvisorRequestDTO request) {
         try {
-            log.info("鏍规嵁ID鏇存柊椤鹃棶閰嶇疆璇锋眰锛歿}", request);
+            log.info("根据ID更新顾问配置请求：{}", request);
             
             if (request.getId() == null) {
                 return Response.<Boolean>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("ID涓嶈兘涓虹┖")
+                        .info("ID不能为空")
                         .data(false)
                         .build();
             }
             
-            // DTO杞琍O
+            // DTO转PO
             AiClientAdvisor aiClientAdvisor = convertToAiClientAdvisor(request);
             aiClientAdvisor.setUpdateTime(LocalDateTime.now());
             
@@ -84,7 +87,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁ID鏇存柊椤鹃棶閰嶇疆澶辫触", e);
+            log.error("根据ID更新顾问配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -97,17 +100,17 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     @PutMapping("/update-by-advisor-id")
     public Response<Boolean> updateAiClientAdvisorByAdvisorId(@RequestBody AiClientAdvisorRequestDTO request) {
         try {
-            log.info("鏍规嵁椤鹃棶ID鏇存柊椤鹃棶閰嶇疆璇锋眰锛歿}", request);
+            log.info("根据顾问ID更新顾问配置请求：{}", request);
             
             if (!StringUtils.hasText(request.getAdvisorId())) {
                 return Response.<Boolean>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("椤鹃棶ID涓嶈兘涓虹┖")
+                        .info("顾问ID不能为空")
                         .data(false)
                         .build();
             }
             
-            // DTO杞琍O
+            // DTO转PO
             AiClientAdvisor aiClientAdvisor = convertToAiClientAdvisor(request);
             aiClientAdvisor.setUpdateTime(LocalDateTime.now());
             
@@ -119,7 +122,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁椤鹃棶ID鏇存柊椤鹃棶閰嶇疆澶辫触", e);
+            log.error("根据顾问ID更新顾问配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -132,7 +135,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     @DeleteMapping("/delete-by-id/{id}")
     public Response<Boolean> deleteAiClientAdvisorById(@PathVariable("id") Long id) {
         try {
-            log.info("鏍规嵁ID鍒犻櫎椤鹃棶閰嶇疆璇锋眰锛歿}", id);
+            log.info("根据ID删除顾问配置请求：{}", id);
             
             int result = aiClientAdvisorDao.deleteById(id);
             
@@ -142,7 +145,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁ID鍒犻櫎椤鹃棶閰嶇疆澶辫触", e);
+            log.error("根据ID删除顾问配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -155,7 +158,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     @DeleteMapping("/delete-by-advisor-id/{advisorId}")
     public Response<Boolean> deleteAiClientAdvisorByAdvisorId(@PathVariable("advisorId") String advisorId) {
         try {
-            log.info("鏍规嵁椤鹃棶ID鍒犻櫎椤鹃棶閰嶇疆璇锋眰锛歿}", advisorId);
+            log.info("根据顾问ID删除顾问配置请求：{}", advisorId);
             
             int result = aiClientAdvisorDao.deleteByAdvisorId(advisorId);
             
@@ -165,7 +168,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁椤鹃棶ID鍒犻櫎椤鹃棶閰嶇疆澶辫触", e);
+            log.error("根据顾问ID删除顾问配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -178,14 +181,14 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     @GetMapping("/query-by-id/{id}")
     public Response<AiClientAdvisorResponseDTO> queryAiClientAdvisorById(@PathVariable("id") Long id) {
         try {
-            log.info("鏍规嵁ID鏌ヨ椤鹃棶閰嶇疆璇锋眰锛歿}", id);
+            log.info("根据ID查询顾问配置请求：{}", id);
             
             AiClientAdvisor aiClientAdvisor = aiClientAdvisorDao.queryById(id);
             
             if (aiClientAdvisor == null) {
                 return Response.<AiClientAdvisorResponseDTO>builder()
                         .code(ResponseCode.SUCCESS.getCode())
-                        .info("鏈壘鍒板搴旂殑椤鹃棶閰嶇疆")
+                        .info("未找到对应的顾问配置")
                         .data(null)
                         .build();
             }
@@ -198,7 +201,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
                     .data(responseDTO)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁ID鏌ヨ椤鹃棶閰嶇疆澶辫触", e);
+            log.error("根据ID查询顾问配置失败", e);
             return Response.<AiClientAdvisorResponseDTO>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -211,14 +214,14 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     @GetMapping("/query-by-advisor-id/{advisorId}")
     public Response<AiClientAdvisorResponseDTO> queryAiClientAdvisorByAdvisorId(@PathVariable("advisorId") String advisorId) {
         try {
-            log.info("鏍规嵁椤鹃棶ID鏌ヨ椤鹃棶閰嶇疆璇锋眰锛歿}", advisorId);
+            log.info("根据顾问ID查询顾问配置请求：{}", advisorId);
             
             AiClientAdvisor aiClientAdvisor = aiClientAdvisorDao.queryByAdvisorId(advisorId);
             
             if (aiClientAdvisor == null) {
                 return Response.<AiClientAdvisorResponseDTO>builder()
                         .code(ResponseCode.SUCCESS.getCode())
-                        .info("鏈壘鍒板搴旂殑椤鹃棶閰嶇疆")
+                        .info("未找到对应的顾问配置")
                         .data(null)
                         .build();
             }
@@ -231,7 +234,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
                     .data(responseDTO)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁椤鹃棶ID鏌ヨ椤鹃棶閰嶇疆澶辫触", e);
+            log.error("根据顾问ID查询顾问配置失败", e);
             return Response.<AiClientAdvisorResponseDTO>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -244,7 +247,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     @GetMapping("/query-enabled")
     public Response<List<AiClientAdvisorResponseDTO>> queryEnabledAiClientAdvisors() {
         try {
-            log.info("鏌ヨ鎵€鏈夊惎鐢ㄧ殑椤鹃棶閰嶇疆");
+            log.info("查询所有启用的顾问配置");
             
             List<AiClientAdvisor> aiClientAdvisors = aiClientAdvisorDao.queryByStatus(1);
             
@@ -258,7 +261,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏌ヨ鎵€鏈夊惎鐢ㄧ殑椤鹃棶閰嶇疆澶辫触", e);
+            log.error("查询所有启用的顾问配置失败", e);
             return Response.<List<AiClientAdvisorResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -271,7 +274,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     @GetMapping("/query-by-status/{status}")
     public Response<List<AiClientAdvisorResponseDTO>> queryAiClientAdvisorsByStatus(@PathVariable("status") Integer status) {
         try {
-            log.info("鏍规嵁鐘舵€佹煡璇㈤【闂厤缃姹傦細{}", status);
+            log.info("根据状态查询顾问配置请求：{}", status);
             
             List<AiClientAdvisor> aiClientAdvisors = aiClientAdvisorDao.queryByStatus(status);
             
@@ -285,7 +288,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鐘舵€佹煡璇㈤【闂厤缃け璐?, e);
+            log.error("根据状态查询顾问配置失败", e);
             return Response.<List<AiClientAdvisorResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -298,7 +301,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     @GetMapping("/query-by-type/{advisorType}")
     public Response<List<AiClientAdvisorResponseDTO>> queryAiClientAdvisorsByType(@PathVariable("advisorType") String advisorType) {
         try {
-            log.info("鏍规嵁椤鹃棶绫诲瀷鏌ヨ椤鹃棶閰嶇疆璇锋眰锛歿}", advisorType);
+            log.info("根据顾问类型查询顾问配置请求：{}", advisorType);
             
             List<AiClientAdvisor> aiClientAdvisors = aiClientAdvisorDao.queryByAdvisorType(advisorType);
             
@@ -312,7 +315,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁椤鹃棶绫诲瀷鏌ヨ椤鹃棶閰嶇疆澶辫触", e);
+            log.error("根据顾问类型查询顾问配置失败", e);
             return Response.<List<AiClientAdvisorResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -325,38 +328,43 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     @PostMapping("/query-list")
     public Response<List<AiClientAdvisorResponseDTO>> queryAiClientAdvisorList(@RequestBody AiClientAdvisorQueryRequestDTO request) {
         try {
-            log.info("鏍规嵁鏉′欢鏌ヨ椤鹃棶閰嶇疆鍒楄〃璇锋眰锛歿}", request);
+            log.info("根据条件查询顾问配置列表请求：{}", request);
             
-            // 鏍规嵁鏌ヨ鏉′欢鑾峰彇鏁版嵁
+            // 根据查询条件获取数据
             List<AiClientAdvisor> aiClientAdvisors;
             
             if (StringUtils.hasText(request.getAdvisorId())) {
-                // 濡傛灉鏈夐【闂甀D锛岀洿鎺ユ煡璇?                AiClientAdvisor advisor = aiClientAdvisorDao.queryByAdvisorId(request.getAdvisorId());
+                // 如果有顾问ID，直接查询
+                AiClientAdvisor advisor = aiClientAdvisorDao.queryByAdvisorId(request.getAdvisorId());
                 aiClientAdvisors = advisor != null ? List.of(advisor) : List.of();
             } else if (StringUtils.hasText(request.getAdvisorType())) {
-                // 濡傛灉鏈夐【闂被鍨嬶紝鎸夌被鍨嬫煡璇?                aiClientAdvisors = aiClientAdvisorDao.queryByAdvisorType(request.getAdvisorType());
+                // 如果有顾问类型，按类型查询
+                aiClientAdvisors = aiClientAdvisorDao.queryByAdvisorType(request.getAdvisorType());
             } else if (request.getStatus() != null) {
-                // 濡傛灉鏈夌姸鎬侊紝鎸夌姸鎬佹煡璇?                aiClientAdvisors = aiClientAdvisorDao.queryByStatus(request.getStatus());
+                // 如果有状态，按状态查询
+                aiClientAdvisors = aiClientAdvisorDao.queryByStatus(request.getStatus());
             } else {
-                // 鍚﹀垯鏌ヨ鎵€鏈?                aiClientAdvisors = aiClientAdvisorDao.queryAll();
+                // 否则查询所有
+                aiClientAdvisors = aiClientAdvisorDao.queryAll();
             }
             
-            // 杩囨护鏉′欢
+            // 过滤条件
             List<AiClientAdvisor> filteredAdvisors = aiClientAdvisors.stream()
                     .filter(advisor -> {
-                        // 椤鹃棶鍚嶇О妯＄硦鏌ヨ
+                        // 顾问名称模糊查询
                         if (StringUtils.hasText(request.getAdvisorName()) && 
                             !advisor.getAdvisorName().contains(request.getAdvisorName())) {
                             return false;
                         }
-                        // 鐘舵€佽繃婊?                        if (request.getStatus() != null && !request.getStatus().equals(advisor.getStatus())) {
+                        // 状态过滤
+                        if (request.getStatus() != null && !request.getStatus().equals(advisor.getStatus())) {
                             return false;
                         }
                         return true;
                     })
                     .collect(Collectors.toList());
             
-            // 鍒嗛〉澶勭悊锛堢畝鍗曞疄鐜帮級
+            // 分页处理（简单实现）
             if (request.getPageNum() != null && request.getPageSize() != null) {
                 int pageNum = Math.max(1, request.getPageNum());
                 int pageSize = Math.max(1, request.getPageSize());
@@ -380,7 +388,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鏉′欢鏌ヨ椤鹃棶閰嶇疆鍒楄〃澶辫触", e);
+            log.error("根据条件查询顾问配置列表失败", e);
             return Response.<List<AiClientAdvisorResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -393,7 +401,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     @GetMapping("/query-all")
     public Response<List<AiClientAdvisorResponseDTO>> queryAllAiClientAdvisors() {
         try {
-            log.info("鏌ヨ鎵€鏈夐【闂厤缃?);
+            log.info("查询所有顾问配置");
             
             List<AiClientAdvisor> aiClientAdvisors = aiClientAdvisorDao.queryAll();
             
@@ -407,7 +415,7 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏌ヨ鎵€鏈夐【闂厤缃け璐?, e);
+            log.error("查询所有顾问配置失败", e);
             return Response.<List<AiClientAdvisorResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -417,9 +425,9 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     }
 
     /**
-     * DTO杞琍O瀵硅薄
-     * @param requestDTO 璇锋眰DTO
-     * @return PO瀵硅薄
+     * DTO转PO对象
+     * @param requestDTO 请求DTO
+     * @return PO对象
      */
     private AiClientAdvisor convertToAiClientAdvisor(AiClientAdvisorRequestDTO requestDTO) {
         AiClientAdvisor aiClientAdvisor = new AiClientAdvisor();
@@ -428,9 +436,9 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     }
 
     /**
-     * PO杞搷搴擠TO瀵硅薄
-     * @param aiClientAdvisor PO瀵硅薄
-     * @return 鍝嶅簲DTO
+     * PO转响应DTO对象
+     * @param aiClientAdvisor PO对象
+     * @return 响应DTO
      */
     private AiClientAdvisorResponseDTO convertToAiClientAdvisorResponseDTO(AiClientAdvisor aiClientAdvisor) {
         AiClientAdvisorResponseDTO responseDTO = new AiClientAdvisorResponseDTO();
@@ -439,4 +447,3 @@ public class AiClientAdvisorAdminController implements IAiClientAdvisorAdminServ
     }
 
 }
-

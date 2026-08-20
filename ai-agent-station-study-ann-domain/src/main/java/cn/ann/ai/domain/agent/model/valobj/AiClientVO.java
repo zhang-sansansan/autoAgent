@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.valobj;
+package cn.ann.ai.domain.agent.model.valobj;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * AI瀹㈡埛绔厤缃紝鍊煎璞? *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/6/27 18:51
+ * AI客户端配置，值对象
+ *
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/6/27 18:51
  */
 @Data
 @Builder
@@ -19,21 +21,22 @@ import java.util.List;
 public class AiClientVO {
 
     /**
-     * 瀹㈡埛绔疘D
+     * 客户端ID
      */
     private String clientId;
 
     /**
-     * 瀹㈡埛绔悕绉?     */
+     * 客户端名称
+     */
     private String clientName;
 
     /**
-     * 鎻忚堪
+     * 描述
      */
     private String description;
 
     /**
-     * 鍏ㄥ眬鍞竴妯″瀷ID
+     * 全局唯一模型ID
      */
     private String modelId;
 
@@ -48,7 +51,7 @@ public class AiClientVO {
     private List<String> mcpIdList;
 
     /**
-     * 椤鹃棶ID List
+     * 顾问ID List
      */
     private List<String> advisorIdList;
 
@@ -73,4 +76,3 @@ public class AiClientVO {
     }
 
 }
-

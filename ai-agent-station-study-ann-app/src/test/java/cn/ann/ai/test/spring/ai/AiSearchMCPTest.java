@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.test.spring.ai;
+package cn.ann.ai.test.spring.ai;
 
 import com.alibaba.fastjson.JSON;
 import io.modelcontextprotocol.client.McpClient;
@@ -32,16 +32,25 @@ import java.util.List;
 @Slf4j
 public class AiSearchMCPTest {
 
+    private static String requireEnvironment(String name) {
+        String value = System.getenv(name);
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException("Missing required environment variable: " + name);
+        }
+        return value;
+    }
+
+
     @Test
     public void test() throws Exception {
-        //鏋勫缓妯″瀷
-        //妯″瀷鍖呮嫭api銆乵cp宸ュ叿
+        //构建模型
+        //模型包括api、mcp工具
         OpenAiChatModel chatModel = OpenAiChatModel.builder()
                 .openAiApi(OpenAiApi.builder()
                         .baseUrl("https://apis.itedus.cn")
-                        .apiKey("${OPENAI_API_KEY}互鑱旂郴灏忓倕鍝ョ敵璇?)
-                        .completionsPath("v1/chat/completions")//鎷兼帴baseUrl锛屾寚瀹氳璋冪敤鐨勫叿浣撳姛鑳芥槸鑱婂ぉ锛屾瘮濡傝皟鐢╟all鏂规硶锛屽氨鏄線杩欎釜鍦板潃鍙憄ost璇锋眰
-                        .embeddingsPath("v1/embeddings")//鍚戦噺鎺ュ彛鐨勮矾寰勶紝涔熸槸鎷兼帴baseUrl锛屼綔鐢ㄦ槸灏嗘枃绔犺浆涓哄悜閲忥紝浣跨敤rag鏃朵細璋冪敤锛屾瘮濡傛妸鏁版嵁瀛樺埌鍚戦噺搴?
+                        .apiKey("sk-sLvFUs1wSIgtbWcE03464f199d25****可以联系小傅哥申请")
+                        .completionsPath("v1/chat/completions")//拼接baseUrl，指定要调用的具体功能是聊天，比如调用call方法，就是往这个地址发post请求
+                        .embeddingsPath("v1/embeddings")//向量接口的路径，也是拼接baseUrl，作用是将文章转为向量，使用rag时会调用，比如把数据存到向量库
                         .build())
                 .defaultOptions(OpenAiChatOptions.builder()
                         .model("gpt-4.1")
@@ -49,13 +58,13 @@ public class AiSearchMCPTest {
                         .build())
                 .build();
 
-        ChatResponse call = chatModel.call(Prompt.builder().messages(new UserMessage("鎼滅储灏忓倕鍝ユ妧鏈崥瀹㈡湁鍝簺椤圭洰")).build());
-        log.info("娴嬭瘯缁撴灉:{}", JSON.toJSONString(call.getResult()));
+        ChatResponse call = chatModel.call(Prompt.builder().messages(new UserMessage("搜索小傅哥技术博客有哪些项目")).build());
+        log.info("测试结果:{}", JSON.toJSONString(call.getResult()));
     }
 
     private McpSyncClient sseMcpClient() {
         HttpClientSseClientTransport sseClientTransport = HttpClientSseClientTransport.builder("http://appbuilder.baidu.com/v2/ai_search/mcp/")
-                .sseEndpoint("sse?api_key=${BAIDU_AI_API_KEY}")
+                .sseEndpoint("sse?api_key=" + requireEnvironment("BAIDU_AI_API_KEY"))
                 .build();
 
         McpSyncClient mcpSyncClient = McpClient.sync(sseClientTransport).requestTimeout(Duration.ofMinutes(360)).build();
@@ -67,4 +76,3 @@ public class AiSearchMCPTest {
 
 
 }
-

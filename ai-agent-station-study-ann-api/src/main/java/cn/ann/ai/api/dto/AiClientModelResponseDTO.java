@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.dto;
+package cn.ann.ai.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,9 +10,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * AI瀹㈡埛绔ā鍨嬮厤缃搷搴?DTO
+ * AI客户端模型配置响应 DTO
  *
- * @author bugstack铏礊鏍? * @description AI瀹㈡埛绔ā鍨嬮厤缃搷搴旀暟鎹紶杈撳璞? */
+ * @author bugstack虫洞栈
+ * @description AI客户端模型配置响应数据传输对象
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -23,46 +25,47 @@ public class AiClientModelResponseDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 鑷涓婚敭ID
+     * 自增主键ID
      */
     private Long id;
 
     /**
-     * 鍏ㄥ眬鍞竴妯″瀷ID
+     * 全局唯一模型ID
      */
     private String modelId;
 
     /**
-     * 鍏宠仈鐨凙PI閰嶇疆ID
+     * 关联的API配置ID
      */
     private String apiId;
 
     /**
-     * 妯″瀷鍚嶇О
+     * 模型名称
      */
     private String modelName;
 
     /**
-     * 妯″瀷绫诲瀷锛歰penai銆乨eepseek銆乧laude
+     * 模型类型：openai、deepseek、claude
      */
     private String modelType;
 
     /**
-     * 妯″瀷鐢ㄩ€?     */
+     * 模型用途
+     */
     private String modelUsage;
     
     /**
-     * 鐘舵€侊細0-绂佺敤锛?-鍚敤
+     * 状态：0-禁用，1-启用
      */
     private Integer status;
 
     /**
-     * 鍒涘缓鏃堕棿
+     * 创建时间
      */
     private LocalDateTime createTime;
 
     /**
-     * 鏇存柊鏃堕棿
+     * 更新时间
      */
     private LocalDateTime updateTime;
 

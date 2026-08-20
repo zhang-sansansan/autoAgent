@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.config;
+package cn.ann.ai.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -7,21 +7,20 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "thread.pool.executor.config", ignoreInvalidFields = true)
 public class ThreadPoolConfigProperties {
 
-    /** 鏍稿績绾跨▼鏁?*/
+    /** 核心线程数 */
     private Integer corePoolSize = 20;
-    /** 鏈€澶х嚎绋嬫暟 */
+    /** 最大线程数 */
     private Integer maxPoolSize = 200;
-    /** 鏈€澶х瓑寰呮椂闂?*/
+    /** 最大等待时间 */
     private Long keepAliveTime = 10L;
-    /** 鏈€澶ч槦鍒楁暟 */
+    /** 最大队列数 */
     private Integer blockQueueSize = 5000;
     /*
-     * AbortPolicy锛氫涪寮冧换鍔″苟鎶涘嚭RejectedExecutionException寮傚父銆?
-     * DiscardPolicy锛氱洿鎺ヤ涪寮冧换鍔★紝浣嗘槸涓嶄細鎶涘嚭寮傚父
-     * DiscardOldestPolicy锛氬皢鏈€鏃╄繘鍏ラ槦鍒楃殑浠诲姟鍒犻櫎锛屼箣鍚庡啀灏濊瘯鍔犲叆闃熷垪鐨勪换鍔¤鎷掔粷
-     * CallerRunsPolicy锛氬鏋滀换鍔℃坊鍔犵嚎绋嬫睜澶辫触锛岄偅涔堜富绾跨▼鑷繁鎵ц璇ヤ换鍔?
+     * AbortPolicy：丢弃任务并抛出RejectedExecutionException异常。
+     * DiscardPolicy：直接丢弃任务，但是不会抛出异常
+     * DiscardOldestPolicy：将最早进入队列的任务删除，之后再尝试加入队列的任务被拒绝
+     * CallerRunsPolicy：如果任务添加线程池失败，那么主线程自己执行该任务
      * */
     private String policy = "AbortPolicy";
 
 }
-

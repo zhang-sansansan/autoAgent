@@ -1,0 +1,40 @@
+26-01-29.18:04:20.597 [main            ] INFO  AgentTest              - Starting AgentTest using Java 17.0.14 with PID 32240 (started by 31017 in E:\code\java\ai-agent-station-study-ann\ai-agent-station-study-ann-app)
+26-01-29.18:04:20.605 [main            ] INFO  AgentTest              - The following 1 profile is active: "dev"
+26-01-29.18:04:26.228 [main            ] INFO  PgVectorStore          - Using the vector table name: vector_store_openai. Is empty: false
+26-01-29.18:04:26.233 [main            ] INFO  PgVectorStore          - Initializing PGVectorStore schema for table: vector_store_openai in schema: public
+26-01-29.18:04:26.234 [main            ] INFO  PgVectorStore          - vectorTableValidationsEnabled false
+26-01-29.18:04:26.992 [main            ] INFO  OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+26-01-29.18:04:28.386 [main            ] INFO  AgentTest              - Started AgentTest in 8.543 seconds (process running for 10.157)
+26-01-29.18:04:58.287 [main            ] INFO  AgentTest              - Starting AgentTest using Java 17.0.14 with PID 28400 (started by 31017 in E:\code\java\ai-agent-station-study-ann\ai-agent-station-study-ann-app)
+26-01-29.18:04:58.288 [main            ] INFO  AgentTest              - The following 1 profile is active: "dev"
+26-01-29.18:05:01.465 [main            ] INFO  PgVectorStore          - Using the vector table name: vector_store_openai. Is empty: false
+26-01-29.18:05:01.470 [main            ] INFO  PgVectorStore          - Initializing PGVectorStore schema for table: vector_store_openai in schema: public
+26-01-29.18:05:01.470 [main            ] INFO  PgVectorStore          - vectorTableValidationsEnabled false
+26-01-29.18:05:02.129 [main            ] INFO  OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+26-01-29.18:05:03.343 [main            ] INFO  AgentTest              - Started AgentTest in 5.608 seconds (process running for 7.144)
+26-01-29.18:05:04.507 [pool-2-thread-1 ] INFO  AiClientLoadDataStrategy - 查询配置数据(ai_client_api) [3001]
+26-01-29.18:05:04.507 [pool-2-thread-2 ] INFO  AiClientLoadDataStrategy - 查询配置数据(ai_client_model) [3001]
+26-01-29.18:05:04.508 [pool-2-thread-3 ] INFO  AiClientLoadDataStrategy - 查询配置数据(ai_client_tool_mcp) [3001]
+26-01-29.18:05:04.508 [pool-2-thread-4 ] INFO  AiClientLoadDataStrategy - 查询配置数据(ai_client_system_prompt) [3001]
+26-01-29.18:05:04.508 [pool-2-thread-5 ] INFO  AiClientLoadDataStrategy - 查询配置数据(ai_client_advisor) [3001]
+26-01-29.18:05:04.509 [pool-2-thread-6 ] INFO  AiClientLoadDataStrategy - 查询配置数据(ai_client) [3001]
+26-01-29.18:05:04.525 [pool-2-thread-3 ] INFO  HikariDataSource       - MainHikariPool - Starting...
+26-01-29.18:05:05.643 [pool-2-thread-2 ] INFO  HikariDataSource       - MainHikariPool - Starting...
+26-01-29.18:05:06.658 [pool-2-thread-5 ] INFO  HikariDataSource       - MainHikariPool - Starting...
+26-01-29.18:05:07.665 [pool-2-thread-4 ] INFO  HikariDataSource       - MainHikariPool - Starting...
+26-01-29.18:05:08.676 [pool-2-thread-6 ] INFO  HikariDataSource       - MainHikariPool - Starting...
+26-01-29.18:05:09.689 [pool-2-thread-1 ] INFO  HikariDataSource       - MainHikariPool - Starting...
+26-01-29.18:06:09.769 [main            ] INFO  AgentTest              - Starting AgentTest using Java 17.0.14 with PID 10328 (started by 31017 in E:\code\java\ai-agent-station-study-ann\ai-agent-station-study-ann-app)
+26-01-29.18:06:09.774 [main            ] INFO  AgentTest              - The following 1 profile is active: "dev"
+26-01-29.18:06:13.722 [main            ] INFO  PgVectorStore          - Using the vector table name: vector_store_openai. Is empty: false
+26-01-29.18:06:13.740 [main            ] INFO  PgVectorStore          - Initializing PGVectorStore schema for table: vector_store_openai in schema: public
+26-01-29.18:06:13.740 [main            ] INFO  PgVectorStore          - vectorTableValidationsEnabled false
+26-01-29.18:06:14.849 [main            ] INFO  OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+26-01-29.18:06:16.113 [main            ] INFO  AgentTest              - Started AgentTest in 6.925 seconds (process running for 8.478)
+26-01-29.18:23:58.522 [main            ] INFO  AgentTest              - Starting AgentTest using Java 17.0.14 with PID 14188 (started by 31017 in E:\code\java\ai-agent-station-study-ann\ai-agent-station-study-ann-app)
+26-01-29.18:23:58.524 [main            ] INFO  AgentTest              - The following 1 profile is active: "dev"
+26-01-29.18:24:01.380 [main            ] INFO  PgVectorStore          - Using the vector table name: vector_store_openai. Is empty: false
+26-01-29.18:24:01.386 [main            ] INFO  PgVectorStore          - Initializing PGVectorStore schema for table: vector_store_openai in schema: public
+26-01-29.18:24:01.386 [main            ] INFO  PgVectorStore          - vectorTableValidationsEnabled false
+26-01-29.18:24:02.095 [main            ] INFO  OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+26-01-29.18:24:03.142 [main            ] INFO  AgentTest              - Started AgentTest in 5.263 seconds (process running for 7.064)

@@ -1,4 +1,4 @@
-﻿/**
- * 瀹氫箟api鎺ュ彛
+/**
+ * 定义api接口
  */
 package cn.ann.ai.api;

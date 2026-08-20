@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.trigger.http.admin;
+package cn.ann.ai.trigger.http.admin;
 
 import cn.ann.ai.api.IAiClientAdminService;
 import cn.ann.ai.api.dto.AiClientQueryRequestDTO;
@@ -19,9 +19,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * AI瀹㈡埛绔鐞嗘帶鍒跺櫒
+ * AI客户端管理控制器
  *
- * @author bugstack铏礊鏍? * @description AI瀹㈡埛绔厤缃鐞嗘帶鍒跺櫒
+ * @author bugstack虫洞栈
+ * @description AI客户端配置管理控制器
  */
 @Slf4j
 @RestController
@@ -36,9 +37,9 @@ public class AiClientAdminController implements IAiClientAdminService {
     @PostMapping("/create")
     public Response<Boolean> createAiClient(@RequestBody AiClientRequestDTO request) {
         try {
-            log.info("鍒涘缓AI瀹㈡埛绔厤缃姹傦細{}", request);
+            log.info("创建AI客户端配置请求：{}", request);
             
-            // DTO杞琍O
+            // DTO转PO
             AiClient aiClient = convertToAiClient(request);
             aiClient.setCreateTime(LocalDateTime.now());
             aiClient.setUpdateTime(LocalDateTime.now());
@@ -51,7 +52,7 @@ public class AiClientAdminController implements IAiClientAdminService {
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鍒涘缓AI瀹㈡埛绔厤缃け璐?, e);
+            log.error("创建AI客户端配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -64,17 +65,17 @@ public class AiClientAdminController implements IAiClientAdminService {
     @PutMapping("/update-by-id")
     public Response<Boolean> updateAiClientById(@RequestBody AiClientRequestDTO request) {
         try {
-            log.info("鏍规嵁ID鏇存柊AI瀹㈡埛绔厤缃姹傦細{}", request);
+            log.info("根据ID更新AI客户端配置请求：{}", request);
             
             if (request.getId() == null) {
                 return Response.<Boolean>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("ID涓嶈兘涓虹┖")
+                        .info("ID不能为空")
                         .data(false)
                         .build();
             }
             
-            // DTO杞琍O
+            // DTO转PO
             AiClient aiClient = convertToAiClient(request);
             aiClient.setUpdateTime(LocalDateTime.now());
             
@@ -86,7 +87,7 @@ public class AiClientAdminController implements IAiClientAdminService {
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁ID鏇存柊AI瀹㈡埛绔厤缃け璐?, e);
+            log.error("根据ID更新AI客户端配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -99,17 +100,17 @@ public class AiClientAdminController implements IAiClientAdminService {
     @PutMapping("/update-by-client-id")
     public Response<Boolean> updateAiClientByClientId(@RequestBody AiClientRequestDTO request) {
         try {
-            log.info("鏍规嵁瀹㈡埛绔疘D鏇存柊AI瀹㈡埛绔厤缃姹傦細{}", request);
+            log.info("根据客户端ID更新AI客户端配置请求：{}", request);
             
             if (!StringUtils.hasText(request.getClientId())) {
                 return Response.<Boolean>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("瀹㈡埛绔疘D涓嶈兘涓虹┖")
+                        .info("客户端ID不能为空")
                         .data(false)
                         .build();
             }
             
-            // DTO杞琍O
+            // DTO转PO
             AiClient aiClient = convertToAiClient(request);
             aiClient.setUpdateTime(LocalDateTime.now());
             
@@ -121,7 +122,7 @@ public class AiClientAdminController implements IAiClientAdminService {
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁瀹㈡埛绔疘D鏇存柊AI瀹㈡埛绔厤缃け璐?, e);
+            log.error("根据客户端ID更新AI客户端配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -134,7 +135,7 @@ public class AiClientAdminController implements IAiClientAdminService {
     @DeleteMapping("/delete-by-id/{id}")
     public Response<Boolean> deleteAiClientById(@PathVariable("id") Long id) {
         try {
-            log.info("鏍规嵁ID鍒犻櫎AI瀹㈡埛绔厤缃姹傦細{}", id);
+            log.info("根据ID删除AI客户端配置请求：{}", id);
             
             int result = aiClientDao.deleteById(id);
             
@@ -144,7 +145,7 @@ public class AiClientAdminController implements IAiClientAdminService {
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁ID鍒犻櫎AI瀹㈡埛绔厤缃け璐?, e);
+            log.error("根据ID删除AI客户端配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -157,7 +158,7 @@ public class AiClientAdminController implements IAiClientAdminService {
     @DeleteMapping("/delete-by-client-id/{clientId}")
     public Response<Boolean> deleteAiClientByClientId(@PathVariable("clientId") String clientId) {
         try {
-            log.info("鏍规嵁瀹㈡埛绔疘D鍒犻櫎AI瀹㈡埛绔厤缃姹傦細{}", clientId);
+            log.info("根据客户端ID删除AI客户端配置请求：{}", clientId);
             
             int result = aiClientDao.deleteByClientId(clientId);
             
@@ -167,7 +168,7 @@ public class AiClientAdminController implements IAiClientAdminService {
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁瀹㈡埛绔疘D鍒犻櫎AI瀹㈡埛绔厤缃け璐?, e);
+            log.error("根据客户端ID删除AI客户端配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -180,19 +181,19 @@ public class AiClientAdminController implements IAiClientAdminService {
     @GetMapping("/query-by-id/{id}")
     public Response<AiClientResponseDTO> queryAiClientById(@PathVariable("id") Long id) {
         try {
-            log.info("鏍规嵁ID鏌ヨAI瀹㈡埛绔厤缃姹傦細{}", id);
+            log.info("根据ID查询AI客户端配置请求：{}", id);
             
             AiClient aiClient = aiClientDao.queryById(id);
             
             if (aiClient == null) {
                 return Response.<AiClientResponseDTO>builder()
                         .code(ResponseCode.UN_ERROR.getCode())
-                        .info("鏈壘鍒板搴旂殑AI瀹㈡埛绔厤缃?)
+                        .info("未找到对应的AI客户端配置")
                         .data(null)
                         .build();
             }
             
-            // PO杞珼TO
+            // PO转DTO
             AiClientResponseDTO responseDTO = convertToAiClientResponseDTO(aiClient);
             
             return Response.<AiClientResponseDTO>builder()
@@ -201,7 +202,7 @@ public class AiClientAdminController implements IAiClientAdminService {
                     .data(responseDTO)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁ID鏌ヨAI瀹㈡埛绔厤缃け璐?, e);
+            log.error("根据ID查询AI客户端配置失败", e);
             return Response.<AiClientResponseDTO>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -214,19 +215,19 @@ public class AiClientAdminController implements IAiClientAdminService {
     @GetMapping("/query-by-client-id/{clientId}")
     public Response<AiClientResponseDTO> queryAiClientByClientId(@PathVariable("clientId") String clientId) {
         try {
-            log.info("鏍规嵁瀹㈡埛绔疘D鏌ヨAI瀹㈡埛绔厤缃姹傦細{}", clientId);
+            log.info("根据客户端ID查询AI客户端配置请求：{}", clientId);
             
             AiClient aiClient = aiClientDao.queryByClientId(clientId);
             
             if (aiClient == null) {
                 return Response.<AiClientResponseDTO>builder()
                         .code(ResponseCode.UN_ERROR.getCode())
-                        .info("鏈壘鍒板搴旂殑AI瀹㈡埛绔厤缃?)
+                        .info("未找到对应的AI客户端配置")
                         .data(null)
                         .build();
             }
             
-            // PO杞珼TO
+            // PO转DTO
             AiClientResponseDTO responseDTO = convertToAiClientResponseDTO(aiClient);
             
             return Response.<AiClientResponseDTO>builder()
@@ -235,7 +236,7 @@ public class AiClientAdminController implements IAiClientAdminService {
                     .data(responseDTO)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁瀹㈡埛绔疘D鏌ヨAI瀹㈡埛绔厤缃け璐?, e);
+            log.error("根据客户端ID查询AI客户端配置失败", e);
             return Response.<AiClientResponseDTO>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -248,7 +249,7 @@ public class AiClientAdminController implements IAiClientAdminService {
     @GetMapping("/query-enabled")
     public Response<List<AiClientResponseDTO>> queryEnabledAiClients() {
         try {
-            log.info("鏌ヨ鎵€鏈夊惎鐢ㄧ殑AI瀹㈡埛绔厤缃?);
+            log.info("查询所有启用的AI客户端配置");
             
             List<AiClient> aiClients = aiClientDao.queryEnabledClients();
             
@@ -262,7 +263,7 @@ public class AiClientAdminController implements IAiClientAdminService {
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏌ヨ鎵€鏈夊惎鐢ㄧ殑AI瀹㈡埛绔厤缃け璐?, e);
+            log.error("查询所有启用的AI客户端配置失败", e);
             return Response.<List<AiClientResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -275,11 +276,11 @@ public class AiClientAdminController implements IAiClientAdminService {
     @PostMapping("/query-list")
     public Response<List<AiClientResponseDTO>> queryAiClientList(@RequestBody AiClientQueryRequestDTO request) {
         try {
-            log.info("鏍规嵁鏉′欢鏌ヨAI瀹㈡埛绔厤缃垪琛ㄨ姹傦細{}", request);
+            log.info("根据条件查询AI客户端配置列表请求：{}", request);
             
             List<AiClient> aiClients;
             
-            // 鏍规嵁涓嶅悓鏉′欢鏌ヨ
+            // 根据不同条件查询
             if (StringUtils.hasText(request.getClientId())) {
                 AiClient aiClient = aiClientDao.queryByClientId(request.getClientId());
                 aiClients = aiClient != null ? List.of(aiClient) : List.of();
@@ -289,13 +290,14 @@ public class AiClientAdminController implements IAiClientAdminService {
                 aiClients = aiClientDao.queryAll();
             }
             
-            // 鐘舵€佽繃婊?            if (request.getStatus() != null) {
+            // 状态过滤
+            if (request.getStatus() != null) {
                 aiClients = aiClients.stream()
                         .filter(client -> request.getStatus().equals(client.getStatus()))
                         .collect(Collectors.toList());
             }
             
-            // 鍒嗛〉澶勭悊锛堢畝鍗曞疄鐜帮級
+            // 分页处理（简单实现）
             if (request.getPageNum() != null && request.getPageSize() != null) {
                 int start = (request.getPageNum() - 1) * request.getPageSize();
                 int end = Math.min(start + request.getPageSize(), aiClients.size());
@@ -316,7 +318,7 @@ public class AiClientAdminController implements IAiClientAdminService {
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鏉′欢鏌ヨAI瀹㈡埛绔厤缃垪琛ㄥけ璐?, e);
+            log.error("根据条件查询AI客户端配置列表失败", e);
             return Response.<List<AiClientResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -329,7 +331,7 @@ public class AiClientAdminController implements IAiClientAdminService {
     @GetMapping("/query-all")
     public Response<List<AiClientResponseDTO>> queryAllAiClients() {
         try {
-            log.info("鏌ヨ鎵€鏈堿I瀹㈡埛绔厤缃?);
+            log.info("查询所有AI客户端配置");
             
             List<AiClient> aiClients = aiClientDao.queryAll();
             
@@ -343,7 +345,7 @@ public class AiClientAdminController implements IAiClientAdminService {
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏌ヨ鎵€鏈堿I瀹㈡埛绔厤缃け璐?, e);
+            log.error("查询所有AI客户端配置失败", e);
             return Response.<List<AiClientResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -353,7 +355,7 @@ public class AiClientAdminController implements IAiClientAdminService {
     }
 
     /**
-     * DTO杞琍O瀵硅薄
+     * DTO转PO对象
      */
     private AiClient convertToAiClient(AiClientRequestDTO requestDTO) {
         AiClient aiClient = new AiClient();
@@ -362,7 +364,7 @@ public class AiClientAdminController implements IAiClientAdminService {
     }
 
     /**
-     * PO杞珼TO瀵硅薄
+     * PO转DTO对象
      */
     private AiClientResponseDTO convertToAiClientResponseDTO(AiClient aiClient) {
         AiClientResponseDTO responseDTO = new AiClientResponseDTO();
@@ -371,4 +373,3 @@ public class AiClientAdminController implements IAiClientAdminService {
     }
 
 }
-

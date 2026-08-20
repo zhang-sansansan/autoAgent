@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.trigger.http;
+package cn.ann.ai.trigger.http;
 
 import cn.ann.ai.api.IAiAgentService;
 import cn.ann.ai.api.dto.AiAgentResponseDTO;
@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * AutoAgent 鑷姩鏅鸿兘瀵硅瘽浣?
+ * AutoAgent 自动智能对话体
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝?
+ * @author xiaofuge bugstack.cn @小傅哥
  */
 @Slf4j
 @RestController
@@ -42,25 +42,25 @@ public class AiAgentController implements IAiAgentService {
 
     @RequestMapping(value = "auto_agent", method = RequestMethod.POST)
     public ResponseBodyEmitter autoAgent(@RequestBody AutoAgentRequestDTO request, HttpServletResponse response) {
-        log.info("AutoAgent娴佸紡鎵ц璇锋眰寮€濮嬶紝璇锋眰淇℃伅锛歿}", JSON.toJSONString(request));
+        log.info("AutoAgent流式执行请求开始，请求信息：{}", JSON.toJSONString(request));
 
         try {
-            // 璁剧疆SSE鍝嶅簲澶?
+            // 设置SSE响应头
             response.setContentType("text/event-stream");
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Cache-Control", "no-cache");
             response.setHeader("Connection", "keep-alive");
 
-            // 1. 鍒涘缓娴佸紡杈撳嚭瀵硅薄
+            // 1. 创建流式输出对象
             ResponseBodyEmitter emitter = new ResponseBodyEmitter(Long.MAX_VALUE);
             if (request == null || request.getAiAgentId() == null || request.getAiAgentId().trim().isEmpty()) {
-                log.warn("AutoAgent璇锋眰鍙傛暟鏃犳晥锛歛iAgentId涓虹┖");
-                emitter.send("璇锋眰澶勭悊寮傚父锛歛iAgentId涓嶈兘涓虹┖");
+                log.warn("AutoAgent请求参数无效：aiAgentId为空");
+                emitter.send("请求处理异常：aiAgentId不能为空");
                 emitter.complete();
                 return emitter;
             }
 
-            // 2. 鏋勫缓鎵ц鍛戒护瀹炰綋
+            // 2. 构建执行命令实体
             ExecuteCommandEntity executeCommandEntity = ExecuteCommandEntity.builder()
                     .aiAgentId(request.getAiAgentId())
                     .message(request.getMessage())
@@ -68,19 +68,19 @@ public class AiAgentController implements IAiAgentService {
                     .maxStep(request.getMaxStep())
                     .build();
 
-            // 3. 璋冨害澶勭悊
+            // 3. 调度处理
             agentDispatchService.dispatch(executeCommandEntity, emitter);
 
             return emitter;
 
         } catch (Exception e) {
-            log.error("AutoAgent璇锋眰澶勭悊寮傚父锛歿}", e.getMessage(), e);
+            log.error("AutoAgent请求处理异常：{}", e.getMessage(), e);
             ResponseBodyEmitter errorEmitter = new ResponseBodyEmitter();
             try {
-                errorEmitter.send("璇锋眰澶勭悊寮傚父锛? + e.getMessage());
+                errorEmitter.send("请求处理异常：" + e.getMessage());
                 errorEmitter.complete();
             } catch (Exception ex) {
-                log.error("鍙戦€侀敊璇俊鎭け璐ワ細{}", ex.getMessage(), ex);
+                log.error("发送错误信息失败：{}", ex.getMessage(), ex);
             }
             return errorEmitter;
         }
@@ -89,35 +89,35 @@ public class AiAgentController implements IAiAgentService {
     @RequestMapping(value = "armory_agent", method = RequestMethod.POST)
     @Override
     public Response<Boolean> armoryAgent(@RequestBody ArmoryAgentRequestDTO request) {
-        log.info("瑁呴厤鏅鸿兘浣撹姹傚紑濮嬶紝璇锋眰淇℃伅锛歿}", JSON.toJSONString(request));
+        log.info("装配智能体请求开始，请求信息：{}", JSON.toJSONString(request));
 
         try {
-            // 鍙傛暟鏍￠獙
+            // 参数校验
             if (request == null || request.getAgentId() == null || request.getAgentId().trim().isEmpty()) {
-                log.warn("瑁呴厤鏅鸿兘浣撹姹傚弬鏁版棤鏁堬細agentId涓虹┖");
+                log.warn("装配智能体请求参数无效：agentId为空");
                 return Response.<Boolean>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("agentId涓嶈兘涓虹┖")
+                        .info("agentId不能为空")
                         .data(false)
                         .build();
             }
             
-            // 璋冪敤瑁呴厤鏈嶅姟
+            // 调用装配服务
             armoryService.acceptArmoryAgent(request.getAgentId());
             
-            log.info("瑁呴厤鏅鸿兘浣撴垚鍔燂紝agentId锛歿}", request.getAgentId());
+            log.info("装配智能体成功，agentId：{}", request.getAgentId());
             return Response.<Boolean>builder()
                     .code(ResponseCode.SUCCESS.getCode())
-                    .info("瑁呴厤鎴愬姛")
+                    .info("装配成功")
                     .data(true)
                     .build();
                     
         } catch (Exception e) {
-            log.error("瑁呴厤鏅鸿兘浣撳け璐ワ紝agentId锛歿}锛岄敊璇俊鎭細{}", 
+            log.error("装配智能体失败，agentId：{}，错误信息：{}", 
                     request != null ? request.getAgentId() : "null", e.getMessage(), e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
-                    .info("瑁呴厤澶辫触锛? + e.getMessage())
+                    .info("装配失败：" + e.getMessage())
                     .data(false)
                     .build();
         }
@@ -126,13 +126,13 @@ public class AiAgentController implements IAiAgentService {
     @RequestMapping(value = "query_available_agents", method = RequestMethod.GET)
     @Override
     public Response<List<AiAgentResponseDTO>> queryAvailableAgents() {
-        log.info("鏌ヨ鍙敤鏅鸿兘浣撳垪琛ㄨ姹傚紑濮?);
+        log.info("查询可用智能体列表请求开始");
 
         try {
-            // 璋冪敤瑁呴厤鏈嶅姟鏌ヨ鍙敤鏅鸿兘浣?
+            // 调用装配服务查询可用智能体
             List<AiAgentVO> aiAgentVOList = armoryService.queryAvailableAgents();
             
-            // 杞崲涓哄搷搴擠TO
+            // 转换为响应DTO
             List<AiAgentResponseDTO> responseList = new ArrayList<>();
             for (AiAgentVO aiAgentVO : aiAgentVOList) {
                 AiAgentResponseDTO responseDTO = AiAgentResponseDTO.builder()
@@ -146,22 +146,21 @@ public class AiAgentController implements IAiAgentService {
                 responseList.add(responseDTO);
             }
             
-            log.info("鏌ヨ鍙敤鏅鸿兘浣撳垪琛ㄦ垚鍔燂紝鍏眥}涓櫤鑳戒綋", responseList.size());
+            log.info("查询可用智能体列表成功，共{}个智能体", responseList.size());
             return Response.<List<AiAgentResponseDTO>>builder()
                     .code(ResponseCode.SUCCESS.getCode())
-                    .info("鏌ヨ鎴愬姛")
+                    .info("查询成功")
                     .data(responseList)
                     .build();
                     
         } catch (Exception e) {
-            log.error("鏌ヨ鍙敤鏅鸿兘浣撳垪琛ㄥけ璐ワ紝閿欒淇℃伅锛歿}", e.getMessage(), e);
+            log.error("查询可用智能体列表失败，错误信息：{}", e.getMessage(), e);
             return Response.<List<AiAgentResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
-                    .info("鏌ヨ澶辫触锛? + e.getMessage())
+                    .info("查询失败：" + e.getMessage())
                     .data(new ArrayList<>())
                     .build();
         }
     }
 
 }
-

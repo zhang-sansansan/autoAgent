@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.execute.auto.step;
+package cn.ann.ai.domain.agent.service.execute.auto.step;
 
 import cn.ann.ai.domain.agent.model.entity.AutoAgentExecuteResultEntity;
 import cn.ann.ai.domain.agent.model.entity.ExecuteCommandEntity;
@@ -11,9 +11,10 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
 /**
- * 鎵ц鎬荤粨鑺傜偣
+ * 执行总结节点
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/7/27 16:45
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/7/27 16:45
  */
 @Slf4j
 @Service
@@ -21,61 +22,61 @@ public class Step4LogExecutionSummaryNode extends AbstractExecuteSupport {
 
     @Override
     protected String doApply(ExecuteCommandEntity requestParameter, DefaultAutoAgentExecuteStrategyFactory.DynamicContext dynamicContext) throws Exception {
-        log.info("\n馃搳 === 鎵ц绗?{} 姝?===", dynamicContext.getStep());
+        log.info("\n📊 === 执行第 {} 步 ===", dynamicContext.getStep());
 
-        // 绗洓闃舵锛氭墽琛屾€荤粨
-        log.info("\n馃搳 闃舵4: 鎵ц鎬荤粨鍒嗘瀽");
+        // 第四阶段：执行总结
+        log.info("\n📊 阶段4: 执行总结分析");
         
-        // 璁板綍鎵ц鎬荤粨
+        // 记录执行总结
         logExecutionSummary(dynamicContext.getMaxStep(), dynamicContext.getExecutionHistory(), dynamicContext.isCompleted());
         
-        // 鐢熸垚鏈€缁堟€荤粨鎶ュ憡锛堟棤璁轰换鍔℃槸鍚﹀畬鎴愰兘闇€瑕佺敓鎴愶級
+        // 生成最终总结报告（无论任务是否完成都需要生成）
         generateFinalReport(requestParameter, dynamicContext);
         
-        log.info("\n馃弫 === 鍔ㄦ€佸杞墽琛岀粨鏉?====");
+        log.info("\n🏁 === 动态多轮执行结束 ====");
         
         return "ai agent execution summary completed!";
     }
 
     @Override
     public StrategyHandler<ExecuteCommandEntity, DefaultAutoAgentExecuteStrategyFactory.DynamicContext, String> get(ExecuteCommandEntity requestParameter, DefaultAutoAgentExecuteStrategyFactory.DynamicContext dynamicContext) throws Exception {
-        // 鎬荤粨鑺傜偣鏄渶鍚庝竴涓妭鐐癸紝杩斿洖null琛ㄧず鎵ц缁撴潫
+        // 总结节点是最后一个节点，返回null表示执行结束
         return defaultStrategyHandler;
     }
     
     /**
-     * 璁板綍鎵ц鎬荤粨
+     * 记录执行总结
      */
     private void logExecutionSummary(int maxSteps, StringBuilder executionHistory, boolean isCompleted) {
-        log.info("\n馃搳 === 鍔ㄦ€佸杞墽琛屾€荤粨 ====");
+        log.info("\n📊 === 动态多轮执行总结 ====");
         
-        int actualSteps = Math.min(maxSteps, executionHistory.toString().split("=== 绗?).length - 1);
-        log.info("馃搱 鎬绘墽琛屾鏁? {} 姝?, actualSteps);
+        int actualSteps = Math.min(maxSteps, executionHistory.toString().split("=== 第").length - 1);
+        log.info("📈 总执行步数: {} 步", actualSteps);
         
         if (isCompleted) {
-            log.info("鉁?浠诲姟瀹屾垚鐘舵€? 宸插畬鎴?);
+            log.info("✅ 任务完成状态: 已完成");
         } else {
-            log.info("鈴革笍 浠诲姟瀹屾垚鐘舵€? 鏈畬鎴愶紙杈惧埌鏈€澶ф鏁伴檺鍒讹級");
+            log.info("⏸️ 任务完成状态: 未完成（达到最大步数限制）");
         }
         
-        // 璁＄畻鎵ц鏁堢巼
+        // 计算执行效率
         double efficiency = isCompleted ? 100.0 : (double) actualSteps / maxSteps * 100;
-        log.info("馃搳 鎵ц鏁堢巼: {}%", efficiency);
+        log.info("📊 执行效率: {}%", efficiency);
     }
     
     /**
-     * 鐢熸垚鏈€缁堟€荤粨鎶ュ憡
+     * 生成最终总结报告
      */
     private void generateFinalReport(ExecuteCommandEntity requestParameter, DefaultAutoAgentExecuteStrategyFactory.DynamicContext dynamicContext) {
         try {
             boolean isCompleted = dynamicContext.isCompleted();
-            log.info("\n--- 鐢熸垚{}浠诲姟鐨勬渶缁堢瓟妗?---", isCompleted ? "宸插畬鎴? : "鏈畬鎴?);
+            log.info("\n--- 生成{}任务的最终答案 ---", isCompleted ? "已完成" : "未完成");
 
             AiAgentClientFlowConfigVO aiAgentClientFlowConfigVO = dynamicContext.getAiAgentClientFlowConfigVOMap().get(AiClientTypeEnumVO.RESPONSE_ASSISTANT.getCode());
 
             String summaryPrompt = getSummaryPrompt(aiAgentClientFlowConfigVO, requestParameter, dynamicContext, isCompleted);
 
-            // 鑾峰彇瀵硅瘽瀹㈡埛绔?- 浣跨敤浠诲姟鍒嗘瀽瀹㈡埛绔繘琛屾€荤粨
+            // 获取对话客户端 - 使用任务分析客户端进行总结
             ChatClient chatClient = getChatClientByClientId(aiAgentClientFlowConfigVO.getClientId());
             
             String summaryResult = chatClient
@@ -88,10 +89,11 @@ public class Step4LogExecutionSummaryNode extends AbstractExecuteSupport {
             assert summaryResult != null;
             logFinalReport(dynamicContext, summaryResult, requestParameter.getSessionId());
             
-            // 灏嗘€荤粨缁撴灉淇濆瓨鍒板姩鎬佷笂涓嬫枃涓?            dynamicContext.setValue("finalSummary", summaryResult);
+            // 将总结结果保存到动态上下文中
+            dynamicContext.setValue("finalSummary", summaryResult);
             
         } catch (Exception e) {
-            log.error("鐢熸垚鏈€缁堟€荤粨鎶ュ憡鏃跺嚭鐜板紓甯? {}", e.getMessage(), e);
+            log.error("生成最终总结报告时出现异常: {}", e.getMessage(), e);
         }
     }
 
@@ -103,19 +105,22 @@ public class Step4LogExecutionSummaryNode extends AbstractExecuteSupport {
                     dynamicContext.getExecutionHistory().toString());
         } else {
             summaryPrompt = String.format("""
-                    铏界劧浠诲姟鏈畬鍏ㄦ墽琛屽畬鎴愶紝浣嗚鍩轰簬宸叉湁鐨勬墽琛岃繃绋嬶紝灏藉姏鍥炵瓟鐢ㄦ埛鐨勫師濮嬮棶棰橈細
+                    虽然任务未完全执行完成，但请基于已有的执行过程，尽力回答用户的原始问题：
                     
-                    **鐢ㄦ埛鍘熷闂:** %s
+                    **用户原始问题:** %s
                     
-                    **宸叉墽琛岀殑杩囩▼鍜岃幏寰楃殑淇℃伅:**
+                    **已执行的过程和获得的信息:**
                     %s
                     
-                    **瑕佹眰:**
-                    1. 鍩轰簬宸叉湁淇℃伅锛屽敖鍔涘洖绛旂敤鎴风殑鍘熷闂
-                    2. 濡傛灉淇℃伅涓嶈冻锛岃鏄庡摢浜涢儴鍒嗘棤娉曞畬鎴愬苟缁欏嚭鍘熷洜
-                    3. 鎻愪緵宸茶兘纭畾鐨勯儴鍒嗙瓟妗?                    4. 缁欏嚭瀹屾垚鍓╀綑閮ㄥ垎鐨勫叿浣撳缓璁?                    5. 浠D璇硶鐨勮〃鏍煎舰寮忥紝浼樺寲灞曠ず缁撴灉鏁版嵁
+                    **要求:**
+                    1. 基于已有信息，尽力回答用户的原始问题
+                    2. 如果信息不足，说明哪些部分无法完成并给出原因
+                    3. 提供已能确定的部分答案
+                    4. 给出完成剩余部分的具体建议
+                    5. 以MD语法的表格形式，优化展示结果数据
                     
-                    璇峰熀浜庣幇鏈変俊鎭粰鍑虹敤鎴烽棶棰樼殑绛旀锛?                    """,
+                    请基于现有信息给出用户问题的答案：
+                    """,
                     requestParameter.getMessage(),
                     dynamicContext.getExecutionHistory().toString());
         }
@@ -123,11 +128,11 @@ public class Step4LogExecutionSummaryNode extends AbstractExecuteSupport {
     }
 
     /**
-     * 杈撳嚭鏈€缁堟€荤粨鎶ュ憡
+     * 输出最终总结报告
      */
     private void logFinalReport(DefaultAutoAgentExecuteStrategyFactory.DynamicContext dynamicContext, String summaryResult, String sessionId) {
         boolean isCompleted = dynamicContext.isCompleted();
-        log.info("\n馃搵 === {}浠诲姟鏈€缁堟€荤粨鎶ュ憡 ===", isCompleted ? "宸插畬鎴? : "鏈畬鎴?);
+        log.info("\n📋 === {}任务最终总结报告 ===", isCompleted ? "已完成" : "未完成");
 
         String[] lines = summaryResult.split("\n");
         String currentSection = "summary_overview";
@@ -137,10 +142,10 @@ public class Step4LogExecutionSummaryNode extends AbstractExecuteSupport {
             line = line.trim();
             if (line.isEmpty()) continue;
             
-            // 妫€娴嬫槸鍚﹀紑濮嬫柊鐨勬€荤粨閮ㄥ垎
+            // 检测是否开始新的总结部分
             String newSection = detectSummarySection(line);
             if (newSection != null && !newSection.equals(currentSection)) {
-                // 鍙戦€佸墠涓€涓儴鍒嗙殑鍐呭
+                // 发送前一个部分的内容
                 if (!sectionContent.isEmpty()) {
                     sendSummarySubResult(dynamicContext, currentSection, sectionContent.toString(), sessionId);
                 }
@@ -148,38 +153,41 @@ public class Step4LogExecutionSummaryNode extends AbstractExecuteSupport {
                 sectionContent.setLength(0);
             }
             
-            // 鏀堕泦褰撳墠閮ㄥ垎鐨勫唴瀹?            if (!sectionContent.isEmpty()) {
+            // 收集当前部分的内容
+            if (!sectionContent.isEmpty()) {
                 sectionContent.append("\n");
             }
             sectionContent.append(line);
             
-            // 鏍规嵁鍐呭绫诲瀷娣诲姞涓嶅悓鍥炬爣
-            if (line.contains("宸插畬鎴?) || line.contains("瀹屾垚鐨勫伐浣?)) {
-                log.info("鉁?{}", line);
-            } else if (line.contains("鏈畬鎴?) || line.contains("鍘熷洜")) {
-                log.info("鉂?{}", line);
-            } else if (line.contains("寤鸿") || line.contains("鎺ㄨ崘")) {
-                log.info("馃挕 {}", line);
-            } else if (line.contains("璇勪及") || line.contains("鏁堟灉")) {
-                log.info("馃搳 {}", line);
+            // 根据内容类型添加不同图标
+            if (line.contains("已完成") || line.contains("完成的工作")) {
+                log.info("✅ {}", line);
+            } else if (line.contains("未完成") || line.contains("原因")) {
+                log.info("❌ {}", line);
+            } else if (line.contains("建议") || line.contains("推荐")) {
+                log.info("💡 {}", line);
+            } else if (line.contains("评估") || line.contains("效果")) {
+                log.info("📊 {}", line);
             } else {
-                log.info("馃摑 {}", line);
+                log.info("📝 {}", line);
             }
         }
         
-        // 鍙戦€佹渶鍚庝竴涓儴鍒嗙殑鍐呭
+        // 发送最后一个部分的内容
         if (!sectionContent.isEmpty()) {
             sendSummarySubResult(dynamicContext, currentSection, sectionContent.toString(), sessionId);
         }
         
-        // 鍙戦€佸畬鏁寸殑鎬荤粨缁撴灉
+        // 发送完整的总结结果
         sendSummaryResult(dynamicContext, summaryResult, sessionId);
         
-        // 鍙戦€佸畬鎴愭爣璇?        sendCompleteResult(dynamicContext, sessionId);
+        // 发送完成标识
+        sendCompleteResult(dynamicContext, sessionId);
     }
     
     /**
-     * 鍙戦€佹€荤粨缁撴灉鍒版祦寮忚緭鍑?     */
+     * 发送总结结果到流式输出
+     */
     private void sendSummaryResult(DefaultAutoAgentExecuteStrategyFactory.DynamicContext dynamicContext, 
                                  String summaryResult, String sessionId) {
         AutoAgentExecuteResultEntity result = AutoAgentExecuteResultEntity.createSummaryResult(
@@ -188,7 +196,8 @@ public class Step4LogExecutionSummaryNode extends AbstractExecuteSupport {
     }
     
     /**
-     * 鍙戦€佹€荤粨闃舵缁嗗垎缁撴灉鍒版祦寮忚緭鍑?     */
+     * 发送总结阶段细分结果到流式输出
+     */
     private void sendSummarySubResult(DefaultAutoAgentExecuteStrategyFactory.DynamicContext dynamicContext, 
                                      String subType, String content, String sessionId) {
         AutoAgentExecuteResultEntity result = AutoAgentExecuteResultEntity.createSummarySubResult(
@@ -197,33 +206,32 @@ public class Step4LogExecutionSummaryNode extends AbstractExecuteSupport {
     }
     
     /**
-     * 鍙戦€佸畬鎴愭爣璇嗗埌娴佸紡杈撳嚭
+     * 发送完成标识到流式输出
      */
     private void sendCompleteResult(DefaultAutoAgentExecuteStrategyFactory.DynamicContext dynamicContext, String sessionId) {
         AutoAgentExecuteResultEntity result = AutoAgentExecuteResultEntity.createCompleteResult(sessionId);
         sendSseResult(dynamicContext, result);
-        log.info("鉁?宸插彂閫佸畬鎴愭爣璇?);
+        log.info("✅ 已发送完成标识");
     }
     
     /**
-     * 妫€娴嬫€荤粨閮ㄥ垎鏍囪瘑
+     * 检测总结部分标识
      */
     private String detectSummarySection(String content) {
-        if (content.contains("宸插畬鎴愮殑宸ヤ綔") || content.contains("瀹屾垚鐨勫伐浣?) || content.contains("宸ヤ綔鍐呭鍜屾垚鏋?)) {
+        if (content.contains("已完成的工作") || content.contains("完成的工作") || content.contains("工作内容和成果")) {
             return "completed_work";
-        } else if (content.contains("鏈畬鎴愮殑鍘熷洜") || content.contains("鏈畬鎴愬師鍥?)) {
+        } else if (content.contains("未完成的原因") || content.contains("未完成原因")) {
             return "incomplete_reasons";
-        } else if (content.contains("鍏抽敭鍥犵礌") || content.contains("瀹屾垚鐨勫叧閿洜绱?)) {
+        } else if (content.contains("关键因素") || content.contains("完成的关键因素")) {
             return "key_factors";
-        } else if (content.contains("鎵ц鏁堢巼") || content.contains("鎵ц鏁堢巼鍜岃川閲?)) {
+        } else if (content.contains("执行效率") || content.contains("执行效率和质量")) {
             return "efficiency_quality";
-        } else if (content.contains("瀹屾垚鍓╀綑浠诲姟鐨勫缓璁?) || content.contains("寤鸿") || content.contains("浼樺寲寤鸿") || content.contains("缁忛獙鎬荤粨")) {
+        } else if (content.contains("完成剩余任务的建议") || content.contains("建议") || content.contains("优化建议") || content.contains("经验总结")) {
             return "suggestions";
-        } else if (content.contains("鏁翠綋鎵ц鏁堟灉") || content.contains("璇勪及")) {
+        } else if (content.contains("整体执行效果") || content.contains("评估")) {
             return "evaluation";
         }
         return null;
     }
 
 }
-

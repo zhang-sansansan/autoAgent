@@ -1,5 +1,5 @@
-﻿# 鍛戒护鎵ц docker-compose -f docker-compose-environment-aliyun.yml up -d
-# docker 浠ｇ悊鍜屼娇鐢ㄦ枃妗ｏ紱https://bugstack.cn/md/road-map/docker.html
+# 命令执行 docker-compose -f docker-compose-environment-aliyun.yml up -d
+# docker 代理和使用文档；https://bugstack.cn/md/road-map/docker.html
 version: '3.9'
 services:
   mysql:
@@ -9,7 +9,7 @@ services:
     restart: always
     environment:
       TZ: Asia/Shanghai
-      MYSQL_ROOT_password: ${MYSQL_PASSWORD:123456}
+      MYSQL_ROOT_PASSWORD: 123456
     ports:
       - "13306:3306"
     volumes:
@@ -62,7 +62,7 @@ services:
       retries: 3
 
   # RedisAdmin https://github.com/joeferner/redis-commander
-  # 璐﹀瘑 admin/admin
+  # 账密 admin/admin
   redis-admin:
     image: registry.cn-hangzhou.aliyuncs.com/xfg-studio/redis-commander:0.8.0
     container_name: redis-admin
@@ -83,7 +83,7 @@ services:
       redis:
         condition: service_healthy
 
-  # 杞欢锛沨ttps://www.postgresql.org/ftp/pgadmin/pgadmin4
+  # 软件；https://www.postgresql.org/ftp/pgadmin/pgadmin4
   vector_db:
     image: registry.cn-hangzhou.aliyuncs.com/xfg-studio/pgvector:v0.5.0
     container_name: vector_db
@@ -109,7 +109,7 @@ services:
     networks:
       - my-network
 
-  # pg 绠＄悊宸ュ叿
+  # pg 管理工具
   pgadmin:
     image: dpage/pgadmin4:9.1.0
     container_name: vector_db_admin
@@ -118,7 +118,7 @@ services:
       - "5050:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@qq.com
-      PGADMIN_DEFAULT_password: ${RABBITMQ_PASSWORD:admin}
+      PGADMIN_DEFAULT_PASSWORD: admin
     depends_on:
       - vector_db
     networks:

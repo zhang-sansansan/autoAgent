@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.rag;
+package cn.ann.ai.domain.agent.service.rag;
 
 import cn.ann.ai.domain.agent.adapter.repository.IAgentRepository;
 import cn.ann.ai.domain.agent.model.valobj.AiRagOrderVO;
@@ -15,8 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 /**
- * 鐭ヨ瘑搴撴湇鍔?
- * @author xiaofuge bugstack.cn @灏忓倕鍝?
+ * 知识库服务
+ * @author xiaofuge bugstack.cn @小傅哥
  * 2025/10/4 09:12
  */
 @Slf4j
@@ -38,13 +38,13 @@ public class RagService implements IRagService {
             TikaDocumentReader documentReader = new TikaDocumentReader(file.getResource());
             List<Document> documentList = tokenTextSplitter.apply(documentReader.get());
 
-            // 娣诲姞鐭ヨ瘑搴撴爣绛?
+            // 添加知识库标签
             documentList.forEach(doc -> doc.getMetadata().put("knowledge", tag));
 
-            // 瀛樺偍鐭ヨ瘑搴撴枃浠?
+            // 存储知识库文件
             vectorStore.accept(documentList);
 
-            // 瀛樺偍鍒版暟鎹簱
+            // 存储到数据库
             AiRagOrderVO aiRagOrderVO = new AiRagOrderVO();
             aiRagOrderVO.setRagName(name);
             aiRagOrderVO.setKnowledgeTag(tag);
@@ -53,4 +53,3 @@ public class RagService implements IRagService {
     }
 
 }
-

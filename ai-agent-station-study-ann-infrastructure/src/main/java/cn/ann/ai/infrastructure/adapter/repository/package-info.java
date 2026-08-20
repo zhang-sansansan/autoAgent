@@ -1,4 +1,4 @@
-﻿/**
- * 浠撳偍瀹炵幇锛涚敤浜庡疄鐜?domain 涓畾涔夌殑浠撳偍鎺ュ彛锛屽锛汭XxxRepository 鍦?Repository 涓皟鐢ㄦ湇鍔?
+/**
+ * 仓储实现；用于实现 domain 中定义的仓储接口，如；IXxxRepository 在 Repository 中调用服务
  */
 package cn.ann.ai.infrastructure.adapter.repository;

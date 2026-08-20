@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao.po;
+package cn.ann.ai.infrastructure.dao.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 鏅鸿兘浣撲换鍔¤皟搴﹂厤缃〃
- * @author bugstack铏礊鏍? * @description 鏅鸿兘浣撲换鍔¤皟搴﹂厤缃〃 PO 瀵硅薄
+ * 智能体任务调度配置表
+ * @author bugstack虫洞栈
+ * @description 智能体任务调度配置表 PO 对象
  */
 @Data
 @Builder
@@ -18,47 +19,47 @@ import java.time.LocalDateTime;
 public class AiAgentTaskSchedule {
 
     /**
-     * 涓婚敭ID
+     * 主键ID
      */
     private Long id;
 
     /**
-     * 鏅鸿兘浣揑D
+     * 智能体ID
      */
     private String agentId;
 
     /**
-     * 浠诲姟鍚嶇О
+     * 任务名称
      */
     private String taskName;
 
     /**
-     * 浠诲姟鎻忚堪
+     * 任务描述
      */
     private String description;
 
     /**
-     * 鏃堕棿琛ㄨ揪寮?濡? 0/3 * * * * *)
+     * 时间表达式(如: 0/3 * * * * *)
      */
     private String cronExpression;
 
     /**
-     * 浠诲姟鍏ュ弬閰嶇疆(JSON鏍煎紡)
+     * 任务入参配置(JSON格式)
      */
     private String taskParam;
 
     /**
-     * 鐘舵€?0:鏃犳晥,1:鏈夋晥)
+     * 状态(0:无效,1:有效)
      */
     private Integer status;
 
     /**
-     * 鍒涘缓鏃堕棿
+     * 创建时间
      */
     private LocalDateTime createTime;
 
     /**
-     * 鏇存柊鏃堕棿
+     * 更新时间
      */
     private LocalDateTime updateTime;
 

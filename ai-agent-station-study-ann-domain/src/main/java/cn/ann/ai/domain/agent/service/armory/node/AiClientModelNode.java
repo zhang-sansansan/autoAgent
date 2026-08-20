@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.armory.node;
+package cn.ann.ai.domain.agent.service.armory.node;
 
 import cn.ann.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import cn.ann.ai.domain.agent.model.valobj.AiAgentEnumVO;
@@ -31,17 +31,17 @@ public class AiClientModelNode extends AbstractArmorySupport {
     private AiClientAdvisorNode aiClientAdvisorNode;
 
 
-    @Override//鏋勫缓妯″瀷鑺傜偣鐨勫叿浣撲笟鍔￠€昏緫
+    @Override//构建模型节点的具体业务逻辑
     protected String doApply(ArmoryCommandEntity requestParameter, DefaultArmoryStrategyFactory.DynamicContext dynamicContext) throws Exception {
-        log.info("Ai Agent 鏋勫缓鑺傜偣锛孧ode 瀵硅瘽妯″瀷{}", JSON.toJSONString(requestParameter));
+        log.info("Ai Agent 构建节点，Mode 对话模型{}", JSON.toJSONString(requestParameter));
 
         List<AiClientModelVO> aiClientModelList = dynamicContext.getValue(dataName());
 
         if (aiClientModelList == null || aiClientModelList.isEmpty()) {
-            log.warn("娌℃湁闇€瑕佽鍒濆鍖栫殑 ai client model");
+            log.warn("没有需要被初始化的 ai client model");
             return router(requestParameter, dynamicContext);
         }
-        //閰嶇疆妯″瀷鐨刟pi鍜宮cp宸ュ叿
+        //配置模型的api和mcp工具
         for(AiClientModelVO modelVO : aiClientModelList) {
             OpenAiApi openAiApi = getBean(AiAgentEnumVO.AI_CLIENT_API.getBeanName(modelVO.getApiId()));
             if (null == openAiApi) {
@@ -54,7 +54,7 @@ public class AiClientModelNode extends AbstractArmorySupport {
                 mcpSyncClients.add(mcpSyncClient);
             }
 
-            // 瀹炰緥鍖栧璇濇ā鍨嬶紙濡傛灉鏈夊叾浠栨ā鍨嬪鎺ワ紝鍙互浣跨敤 one-api 鏈嶅姟锛岃浆鎹负 openai 妯″瀷鏍煎紡锛?
+            // 实例化对话模型（如果有其他模型对接，可以使用 one-api 服务，转换为 openai 模型格式）
             OpenAiChatModel chatModel = OpenAiChatModel.builder()
                     .openAiApi(openAiApi)
                     .defaultOptions(
@@ -85,4 +85,3 @@ public class AiClientModelNode extends AbstractArmorySupport {
         return AiAgentEnumVO.AI_CLIENT_MODEL.getDataName();
     }
 }
-

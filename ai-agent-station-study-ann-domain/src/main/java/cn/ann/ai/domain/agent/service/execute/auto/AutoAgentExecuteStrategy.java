@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.execute.auto;
+package cn.ann.ai.domain.agent.service.execute.auto;
 
 
 import cn.ann.ai.domain.agent.model.entity.AutoAgentExecuteResultEntity;
@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 /**
- * 鑷姩鎵ц绛栫暐
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/8/5 09:49
+ * 自动执行策略
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/8/5 09:49
  */
 @Slf4j
 @Service("autoAgentExecuteStrategy")
@@ -35,7 +36,7 @@ public class AutoAgentExecuteStrategy implements IExecuteStrategy {
         dynamicContext.setValue("emitter", emitter);
 
         String apply = executeHandler.apply(executeCommandEntity, dynamicContext);
-        log.info("娴嬭瘯缁撴灉:{}", apply);
+        log.info("测试结果:{}", apply);
 
         try{
             AutoAgentExecuteResultEntity result = AutoAgentExecuteResultEntity.createCompleteResult(executeCommandEntity.getSessionId());
@@ -43,9 +44,8 @@ public class AutoAgentExecuteStrategy implements IExecuteStrategy {
             emitter.send(sseData);
         }
         catch(Exception e){
-            log.error("鍙戦€佺粨鏋滃け璐}",e.getMessage());
+            log.error("发送结果失败{}",e.getMessage());
         }
 
     }
 }
-

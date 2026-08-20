@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao;
+package cn.ann.ai.infrastructure.dao;
 
 import cn.ann.ai.infrastructure.dao.po.AiClientModel;
 import org.apache.ibatis.annotations.Mapper;
@@ -6,82 +6,85 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * 鑱婂ぉ妯″瀷閰嶇疆琛?DAO
- * @author bugstack铏礊鏍? * @description 鑱婂ぉ妯″瀷閰嶇疆琛ㄦ暟鎹闂璞? */
+ * 聊天模型配置表 DAO
+ * @author bugstack虫洞栈
+ * @description 聊天模型配置表数据访问对象
+ */
 @Mapper
 public interface IAiClientModelDao {
 
     /**
-     * 鎻掑叆鑱婂ぉ妯″瀷閰嶇疆
-     * @param aiClientModel 鑱婂ぉ妯″瀷閰嶇疆瀵硅薄
-     * @return 褰卞搷琛屾暟
+     * 插入聊天模型配置
+     * @param aiClientModel 聊天模型配置对象
+     * @return 影响行数
      */
     int insert(AiClientModel aiClientModel);
 
     /**
-     * 鏍规嵁ID鏇存柊鑱婂ぉ妯″瀷閰嶇疆
-     * @param aiClientModel 鑱婂ぉ妯″瀷閰嶇疆瀵硅薄
-     * @return 褰卞搷琛屾暟
+     * 根据ID更新聊天模型配置
+     * @param aiClientModel 聊天模型配置对象
+     * @return 影响行数
      */
     int updateById(AiClientModel aiClientModel);
 
     /**
-     * 鏍规嵁妯″瀷ID鏇存柊鑱婂ぉ妯″瀷閰嶇疆
-     * @param aiClientModel 鑱婂ぉ妯″瀷閰嶇疆瀵硅薄
-     * @return 褰卞搷琛屾暟
+     * 根据模型ID更新聊天模型配置
+     * @param aiClientModel 聊天模型配置对象
+     * @return 影响行数
      */
     int updateByModelId(AiClientModel aiClientModel);
 
     /**
-     * 鏍规嵁ID鍒犻櫎鑱婂ぉ妯″瀷閰嶇疆
-     * @param id 涓婚敭ID
-     * @return 褰卞搷琛屾暟
+     * 根据ID删除聊天模型配置
+     * @param id 主键ID
+     * @return 影响行数
      */
     int deleteById(Long id);
 
     /**
-     * 鏍规嵁妯″瀷ID鍒犻櫎鑱婂ぉ妯″瀷閰嶇疆
-     * @param modelId 妯″瀷ID
-     * @return 褰卞搷琛屾暟
+     * 根据模型ID删除聊天模型配置
+     * @param modelId 模型ID
+     * @return 影响行数
      */
     int deleteByModelId(String modelId);
 
     /**
-     * 鏍规嵁ID鏌ヨ鑱婂ぉ妯″瀷閰嶇疆
-     * @param id 涓婚敭ID
-     * @return 鑱婂ぉ妯″瀷閰嶇疆瀵硅薄
+     * 根据ID查询聊天模型配置
+     * @param id 主键ID
+     * @return 聊天模型配置对象
      */
     AiClientModel queryById(Long id);
 
     /**
-     * 鏍规嵁妯″瀷ID鏌ヨ鑱婂ぉ妯″瀷閰嶇疆
-     * @param modelId 妯″瀷ID
-     * @return 鑱婂ぉ妯″瀷閰嶇疆瀵硅薄
+     * 根据模型ID查询聊天模型配置
+     * @param modelId 模型ID
+     * @return 聊天模型配置对象
      */
     AiClientModel queryByModelId(String modelId);
 
     /**
-     * 鏍规嵁API閰嶇疆ID鏌ヨ鑱婂ぉ妯″瀷閰嶇疆
-     * @param apiId API閰嶇疆ID
-     * @return 鑱婂ぉ妯″瀷閰嶇疆鍒楄〃
+     * 根据API配置ID查询聊天模型配置
+     * @param apiId API配置ID
+     * @return 聊天模型配置列表
      */
     List<AiClientModel> queryByApiId(String apiId);
 
     /**
-     * 鏍规嵁妯″瀷绫诲瀷鏌ヨ鑱婂ぉ妯″瀷閰嶇疆
-     * @param modelType 妯″瀷绫诲瀷
-     * @return 鑱婂ぉ妯″瀷閰嶇疆鍒楄〃
+     * 根据模型类型查询聊天模型配置
+     * @param modelType 模型类型
+     * @return 聊天模型配置列表
      */
     List<AiClientModel> queryByModelType(String modelType);
 
     /**
-     * 鏌ヨ鎵€鏈夊惎鐢ㄧ殑鑱婂ぉ妯″瀷閰嶇疆
-     * @return 鑱婂ぉ妯″瀷閰嶇疆鍒楄〃
+     * 查询所有启用的聊天模型配置
+     * @return 聊天模型配置列表
      */
     List<AiClientModel> queryEnabledModels();
 
     /**
-     * 鏌ヨ鎵€鏈夎亰澶╂ā鍨嬮厤缃?     * @return 鑱婂ぉ妯″瀷閰嶇疆鍒楄〃
+     * 查询所有聊天模型配置
+     * @return 聊天模型配置列表
      */
     List<AiClientModel> queryAll();
 
