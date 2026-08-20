@@ -1,4 +1,4 @@
-﻿/**
- * HTTP 鎺ュ彛鏈嶅姟
+/**
+ * HTTP 接口服务
  */
 package cn.ann.ai.trigger.http;

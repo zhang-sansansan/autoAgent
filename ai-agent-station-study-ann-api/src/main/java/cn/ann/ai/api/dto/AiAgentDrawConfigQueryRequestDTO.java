@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.dto;
+package cn.ann.ai.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,10 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * AI鏅鸿兘浣撴嫋鎷夋嫿閰嶇疆鏌ヨ璇锋眰 DTO
+ * AI智能体拖拉拽配置查询请求 DTO
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/10/02
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/10/02
  */
 @Data
 @Builder
@@ -23,31 +24,32 @@ public class AiAgentDrawConfigQueryRequestDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 閰嶇疆ID锛堝敮涓€鏍囪瘑锛?     */
+     * 配置ID（唯一标识）
+     */
     private String configId;
 
     /**
-     * 閰嶇疆鍚嶇О锛堟ā绯婃煡璇級
+     * 配置名称（模糊查询）
      */
     private String configName;
 
     /**
-     * 鍏宠仈鐨勬櫤鑳戒綋ID
+     * 关联的智能体ID
      */
     private String agentId;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 
     /**
-     * 椤电爜锛堜粠1寮€濮嬶級
+     * 页码（从1开始）
      */
     private Integer pageNum;
 
     /**
-     * 姣忛〉澶у皬
+     * 每页大小
      */
     private Integer pageSize;
 }

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.valobj;
+package cn.ann.ai.domain.agent.model.valobj;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * 鑱婂ぉ妯″瀷閰嶇疆锛屽€煎璞? * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/6/27 17:43
+ * 聊天模型配置，值对象
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/6/27 17:43
  */
 @Data
 @Builder
@@ -17,29 +19,28 @@ import java.util.List;
 public class AiClientModelVO {
 
     /**
-     * 鍏ㄥ眬鍞竴妯″瀷ID
+     * 全局唯一模型ID
      */
     private String modelId;
 
     /**
-     * 鍏宠仈鐨凙PI閰嶇疆ID
+     * 关联的API配置ID
      */
     private String apiId;
 
     /**
-     * 妯″瀷鍚嶇О
+     * 模型名称
      */
     private String modelName;
 
     /**
-     * 妯″瀷绫诲瀷锛歰penai銆乨eepseek銆乧laude
+     * 模型类型：openai、deepseek、claude
      */
     private String modelType;
 
     /**
-     * 宸ュ叿 mcp ids
+     * 工具 mcp ids
      */
     private List<String> toolMcpIds;
 
 }
-

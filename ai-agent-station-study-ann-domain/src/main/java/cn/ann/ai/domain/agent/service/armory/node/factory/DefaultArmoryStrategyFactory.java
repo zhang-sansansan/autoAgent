@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.armory.node.factory;
+package cn.ann.ai.domain.agent.service.armory.node.factory;
 
 import cn.ann.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import cn.ann.ai.domain.agent.service.armory.node.RootNode;
@@ -13,8 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 宸ュ巶绫? *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/6/27 07:14
+ * 工厂类
+ *
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/6/27 07:14
  */
 @Service
 public class DefaultArmoryStrategyFactory {
@@ -23,9 +25,9 @@ public class DefaultArmoryStrategyFactory {
 
     public DefaultArmoryStrategyFactory(RootNode rootNode) {
         this.rootNode = rootNode;
-    }//閫氳繃鏋勯€犲嚱鏁版敞鍏ュ鍣ㄤ腑鐨剅ootNode鐨刡ean
+    }//通过构造函数注入容器中的rootNode的bean
 
-    //璇ュ伐绋嬬被鐩存帴杩斿洖鐨勫璞℃槸rootnode,閫氳繃spring鐨勬瀯閫犳柟娉曟敞鍏? 浠栨槸涓€涓瓥鐣ュ鐞嗗櫒
+    //该工程类直接返回的对象是rootnode,通过spring的构造方法注入  他是一个策略处理器
     public StrategyHandler<ArmoryCommandEntity, DefaultArmoryStrategyFactory.DynamicContext, String> armoryStrategyHandler(){
         return rootNode;
     }
@@ -48,4 +50,3 @@ public class DefaultArmoryStrategyFactory {
     }
 
 }
-

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao;
+package cn.ann.ai.infrastructure.dao;
 
 import cn.ann.ai.infrastructure.dao.po.AiAgentDrawConfig;
 import org.apache.ibatis.annotations.Mapper;
@@ -6,85 +6,85 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * AI鏅鸿兘浣撴嫋鎷夋嫿閰嶇疆涓昏〃 DAO
- * @author bugstack铏礊鏍?
- * @description AI鏅鸿兘浣撴嫋鎷夋嫿閰嶇疆涓昏〃鏁版嵁璁块棶瀵硅薄
+ * AI智能体拖拉拽配置主表 DAO
+ * @author bugstack虫洞栈
+ * @description AI智能体拖拉拽配置主表数据访问对象
  */
 @Mapper
 public interface IAiAgentDrawConfigDao {
 
     /**
-     * 鎻掑叆鎷栨媺鎷介厤缃?
-     * @param aiAgentDrawConfig 鎷栨媺鎷介厤缃璞?
-     * @return 褰卞搷琛屾暟
+     * 插入拖拉拽配置
+     * @param aiAgentDrawConfig 拖拉拽配置对象
+     * @return 影响行数
      */
     int insert(AiAgentDrawConfig aiAgentDrawConfig);
 
     /**
-     * 鏍规嵁ID鏇存柊鎷栨媺鎷介厤缃?
-     * @param aiAgentDrawConfig 鎷栨媺鎷介厤缃璞?
-     * @return 褰卞搷琛屾暟
+     * 根据ID更新拖拉拽配置
+     * @param aiAgentDrawConfig 拖拉拽配置对象
+     * @return 影响行数
      */
     int updateById(AiAgentDrawConfig aiAgentDrawConfig);
 
     /**
-     * 鏍规嵁閰嶇疆ID鏇存柊鎷栨媺鎷介厤缃?
-     * @param aiAgentDrawConfig 鎷栨媺鎷介厤缃璞?
-     * @return 褰卞搷琛屾暟
+     * 根据配置ID更新拖拉拽配置
+     * @param aiAgentDrawConfig 拖拉拽配置对象
+     * @return 影响行数
      */
     int updateByConfigId(AiAgentDrawConfig aiAgentDrawConfig);
 
     /**
-     * 鏍规嵁ID鍒犻櫎鎷栨媺鎷介厤缃?
-     * @param id 涓婚敭ID
-     * @return 褰卞搷琛屾暟
+     * 根据ID删除拖拉拽配置
+     * @param id 主键ID
+     * @return 影响行数
      */
     int deleteById(Long id);
 
     /**
-     * 鏍规嵁閰嶇疆ID鍒犻櫎鎷栨媺鎷介厤缃?
-     * @param configId 閰嶇疆ID
-     * @return 褰卞搷琛屾暟
+     * 根据配置ID删除拖拉拽配置
+     * @param configId 配置ID
+     * @return 影响行数
      */
     int deleteByConfigId(String configId);
 
     /**
-     * 鏍规嵁ID鏌ヨ鎷栨媺鎷介厤缃?
-     * @param id 涓婚敭ID
-     * @return 鎷栨媺鎷介厤缃璞?
+     * 根据ID查询拖拉拽配置
+     * @param id 主键ID
+     * @return 拖拉拽配置对象
      */
     AiAgentDrawConfig queryById(Long id);
 
     /**
-     * 鏍规嵁閰嶇疆ID鏌ヨ鎷栨媺鎷介厤缃?
-     * @param configId 閰嶇疆ID
-     * @return 鎷栨媺鎷介厤缃璞?
+     * 根据配置ID查询拖拉拽配置
+     * @param configId 配置ID
+     * @return 拖拉拽配置对象
      */
     AiAgentDrawConfig queryByConfigId(String configId);
 
     /**
-     * 鏍规嵁鏅鸿兘浣揑D鏌ヨ鎷栨媺鎷介厤缃?
-     * @param agentId 鏅鸿兘浣揑D
-     * @return 鎷栨媺鎷介厤缃璞?
+     * 根据智能体ID查询拖拉拽配置
+     * @param agentId 智能体ID
+     * @return 拖拉拽配置对象
      */
     AiAgentDrawConfig queryByAgentId(String agentId);
 
     /**
-     * 鏌ヨ鍚敤鐘舵€佺殑鎷栨媺鎷介厤缃垪琛?
-     * @return 鎷栨媺鎷介厤缃垪琛?
+     * 查询启用状态的拖拉拽配置列表
+     * @return 拖拉拽配置列表
      */
     List<AiAgentDrawConfig> queryEnabledConfigs();
 
     /**
-     * 鏍规嵁閰嶇疆鍚嶇О妯＄硦鏌ヨ鎷栨媺鎷介厤缃垪琛?
-     * @param configName 閰嶇疆鍚嶇О
-     * @return 鎷栨媺鎷介厤缃垪琛?
+     * 根据配置名称模糊查询拖拉拽配置列表
+     * @param configName 配置名称
+     * @return 拖拉拽配置列表
      */
     List<AiAgentDrawConfig> queryByConfigName(String configName);
 
     /**
-     * 鏌ヨ鎵€鏈夋嫋鎷夋嫿閰嶇疆
-     * @return 鎷栨媺鎷介厤缃垪琛?
+     * 查询所有拖拉拽配置
+     * @return 拖拉拽配置列表
      */
     List<AiAgentDrawConfig> queryAll();
 

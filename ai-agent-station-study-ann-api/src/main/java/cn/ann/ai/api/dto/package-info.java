@@ -1,4 +1,4 @@
-﻿/**
- * 鏁版嵁浼犺緭瀵硅薄 xxxRequestDTO xxxResponseDTO
+/**
+ * 数据传输对象 xxxRequestDTO xxxResponseDTO
  */
 package cn.ann.ai.api.dto;

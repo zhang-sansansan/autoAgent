@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.valobj;
+package cn.ann.ai.domain.agent.model.valobj;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,33 +11,32 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AiAgentVO {
     /**
-     * 鏅鸿兘浣揑D
+     * 智能体ID
      */
     private String agentId;
 
     /**
-     * 鏅鸿兘浣撳悕绉?
+     * 智能体名称
      */
     private String agentName;
 
     /**
-     * 鎻忚堪
+     * 描述
      */
     private String description;
 
     /**
-     * 娓犻亾绫诲瀷(agent锛宑hat_stream)
+     * 渠道类型(agent，chat_stream)
      */
     private String channel;
 
     /**
-     * 鎵ц绛栫暐(auto銆乫low)
+     * 执行策略(auto、flow)
      */
     private String strategy;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 }
-

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.dto;
+package cn.ann.ai.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,11 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 鐭ヨ瘑搴撻厤缃煡璇㈣姹?DTO
+ * 知识库配置查询请求 DTO
  *
- * @author bugstack铏礊鏍? * @description 鐭ヨ瘑搴撻厤缃煡璇㈣姹傛暟鎹紶杈撳璞? */
+ * @author bugstack虫洞栈
+ * @description 知识库配置查询请求数据传输对象
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -22,31 +24,32 @@ public class AiClientRagOrderQueryRequestDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 鐭ヨ瘑搴揑D
+     * 知识库ID
      */
     private String ragId;
 
     /**
-     * 鐭ヨ瘑搴撳悕绉帮紙妯＄硦鏌ヨ锛?     */
+     * 知识库名称（模糊查询）
+     */
     private String ragName;
 
     /**
-     * 鐭ヨ瘑鏍囩
+     * 知识标签
      */
     private String knowledgeTag;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 
     /**
-     * 椤电爜锛堜粠1寮€濮嬶級
+     * 页码（从1开始）
      */
     private Integer pageNum;
 
     /**
-     * 姣忛〉澶у皬
+     * 每页大小
      */
     private Integer pageSize;
 

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.dto;
+package cn.ann.ai.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,11 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 绯荤粺鎻愮ず璇嶉厤缃煡璇㈣姹?DTO
+ * 系统提示词配置查询请求 DTO
  *
- * @author bugstack铏礊鏍? * @description 绯荤粺鎻愮ず璇嶉厤缃煡璇㈣姹傛暟鎹紶杈撳璞? */
+ * @author bugstack虫洞栈
+ * @description 系统提示词配置查询请求数据传输对象
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -22,26 +24,28 @@ public class AiClientSystemPromptQueryRequestDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 鎻愮ず璇岻D
+     * 提示词ID
      */
     private String promptId;
 
     /**
-     * 鎻愮ず璇嶅悕绉帮紙妯＄硦鏌ヨ锛?     */
+     * 提示词名称（模糊查询）
+     */
     private String promptName;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 
     /**
-     * 椤电爜锛堝垎椤垫煡璇級
+     * 页码（分页查询）
      */
     private Integer pageNum;
 
     /**
-     * 椤靛ぇ灏忥紙鍒嗛〉鏌ヨ锛?     */
+     * 页大小（分页查询）
+     */
     private Integer pageSize;
 
 }

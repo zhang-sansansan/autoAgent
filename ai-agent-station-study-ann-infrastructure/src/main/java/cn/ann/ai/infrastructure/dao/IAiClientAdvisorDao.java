@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao;
+package cn.ann.ai.infrastructure.dao;
 
 import cn.ann.ai.infrastructure.dao.po.AiClientAdvisor;
 import org.apache.ibatis.annotations.Mapper;
@@ -6,74 +6,79 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * 椤鹃棶閰嶇疆琛?DAO
- * @author bugstack铏礊鏍? * @description 椤鹃棶閰嶇疆琛ㄦ暟鎹闂璞? */
+ * 顾问配置表 DAO
+ * @author bugstack虫洞栈
+ * @description 顾问配置表数据访问对象
+ */
 @Mapper
 public interface IAiClientAdvisorDao {
 
     /**
-     * 鎻掑叆椤鹃棶閰嶇疆
-     * @param aiClientAdvisor 椤鹃棶閰嶇疆瀵硅薄
-     * @return 褰卞搷琛屾暟
+     * 插入顾问配置
+     * @param aiClientAdvisor 顾问配置对象
+     * @return 影响行数
      */
     int insert(AiClientAdvisor aiClientAdvisor);
 
     /**
-     * 鏍规嵁ID鏇存柊椤鹃棶閰嶇疆
-     * @param aiClientAdvisor 椤鹃棶閰嶇疆瀵硅薄
-     * @return 褰卞搷琛屾暟
+     * 根据ID更新顾问配置
+     * @param aiClientAdvisor 顾问配置对象
+     * @return 影响行数
      */
     int updateById(AiClientAdvisor aiClientAdvisor);
 
     /**
-     * 鏍规嵁椤鹃棶ID鏇存柊椤鹃棶閰嶇疆
-     * @param aiClientAdvisor 椤鹃棶閰嶇疆瀵硅薄
-     * @return 褰卞搷琛屾暟
+     * 根据顾问ID更新顾问配置
+     * @param aiClientAdvisor 顾问配置对象
+     * @return 影响行数
      */
     int updateByAdvisorId(AiClientAdvisor aiClientAdvisor);
 
     /**
-     * 鏍规嵁ID鍒犻櫎椤鹃棶閰嶇疆
-     * @param id 涓婚敭ID
-     * @return 褰卞搷琛屾暟
+     * 根据ID删除顾问配置
+     * @param id 主键ID
+     * @return 影响行数
      */
     int deleteById(Long id);
 
     /**
-     * 鏍规嵁椤鹃棶ID鍒犻櫎椤鹃棶閰嶇疆
-     * @param advisorId 椤鹃棶ID
-     * @return 褰卞搷琛屾暟
+     * 根据顾问ID删除顾问配置
+     * @param advisorId 顾问ID
+     * @return 影响行数
      */
     int deleteByAdvisorId(String advisorId);
 
     /**
-     * 鏍规嵁ID鏌ヨ椤鹃棶閰嶇疆
-     * @param id 涓婚敭ID
-     * @return 椤鹃棶閰嶇疆瀵硅薄
+     * 根据ID查询顾问配置
+     * @param id 主键ID
+     * @return 顾问配置对象
      */
     AiClientAdvisor queryById(Long id);
 
     /**
-     * 鏍规嵁椤鹃棶ID鏌ヨ椤鹃棶閰嶇疆
-     * @param advisorId 椤鹃棶ID
-     * @return 椤鹃棶閰嶇疆瀵硅薄
+     * 根据顾问ID查询顾问配置
+     * @param advisorId 顾问ID
+     * @return 顾问配置对象
      */
     AiClientAdvisor queryByAdvisorId(String advisorId);
 
     /**
-     * 鏌ヨ鎵€鏈夐【闂厤缃?     * @return 椤鹃棶閰嶇疆鍒楄〃
+     * 查询所有顾问配置
+     * @return 顾问配置列表
      */
     List<AiClientAdvisor> queryAll();
 
     /**
-     * 鏍规嵁鐘舵€佹煡璇㈤【闂厤缃?     * @param status 鐘舵€?     * @return 椤鹃棶閰嶇疆鍒楄〃
+     * 根据状态查询顾问配置
+     * @param status 状态
+     * @return 顾问配置列表
      */
     List<AiClientAdvisor> queryByStatus(Integer status);
 
     /**
-     * 鏍规嵁椤鹃棶绫诲瀷鏌ヨ椤鹃棶閰嶇疆
-     * @param advisorType 椤鹃棶绫诲瀷
-     * @return 椤鹃棶閰嶇疆鍒楄〃
+     * 根据顾问类型查询顾问配置
+     * @param advisorType 顾问类型
+     * @return 顾问配置列表
      */
     List<AiClientAdvisor> queryByAdvisorType(String advisorType);
 

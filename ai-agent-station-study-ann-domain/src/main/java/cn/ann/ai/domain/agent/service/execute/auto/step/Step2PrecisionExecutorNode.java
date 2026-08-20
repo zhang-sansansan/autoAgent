@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.execute.auto.step;
+package cn.ann.ai.domain.agent.service.execute.auto.step;
 
 import cn.ann.ai.domain.agent.model.entity.AutoAgentExecuteResultEntity;
 import cn.ann.ai.domain.agent.model.entity.ExecuteCommandEntity;
@@ -11,9 +11,10 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
 /**
- * 绮惧噯鎵ц鑺傜偣
+ * 精准执行节点
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/7/27 16:42
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/7/27 16:42
  */
 @Slf4j
 @Service
@@ -21,19 +22,21 @@ public class Step2PrecisionExecutorNode extends AbstractExecuteSupport{
 
     @Override
     protected String doApply(ExecuteCommandEntity requestParameter, DefaultAutoAgentExecuteStrategyFactory.DynamicContext dynamicContext) throws Exception {
-        log.info("\n鈿?闃舵2: 绮惧噯浠诲姟鎵ц");
+        log.info("\n⚡ 阶段2: 精准任务执行");
         
-        // 浠庡姩鎬佷笂涓嬫枃涓幏鍙栧垎鏋愮粨鏋?        String analysisResult = dynamicContext.getValue("analysisResult");
+        // 从动态上下文中获取分析结果
+        String analysisResult = dynamicContext.getValue("analysisResult");
         if (analysisResult == null || analysisResult.trim().isEmpty()) {
-            log.warn("鈿狅笍 鍒嗘瀽缁撴灉涓虹┖锛屼娇鐢ㄩ粯璁ゆ墽琛岀瓥鐣?);
-            analysisResult = "鎵ц褰撳墠浠诲姟姝ラ";
+            log.warn("⚠️ 分析结果为空，使用默认执行策略");
+            analysisResult = "执行当前任务步骤";
         }
 
         AiAgentClientFlowConfigVO aiAgentClientFlowConfigVO = dynamicContext.getAiAgentClientFlowConfigVOMap().get(AiClientTypeEnumVO.PRECISION_EXECUTOR_CLIENT.getCode());
 
         String executionPrompt = String.format(aiAgentClientFlowConfigVO.getStepPrompt(), requestParameter.getMessage(), analysisResult);
 
-        // 鑾峰彇瀵硅瘽瀹㈡埛绔?        ChatClient chatClient = getChatClientByClientId(aiAgentClientFlowConfigVO.getClientId());
+        // 获取对话客户端
+        ChatClient chatClient = getChatClientByClientId(aiAgentClientFlowConfigVO.getClientId());
 
         String executionResult = chatClient
                 .prompt(executionPrompt)
@@ -45,13 +48,14 @@ public class Step2PrecisionExecutorNode extends AbstractExecuteSupport{
         assert executionResult != null;
         parseExecutionResult(dynamicContext, executionResult, requestParameter.getSessionId());
         
-        // 灏嗘墽琛岀粨鏋滀繚瀛樺埌鍔ㄦ€佷笂涓嬫枃涓紝渚涗笅涓€姝ヤ娇鐢?        dynamicContext.setValue("executionResult", executionResult);
+        // 将执行结果保存到动态上下文中，供下一步使用
+        dynamicContext.setValue("executionResult", executionResult);
         
-        // 鏇存柊鎵ц鍘嗗彶
+        // 更新执行历史
         String stepSummary = String.format("""
-                === 绗?%d 姝ユ墽琛岃褰?===
-                銆愬垎鏋愰樁娈点€?s
-                銆愭墽琛岄樁娈点€?s
+                === 第 %d 步执行记录 ===
+                【分析阶段】%s
+                【执行阶段】%s
                 """, dynamicContext.getStep(), analysisResult, executionResult);
         
         dynamicContext.getExecutionHistory().append(stepSummary);
@@ -65,11 +69,11 @@ public class Step2PrecisionExecutorNode extends AbstractExecuteSupport{
     }
     
     /**
-     * 瑙ｆ瀽鎵ц缁撴灉
+     * 解析执行结果
      */
     private void parseExecutionResult(DefaultAutoAgentExecuteStrategyFactory.DynamicContext dynamicContext, String executionResult, String sessionId) {
         int step = dynamicContext.getStep();
-        log.info("\n鈿?=== 绗?{} 姝ユ墽琛岀粨鏋?===", step);
+        log.info("\n⚡ === 第 {} 步执行结果 ===", step);
         
         String[] lines = executionResult.split("\n");
         String currentSection = "";
@@ -79,63 +83,69 @@ public class Step2PrecisionExecutorNode extends AbstractExecuteSupport{
             line = line.trim();
             if (line.isEmpty()) continue;
             
-            if (line.contains("鎵ц鐩爣:")) {
-                // 鍙戦€佷笂涓€涓猻ection鐨勫唴瀹?                sendExecutionSubResult(dynamicContext, currentSection, sectionContent.toString(), sessionId);
+            if (line.contains("执行目标:")) {
+                // 发送上一个section的内容
+                sendExecutionSubResult(dynamicContext, currentSection, sectionContent.toString(), sessionId);
                 currentSection = "execution_target";
                 sectionContent = new StringBuilder();
-                log.info("\n馃幆 鎵ц鐩爣:");
+                log.info("\n🎯 执行目标:");
                 continue;
-            } else if (line.contains("鎵ц杩囩▼:")) {
-                // 鍙戦€佷笂涓€涓猻ection鐨勫唴瀹?                sendExecutionSubResult(dynamicContext, currentSection, sectionContent.toString(), sessionId);
+            } else if (line.contains("执行过程:")) {
+                // 发送上一个section的内容
+                sendExecutionSubResult(dynamicContext, currentSection, sectionContent.toString(), sessionId);
                 currentSection = "execution_process";
                 sectionContent = new StringBuilder();
-                log.info("\n馃敡 鎵ц杩囩▼:");
+                log.info("\n🔧 执行过程:");
                 continue;
-            } else if (line.contains("鎵ц缁撴灉:")) {
-                // 鍙戦€佷笂涓€涓猻ection鐨勫唴瀹?                sendExecutionSubResult(dynamicContext, currentSection, sectionContent.toString(), sessionId);
+            } else if (line.contains("执行结果:")) {
+                // 发送上一个section的内容
+                sendExecutionSubResult(dynamicContext, currentSection, sectionContent.toString(), sessionId);
                 currentSection = "execution_result";
                 sectionContent = new StringBuilder();
-                log.info("\n馃搱 鎵ц缁撴灉:");
+                log.info("\n📈 执行结果:");
                 continue;
-            } else if (line.contains("璐ㄩ噺妫€鏌?")) {
-                // 鍙戦€佷笂涓€涓猻ection鐨勫唴瀹?                sendExecutionSubResult(dynamicContext, currentSection, sectionContent.toString(), sessionId);
+            } else if (line.contains("质量检查:")) {
+                // 发送上一个section的内容
+                sendExecutionSubResult(dynamicContext, currentSection, sectionContent.toString(), sessionId);
                 currentSection = "execution_quality";
                 sectionContent = new StringBuilder();
-                log.info("\n馃攳 璐ㄩ噺妫€鏌?");
+                log.info("\n🔍 质量检查:");
                 continue;
             }
             
-            // 鏀堕泦褰撳墠section鐨勫唴瀹?            if (!currentSection.isEmpty()) {
+            // 收集当前section的内容
+            if (!currentSection.isEmpty()) {
                 sectionContent.append(line).append("\n");
                 switch (currentSection) {
                     case "execution_target":
-                        log.info("   馃幆 {}", line);
+                        log.info("   🎯 {}", line);
                         break;
                     case "execution_process":
-                        log.info("   鈿欙笍 {}", line);
+                        log.info("   ⚙️ {}", line);
                         break;
                     case "execution_result":
-                        log.info("   馃搳 {}", line);
+                        log.info("   📊 {}", line);
                         break;
                     case "execution_quality":
-                        log.info("   鉁?{}", line);
+                        log.info("   ✅ {}", line);
                         break;
                     default:
-                        log.info("   馃摑 {}", line);
+                        log.info("   📝 {}", line);
                         break;
                 }
             }
         }
         
-        // 鍙戦€佹渶鍚庝竴涓猻ection鐨勫唴瀹?        sendExecutionSubResult(dynamicContext, currentSection, sectionContent.toString(), sessionId);
+        // 发送最后一个section的内容
+        sendExecutionSubResult(dynamicContext, currentSection, sectionContent.toString(), sessionId);
     }
     
     /**
-     * 鍙戦€佹墽琛岄樁娈电粏鍒嗙粨鏋滃埌娴佸紡杈撳嚭
+     * 发送执行阶段细分结果到流式输出
      */
     private void sendExecutionSubResult(DefaultAutoAgentExecuteStrategyFactory.DynamicContext dynamicContext, 
                                        String subType, String content, String sessionId) {
-        // 鎶藉彇鐨勯€氱敤鍒ゆ柇閫昏緫
+        // 抽取的通用判断逻辑
         if (!subType.isEmpty() && !content.isEmpty()) {
             AutoAgentExecuteResultEntity result = AutoAgentExecuteResultEntity.createExecutionSubResult(
                     dynamicContext.getStep(), subType, content, sessionId);
@@ -144,4 +154,3 @@ public class Step2PrecisionExecutorNode extends AbstractExecuteSupport{
     }
     
 }
-

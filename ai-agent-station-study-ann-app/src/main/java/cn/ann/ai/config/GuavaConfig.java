@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.config;
+package cn.ann.ai.config;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -18,4 +18,3 @@ public class GuavaConfig {
     }
 
 }
-

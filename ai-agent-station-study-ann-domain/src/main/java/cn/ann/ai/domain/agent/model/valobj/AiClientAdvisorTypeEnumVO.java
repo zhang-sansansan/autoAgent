@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.valobj;
+package cn.ann.ai.domain.agent.model.valobj;
 
 
 import lombok.AllArgsConstructor;
@@ -18,11 +18,11 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-//椤鹃棶绫诲瀷鐨勬灇涓?
+//顾问类型的枚举
 public enum AiClientAdvisorTypeEnumVO {
 
-    //鍒涘缓鏋氫妇瀹炰緥
-    CHAT_MEMORY("chatMemory","涓婁笅鏂囪蹇?鍐呭瓨妯″紡)") {//璋冪敤鏋勯€犲嚱鏁板垵濮嬪寲瀹炰緥
+    //创建枚举实例
+    CHAT_MEMORY("ChatMemory","上下文记忆(内存模式)") {//调用构造函数初始化实例
         @Override
         public Advisor createAdvisor(AiClientAdvisorVO aiClientAdvisorVO, VectorStore vectorStore) {
             AiClientAdvisorVO.ChatMemory chatMemory = aiClientAdvisorVO.getChatMemory();
@@ -34,7 +34,7 @@ public enum AiClientAdvisorTypeEnumVO {
         }
     },
 
-    RAG_ANSWER("RagAnswer","鐭ヨ瘑搴?){
+    RAG_ANSWER("RagAnswer","知识库"){
         @Override
         public Advisor createAdvisor(AiClientAdvisorVO aiClientAdvisorVO, VectorStore vectorStore) {
             AiClientAdvisorVO.RagAnswer ragAnswer = aiClientAdvisorVO.getRagAnswer();
@@ -46,25 +46,25 @@ public enum AiClientAdvisorTypeEnumVO {
     };
 
 
-    //鏋氫妇绫荤殑瀹炰緥鐨勫睘鎬?
+    //枚举类的实例的属性
     private String code;
     private String info;
 
-    //鍒涘缓涓€涓潤鎬佺殑map锛岀敤浜庢牴鎹甤ode蹇€熸煡鎵惧埌瀵瑰簲鐨勬灇涓惧疄渚?
+    //创建一个静态的map，用于根据code快速查找到对应的枚举实例
     private static final Map<String,AiClientAdvisorTypeEnumVO>CODE_Map = new HashMap<String,AiClientAdvisorTypeEnumVO>();
 
-    //浣跨敤闈欐€佷唬鐮佸揩锛屽湪绫诲姞杞芥椂灏卞皢map濉厖
+    //使用静态代码快，在类加载时就将map填充
     static {
-        //杩欎釜values鏄痵pring瀵规灇涓剧被鎻愪緵鐨勬柟娉曪紝瀛樻斁鏋氫妇瀹炰緥鐨勫垵濮嬪寲鐨勫€硷紝鐩存帴璋冪敤鍗冲彲
+        //这个values是spring对枚举类提供的方法，存放枚举实例的初始化的值，直接调用即可
         for(AiClientAdvisorTypeEnumVO enumVo : values()){
             CODE_Map.put(enumVo.getCode(), enumVo);
         }
     }
 
-    //鍙傛暟涓哄€煎璞″拰鍚戦噺搴? 鍏朵腑鍚戦噺搴撶敤浜巖ag鐭ヨ瘑搴撶殑妫€绱?
+    //参数为值对象和向量库  其中向量库用于rag知识库的检索
     public abstract Advisor createAdvisor(AiClientAdvisorVO aiClientAdvisorVO, VectorStore vectorStore);
 
-    //闈欐€佹柟娉曪紝鏍规嵁code鍘昏幏鍙栨灇涓剧殑瀹炰緥
+    //静态方法，根据code去获取枚举的实例
     public static AiClientAdvisorTypeEnumVO getByCode(String code) {
         AiClientAdvisorTypeEnumVO enumVO = CODE_Map.get(code);
         if(enumVO == null){
@@ -73,4 +73,3 @@ public enum AiClientAdvisorTypeEnumVO {
         return enumVO;
     }
 }
-

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.trigger.http.admin;
+package cn.ann.ai.trigger.http.admin;
 
 import cn.ann.ai.api.IAiClientApiAdminService;
 import cn.ann.ai.api.dto.AiClientApiQueryRequestDTO;
@@ -339,4 +339,3 @@ public class AiClientApiAdminController implements IAiClientApiAdminService {
     }
 
 }
-

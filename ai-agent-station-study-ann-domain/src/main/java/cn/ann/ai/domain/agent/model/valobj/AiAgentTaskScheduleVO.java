@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.valobj;
+package cn.ann.ai.domain.agent.model.valobj;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 鏅鸿兘浣撲换鍔?
- * @author xiaofuge bugstack.cn @灏忓倕鍝?
+ * 智能体任务
+ * @author xiaofuge bugstack.cn @小傅哥
  * 2025/9/13 16:08
  */
 @Data
@@ -17,29 +17,28 @@ import lombok.NoArgsConstructor;
 public class AiAgentTaskScheduleVO {
 
     /**
-     * 涓婚敭ID
+     * 主键ID
      */
     private Long id;
 
     /**
-     * 鏅鸿兘浣揑D
+     * 智能体ID
      */
     private String agentId;
 
     /**
-     * 浠诲姟鎻忚堪
+     * 任务描述
      */
     private String description;
 
     /**
-     * 鏃堕棿琛ㄨ揪寮?濡? 0/3 * * * * *)
+     * 时间表达式(如: 0/3 * * * * *)
      */
     private String cronExpression;
 
     /**
-     * 浠诲姟鍏ュ弬閰嶇疆(JSON鏍煎紡)
+     * 任务入参配置(JSON格式)
      */
     private String taskParam;
 
 }
-

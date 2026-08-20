@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.execute.flow.step;
+package cn.ann.ai.domain.agent.service.execute.flow.step;
 
 import cn.ann.ai.domain.agent.model.entity.AutoAgentExecuteResultEntity;
 import cn.ann.ai.domain.agent.model.entity.ExecuteCommandEntity;
@@ -15,8 +15,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 绗洓姝ワ細鎸夐『搴忔墽琛岃鍒掓楠よ妭鐐? *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/8/25 10:30
+ * 第四步：按顺序执行规划步骤节点
+ *
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/8/25 10:30
  */
 @Slf4j
 @Component
@@ -24,44 +26,49 @@ public class Step4ExecuteStepsNode extends AbstractExecuteSupport {
 
     @Override
     public String doApply(ExecuteCommandEntity request, DefaultFlowAgentExecuteStrategyFactory.DynamicContext dynamicContext) {
-        log.info("寮€濮嬫墽琛岀鍥涙锛氭寜椤哄簭鎵ц瑙勫垝姝ラ");
+        log.info("开始执行第四步：按顺序执行规划步骤");
         
         try {
-            // 鑾峰彇閰嶇疆淇℃伅
+            // 获取配置信息
             AiAgentClientFlowConfigVO aiAgentClientFlowConfigVO = dynamicContext.getAiAgentClientFlowConfigVOMap().get(AiClientTypeEnumVO.EXECUTOR_CLIENT.getCode());
 
-            // 鑾峰彇瑙勫垝瀹㈡埛绔?            ChatClient executorChatClient = getChatClientByClientId(aiAgentClientFlowConfigVO.getClientId());
+            // 获取规划客户端
+            ChatClient executorChatClient = getChatClientByClientId(aiAgentClientFlowConfigVO.getClientId());
 
-            // 浠庡姩鎬佷笂涓嬫枃鑾峰彇瑙ｆ瀽鐨勬楠?            Map<String, String> stepsMap = dynamicContext.getValue("stepsMap");
+            // 从动态上下文获取解析的步骤
+            Map<String, String> stepsMap = dynamicContext.getValue("stepsMap");
             
             if (stepsMap == null || stepsMap.isEmpty()) {
-                return "姝ラ鏄犲皠涓虹┖锛屾棤娉曟墽琛?;
+                return "步骤映射为空，无法执行";
             }
             
-            // 鎸夐『搴忔墽琛岃鍒掓楠?            executeStepsInOrder(executorChatClient, stepsMap, dynamicContext);
+            // 按顺序执行规划步骤
+            executeStepsInOrder(executorChatClient, stepsMap, dynamicContext);
             
-            // 鍙戦€丼SE缁撴灉
+            // 发送SSE结果
             AutoAgentExecuteResultEntity result = AutoAgentExecuteResultEntity.createExecutionResult(
                     dynamicContext.getStep(),
-                    "宸插畬鎴愭墍鏈夎鍒掓楠ょ殑鎵ц",
+                    "已完成所有规划步骤的执行",
                     request.getSessionId()
             );
             sendSseResult(dynamicContext, result);
             
-            // 鍙戦€佹€荤粨缁撴灉鍒般€愭渶缁堟墽琛岀粨鏋溿€戝尯鍩?            sendSummaryResult(dynamicContext, request.getSessionId());
+            // 发送总结结果到【最终执行结果】区域
+            sendSummaryResult(dynamicContext, request.getSessionId());
             
-            // 鍙戦€佸畬鎴愭爣璇?            sendCompleteResult(dynamicContext, request.getSessionId());
+            // 发送完成标识
+            sendCompleteResult(dynamicContext, request.getSessionId());
 
-            // 鏇存柊姝ラ
+            // 更新步骤
             dynamicContext.setStep(dynamicContext.getStep() + 1);
             dynamicContext.setCompleted(true);
             
-            log.info("绗洓姝ユ墽琛屽畬鎴愶細鎵€鏈夎鍒掓楠ゅ凡鎵ц");
+            log.info("第四步执行完成：所有规划步骤已执行");
 
-            return "鎵€鏈夎鍒掓楠ゆ墽琛屽畬鎴?;
+            return "所有规划步骤执行完成";
         } catch (Exception e) {
-            log.error("绗洓姝ユ墽琛屽け璐?, e);
-            return "鎵ц姝ラ澶辫触: " + e.getMessage();
+            log.error("第四步执行失败", e);
+            return "执行步骤失败: " + e.getMessage();
         }
     }
 
@@ -71,35 +78,39 @@ public class Step4ExecuteStepsNode extends AbstractExecuteSupport {
     }
     
     /**
-     * 鎸夐『搴忔墽琛岃鍒掓楠?     */
+     * 按顺序执行规划步骤
+     */
     private void executeStepsInOrder(ChatClient executorChatClient, Map<String, String> stepsMap, DefaultFlowAgentExecuteStrategyFactory.DynamicContext dynamicContext) {
         if (stepsMap == null || stepsMap.isEmpty()) {
-            log.warn("姝ラ鏄犲皠涓虹┖锛屾棤娉曟墽琛?);
+            log.warn("步骤映射为空，无法执行");
             return;
         }
 
-        // 鎸夋楠ょ紪鍙锋帓搴忔墽琛?        List<Integer> stepNumbers = new ArrayList<>();
+        // 按步骤编号排序执行
+        List<Integer> stepNumbers = new ArrayList<>();
         for (String stepKey : stepsMap.keySet()) {
             try {
-                // 浠?绗?姝?銆?绗?姝?绛夋牸寮忎腑鎻愬彇鏁板瓧
-                Pattern numberPattern = Pattern.compile("绗?\\d+)姝?);
+                // 从"第1步"、"第2步"等格式中提取数字
+                Pattern numberPattern = Pattern.compile("第(\\d+)步");
                 Matcher matcher = numberPattern.matcher(stepKey);
                 if (matcher.find()) {
                     stepNumbers.add(Integer.parseInt(matcher.group(1)));
                 }
             } catch (NumberFormatException e) {
-                log.warn("鏃犳硶瑙ｆ瀽姝ラ缂栧彿: {}", stepKey);
+                log.warn("无法解析步骤编号: {}", stepKey);
             }
         }
 
-        // 鎺掑簭姝ラ缂栧彿
+        // 排序步骤编号
         stepNumbers.sort(Integer::compareTo);
 
-        // 鎸夐『搴忔墽琛屾瘡涓楠?        for (Integer stepNumber : stepNumbers) {
-            String stepKey = "绗? + stepNumber + "姝?;
+        // 按顺序执行每个步骤
+        for (Integer stepNumber : stepNumbers) {
+            String stepKey = "第" + stepNumber + "步";
             String stepContent = null;
 
-            // 鏌ユ壘鍖归厤鐨勬楠ゅ唴瀹?            for (Map.Entry<String, String> entry : stepsMap.entrySet()) {
+            // 查找匹配的步骤内容
+            for (Map.Entry<String, String> entry : stepsMap.entrySet()) {
                 if (entry.getKey().startsWith(stepKey)) {
                     stepContent = entry.getValue();
                     break;
@@ -109,61 +120,65 @@ public class Step4ExecuteStepsNode extends AbstractExecuteSupport {
             if (stepContent != null) {
                 executeStep(executorChatClient, stepNumber, stepKey, stepContent, dynamicContext);
             } else {
-                log.warn("鏈壘鍒版楠ゅ唴瀹? {}", stepKey);
+                log.warn("未找到步骤内容: {}", stepKey);
             }
         }
     }
     
     /**
-     * 鎵ц鍗曚釜姝ラ
+     * 执行单个步骤
      */
     private void executeStep(ChatClient executorChatClient, Integer stepNumber, String stepKey, String stepContent, DefaultFlowAgentExecuteStrategyFactory.DynamicContext dynamicContext) {
-        log.info("\n--- 寮€濮嬫墽琛?{} ---", stepKey);
-        log.info("姝ラ鍐呭: {}", stepContent.substring(0, Math.min(200, stepContent.length())) + "...");
+        log.info("\n--- 开始执行 {} ---", stepKey);
+        log.info("步骤内容: {}", stepContent.substring(0, Math.min(200, stepContent.length())) + "...");
 
         try {
-            // 鏇存柊鎵ц涓婁笅鏂?            dynamicContext.setValue("currentStep", stepNumber);
+            // 更新执行上下文
+            dynamicContext.setValue("currentStep", stepNumber);
             dynamicContext.setValue("currentStepKey", stepKey);
             dynamicContext.setValue("currentStepContent", stepContent);
 
-            // 浣跨敤鎵ц鍣–hatClient鏉ユ墽琛屽叿浣撴楠?            String executionResult = executorChatClient.prompt()
+            // 使用执行器ChatClient来执行具体步骤
+            String executionResult = executorChatClient.prompt()
                     .user(buildStepExecutionPrompt(stepContent, dynamicContext))
                     .call()
                     .content();
 
             assert executionResult != null;
-            log.info("姝ラ {} 鎵ц缁撴灉: {}", stepNumber, executionResult.substring(0, Math.min(150, executionResult.length())) + "...");
+            log.info("步骤 {} 执行结果: {}", stepNumber, executionResult.substring(0, Math.min(150, executionResult.length())) + "...");
 
-            // 淇濆瓨鎵ц缁撴灉
+            // 保存执行结果
             dynamicContext.setValue("step" + stepNumber + "Result", executionResult);
             
-            // 鍙戦€佹楠ゆ墽琛岀粨鏋滅殑SSE
+            // 发送步骤执行结果的SSE
             AutoAgentExecuteResultEntity stepResult = AutoAgentExecuteResultEntity.createExecutionResult(
                     stepNumber,
-                    stepKey + " 鎵ц瀹屾垚: " + executionResult.substring(0, Math.min(500, executionResult.length())),
+                    stepKey + " 执行完成: " + executionResult.substring(0, Math.min(500, executionResult.length())),
                     (String) dynamicContext.getValue("sessionId")
             );
             sendSseResult(dynamicContext, stepResult);
 
-            // 鐭殏寤惰繜锛岄伩鍏嶈姹傝繃浜庨绻?            Thread.sleep(1000);
+            // 短暂延迟，避免请求过于频繁
+            Thread.sleep(1000);
 
         } catch (Exception e) {
-            log.error("鎵ц姝ラ {} 鏃跺彂鐢熼敊璇? {}", stepNumber, e.getMessage());
+            log.error("执行步骤 {} 时发生错误: {}", stepNumber, e.getMessage());
             dynamicContext.setValue("step" + stepNumber + "Error", e.getMessage());
 
-            // 璁板綍閿欒浣嗙户缁墽琛屼笅涓€姝?            handleStepExecutionError(stepNumber, stepKey, e, dynamicContext);
+            // 记录错误但继续执行下一步
+            handleStepExecutionError(stepNumber, stepKey, e, dynamicContext);
         }
 
-        log.info("--- 瀹屾垚鎵ц {} ---", stepKey);
+        log.info("--- 完成执行 {} ---", stepKey);
     }
     
     /**
-     * 澶勭悊姝ラ鎵ц閿欒
+     * 处理步骤执行错误
      */
     private void handleStepExecutionError(Integer stepNumber, String stepKey, Exception e, DefaultFlowAgentExecuteStrategyFactory.DynamicContext dynamicContext) {
-        log.warn("姝ラ {} 鎵ц澶辫触锛屽皾璇曟仮澶嶇瓥鐣?, stepNumber);
+        log.warn("步骤 {} 执行失败，尝试恢复策略", stepNumber);
 
-        // 璁板綍閿欒缁熻
+        // 记录错误统计
         Map<String, Integer> errorStats = dynamicContext.getValue("stepErrorStats");
         if (errorStats == null) {
             errorStats = new HashMap<>();
@@ -171,82 +186,85 @@ public class Step4ExecuteStepsNode extends AbstractExecuteSupport {
         }
         errorStats.put("step" + stepNumber, errorStats.getOrDefault("step" + stepNumber, 0) + 1);
 
-        // 濡傛灉鏄綉缁滈敊璇紝鍙互灏濊瘯閲嶈瘯
+        // 如果是网络错误，可以尝试重试
         if (e.getMessage() != null && (e.getMessage().contains("timeout") || e.getMessage().contains("connection"))) {
-            log.info("妫€娴嬪埌缃戠粶閿欒锛屽皢鍦ㄥ悗缁噸璇曟満鍒朵腑澶勭悊");
+            log.info("检测到网络错误，将在后续重试机制中处理");
         }
 
-        // 鏍囪姝ラ涓洪儴鍒嗗畬鎴愮姸鎬?        dynamicContext.setValue("step" + stepNumber + "Status", "FAILED_WITH_ERROR");
+        // 标记步骤为部分完成状态
+        dynamicContext.setValue("step" + stepNumber + "Status", "FAILED_WITH_ERROR");
         
-        // 鍙戦€侀敊璇粨鏋滅殑SSE
+        // 发送错误结果的SSE
         try {
             AutoAgentExecuteResultEntity errorResult = AutoAgentExecuteResultEntity.createExecutionResult(
                     stepNumber,
-                    stepKey + " 鎵ц澶辫触: " + e.getMessage(),
+                    stepKey + " 执行失败: " + e.getMessage(),
                     dynamicContext.getValue("sessionId")
             );
             sendSseResult(dynamicContext, errorResult);
         } catch (Exception sseException) {
-            log.error("鍙戦€侀敊璇疭SE缁撴灉澶辫触", sseException);
+            log.error("发送错误SSE结果失败", sseException);
         }
     }
     
     /**
-     * 鏋勫缓姝ラ鎵ц鎻愮ず璇?     */
+     * 构建步骤执行提示词
+     */
     private String buildStepExecutionPrompt(String stepContent, DefaultFlowAgentExecuteStrategyFactory.DynamicContext dynamicContext) {
-        return "浣犳槸涓€涓櫤鑳芥墽琛屽姪鎵嬶紝闇€瑕佹墽琛屼互涓嬫楠?\n\n" +
-                "**姝ラ鍐呭:**\n" +
+        return "你是一个智能执行助手，需要执行以下步骤:\n\n" +
+                "**步骤内容:**\n" +
                 stepContent + "\n\n" +
-                "**鐢ㄦ埛鍘熷璇锋眰:**\n" +
+                "**用户原始请求:**\n" +
                 dynamicContext.getCurrentTask() + "\n\n" +
-                "**鎵ц瑕佹眰:**\n" +
-                "1. 浠旂粏鍒嗘瀽姝ラ鍐呭锛岀悊瑙ｉ渶瑕佹墽琛岀殑鍏蜂綋浠诲姟\n" +
-                "2. 濡傛灉娑夊強MCP宸ュ叿璋冪敤锛岃浣跨敤鐩稿簲鐨勫伐鍏穃n" +
-                "3. 鎻愪緵璇︾粏鐨勬墽琛岃繃绋嬪拰缁撴灉\n" +
-                "4. 濡傛灉閬囧埌闂锛岃璇存槑鍏蜂綋鐨勯敊璇俊鎭痋n" +
-                "5. **閲嶈**: 鎵ц瀹屾垚鍚庯紝蹇呴』鍦ㄥ洖澶嶆湯灏炬槑纭緭鍑烘墽琛岀粨鏋滐紝鏍煎紡濡備笅:\n" +
+                "**执行要求:**\n" +
+                "1. 仔细分析步骤内容，理解需要执行的具体任务\n" +
+                "2. 如果涉及MCP工具调用，请使用相应的工具\n" +
+                "3. 提供详细的执行过程和结果\n" +
+                "4. 如果遇到问题，请说明具体的错误信息\n" +
+                "5. **重要**: 执行完成后，必须在回复末尾明确输出执行结果，格式如下:\n" +
                 "   ```\n" +
-                "   === 鎵ц缁撴灉 ===\n" +
-                "   鐘舵€? [鎴愬姛/澶辫触]\n" +
-                "   缁撴灉鎻忚堪: [鍏蜂綋鐨勬墽琛岀粨鏋滄弿杩癩\n" +
-                "   杈撳嚭鏁版嵁: [濡傛灉鏈夊叿浣撶殑杈撳嚭鏁版嵁锛岃鍦ㄦ鍒楀嚭]\n" +
+                "   === 执行结果 ===\n" +
+                "   状态: [成功/失败]\n" +
+                "   结果描述: [具体的执行结果描述]\n" +
+                "   输出数据: [如果有具体的输出数据，请在此列出]\n" +
                 "   ```\n\n" +
-                "璇峰紑濮嬫墽琛岃繖涓楠わ紝骞朵弗鏍兼寜鐓ц姹傛彁渚涜缁嗙殑鎵ц鎶ュ憡鍜岀粨鏋滆緭鍑恒€?;
+                "请开始执行这个步骤，并严格按照要求提供详细的执行报告和结果输出。";
     }
 
     /**
-     * 鍙戦€佹€荤粨缁撴灉鍒版祦寮忚緭鍑?     */
+     * 发送总结结果到流式输出
+     */
        private void sendSummaryResult(DefaultFlowAgentExecuteStrategyFactory.DynamicContext dynamicContext, String sessionId) {
-        // 鏋勫缓鎵ц鎬荤粨鍐呭
+        // 构建执行总结内容
         StringBuilder summaryContent = new StringBuilder();
-        summaryContent.append("## 鎵ц姝ラ瀹屾垚鎬荤粨\n\n");
+        summaryContent.append("## 执行步骤完成总结\n\n");
         
-        // 鑾峰彇鎵ц鍘嗗彶
+        // 获取执行历史
         StringBuilder executionHistory = dynamicContext.getExecutionHistory();
         if (executionHistory != null && executionHistory.length() > 0) {
-            summaryContent.append("### 宸插畬鎴愮殑宸ヤ綔\n");
+            summaryContent.append("### 已完成的工作\n");
             summaryContent.append(executionHistory.toString());
             summaryContent.append("\n\n");
         }
         
-        summaryContent.append("### 鎵ц鐘舵€乗n");
-        summaryContent.append("鉁?鎵€鏈夎鍒掓楠ゅ凡鎴愬姛鎵ц瀹屾垚\n\n");
+        summaryContent.append("### 执行状态\n");
+        summaryContent.append("✅ 所有规划步骤已成功执行完成\n\n");
         
-        summaryContent.append("### 鎵ц鏁堟灉璇勪及\n");
-        summaryContent.append("馃搳 浠诲姟鎵ц娴佺▼椤哄埄瀹屾垚锛屽悇姝ラ鎸夎鍒掓墽琛?);
+        summaryContent.append("### 执行效果评估\n");
+        summaryContent.append("📊 任务执行流程顺利完成，各步骤按计划执行");
         
         AutoAgentExecuteResultEntity result = AutoAgentExecuteResultEntity.createSummaryResult(
                 summaryContent.toString(), sessionId);
         sendSseResult(dynamicContext, result);
-        log.info("馃搳 宸插彂閫佹€荤粨缁撴灉鍒般€愭渶缁堟墽琛岀粨鏋溿€戝尯鍩?);
+        log.info("📊 已发送总结结果到【最终执行结果】区域");
     }
     
     /**
-     * 鍙戦€佸畬鎴愭爣璇嗗埌娴佸紡杈撳嚭
+     * 发送完成标识到流式输出
      */
     private void sendCompleteResult(DefaultFlowAgentExecuteStrategyFactory.DynamicContext dynamicContext, String sessionId) {
         AutoAgentExecuteResultEntity result = AutoAgentExecuteResultEntity.createCompleteResult(sessionId);
         sendSseResult(dynamicContext, result);
-        log.info("鉁?宸插彂閫佸畬鎴愭爣璇?);
+        log.info("✅ 已发送完成标识");
     }
 }

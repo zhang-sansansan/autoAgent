@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.config;
+package cn.ann.ai.config;
 
 //import cn.bugstack.wrench.task.job.TaskJob;
 //import cn.bugstack.wrench.task.job.config.TaskJobAutoConfig;
@@ -10,7 +10,7 @@
 
 /**
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝?
+ * @author xiaofuge bugstack.cn @小傅哥
  * 2025/9/13 16:41
  */
 
@@ -35,7 +35,7 @@ public class TaskJobAutoConfigBean {
 //        scheduler.setWaitForTasksToCompleteOnShutdown(properties.isWaitForTasksToCompleteOnShutdown());
 //        scheduler.setAwaitTerminationSeconds(properties.getAwaitTerminationSeconds());
 //        scheduler.initialize();
-//        this.log.info("xfg-wrench锛屼换鍔¤皟搴﹀櫒鍒濆鍖栧畬鎴愩€傜嚎绋嬫睜澶у皬: {}, 绾跨▼鍚嶅墠缂€: {}", properties.getPoolSize(), properties.getThreadNamePrefix());
+//        this.log.info("xfg-wrench，任务调度器初始化完成。线程池大小: {}, 线程名前缀: {}", properties.getPoolSize(), properties.getThreadNamePrefix());
 //        return scheduler;
 //    }
 //
@@ -48,9 +48,8 @@ public class TaskJobAutoConfigBean {
 //
 //    @Bean
 //    public TaskJob taskJob(TaskJobAutoProperties properties, ITaskJobService taskJobService) {
-//        this.log.info("xfg-wrench锛屼换鍔¤皟搴︿綔涓氬垵濮嬪寲瀹屾垚銆傚埛鏂伴棿闅? {}ms, 娓呯悊cron: {}", properties.getRefreshInterval(), properties.getCleanInvalidTasksCron());
+//        this.log.info("xfg-wrench，任务调度作业初始化完成。刷新间隔: {}ms, 清理cron: {}", properties.getRefreshInterval(), properties.getCleanInvalidTasksCron());
 //        return new TaskJob(properties, taskJobService);
 //    }
 
 }
-

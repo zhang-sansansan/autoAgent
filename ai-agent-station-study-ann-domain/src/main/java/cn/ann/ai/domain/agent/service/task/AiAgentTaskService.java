@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.task;
+package cn.ann.ai.domain.agent.service.task;
 
 import cn.ann.ai.domain.agent.adapter.repository.IAgentRepository;
 import cn.ann.ai.domain.agent.model.valobj.AiAgentTaskScheduleVO;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 鏅鸿兘浣撴墽琛屼换鍔?
+ * 智能体执行任务
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝?
+ * @author xiaofuge bugstack.cn @小傅哥
  * 2025/9/13 16:09
  */
 @Service
@@ -31,4 +31,3 @@ public class AiAgentTaskService implements ITaskService {
     }
 
 }
-

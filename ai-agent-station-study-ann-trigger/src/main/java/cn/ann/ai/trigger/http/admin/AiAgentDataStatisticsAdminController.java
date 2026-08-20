@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.trigger.http.admin;
+package cn.ann.ai.trigger.http.admin;
 
 import cn.ann.ai.api.IAiAgentDataStatisticsAdminService;
 import cn.ann.ai.api.dto.DataStatisticsResponseDTO;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 /**
- * 鏁版嵁缁熻
+ * 数据统计
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝?
+ * @author xiaofuge bugstack.cn @小傅哥
  * 2025/10/4 10:33
  */
 @Slf4j
@@ -51,9 +51,9 @@ public class AiAgentDataStatisticsAdminController implements IAiAgentDataStatist
     @GetMapping("/get-data-statistics")
     public Response<DataStatisticsResponseDTO> getDataStatistics() {
         try {
-            log.info("寮€濮嬭幏鍙栫郴缁熸暟鎹粺璁?);
+            log.info("开始获取系统数据统计");
             
-            // 缁熻鍚勭被鏁版嵁鏁伴噺
+            // 统计各类数据数量
             long agentCount = (long) aiAgentDao.queryAll().size();
             long clientCount = (long) aiClientDao.queryAll().size();
             long mcpToolCount = (long) aiClientToolMcpDao.queryAll().size();
@@ -62,7 +62,7 @@ public class AiAgentDataStatisticsAdminController implements IAiAgentDataStatist
             long advisorCount = (long) aiClientAdvisorDao.queryAll().size();
             long modelCount = (long) aiClientModelDao.queryAll().size();
             
-            // 鏋勫缓鍝嶅簲鏁版嵁
+            // 构建响应数据
             DataStatisticsResponseDTO responseDTO = DataStatisticsResponseDTO.builder()
                     .activeAgentCount(agentCount)
                     .clientCount(clientCount)
@@ -71,12 +71,12 @@ public class AiAgentDataStatisticsAdminController implements IAiAgentDataStatist
                     .ragOrderCount(ragOrderCount)
                     .advisorCount(advisorCount)
                     .modelCount(modelCount)
-                    .todayRequestCount(0L) // 鏆傛椂璁句负0锛屽悗缁彲浠ユ坊鍔犺姹傜粺璁″姛鑳?
-                    .successRate(95.5) // 鏆傛椂璁句负鍥哄畾鍊硷紝鍚庣画鍙互娣诲姞鎴愬姛鐜囩粺璁″姛鑳?
-                    .runningTaskCount(0L) // 鏆傛椂璁句负0锛屽悗缁彲浠ユ坊鍔犱换鍔＄粺璁″姛鑳?
+                    .todayRequestCount(0L) // 暂时设为0，后续可以添加请求统计功能
+                    .successRate(95.5) // 暂时设为固定值，后续可以添加成功率统计功能
+                    .runningTaskCount(0L) // 暂时设为0，后续可以添加任务统计功能
                     .build();
             
-            log.info("绯荤粺鏁版嵁缁熻鑾峰彇鎴愬姛锛氭櫤鑳戒綋鏁伴噺={}, 瀹㈡埛绔暟閲?{}, MCP宸ュ叿鏁伴噺={}, 绯荤粺鎻愮ず鏁伴噺={}, 鐭ヨ瘑搴撴暟閲?{}, 椤鹃棶鏁伴噺={}, 妯″瀷鏁伴噺={}", 
+            log.info("系统数据统计获取成功：智能体数量={}, 客户端数量={}, MCP工具数量={}, 系统提示数量={}, 知识库数量={}, 顾问数量={}, 模型数量={}", 
                     agentCount, clientCount, mcpToolCount, systemPromptCount, ragOrderCount, advisorCount, modelCount);
             
             return Response.<DataStatisticsResponseDTO>builder()
@@ -86,7 +86,7 @@ public class AiAgentDataStatisticsAdminController implements IAiAgentDataStatist
                     .build();
                     
         } catch (Exception e) {
-            log.error("鑾峰彇绯荤粺鏁版嵁缁熻澶辫触", e);
+            log.error("获取系统数据统计失败", e);
             return Response.<DataStatisticsResponseDTO>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -96,4 +96,3 @@ public class AiAgentDataStatisticsAdminController implements IAiAgentDataStatist
     }
 
 }
-

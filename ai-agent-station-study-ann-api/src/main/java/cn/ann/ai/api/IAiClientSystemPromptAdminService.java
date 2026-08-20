@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api;
+package cn.ann.ai.api;
 
 import cn.ann.ai.api.dto.AiClientSystemPromptQueryRequestDTO;
 import cn.ann.ai.api.dto.AiClientSystemPromptRequestDTO;
@@ -8,66 +8,86 @@ import cn.ann.ai.api.response.Response;
 import java.util.List;
 
 /**
- * 绯荤粺鎻愮ず璇嶉厤缃鐞嗘湇鍔℃帴鍙? *
- * @author bugstack铏礊鏍? * @description 绯荤粺鎻愮ず璇嶉厤缃鐞嗘湇鍔℃帴鍙? */
+ * 系统提示词配置管理服务接口
+ *
+ * @author bugstack虫洞栈
+ * @description 系统提示词配置管理服务接口
+ */
 public interface IAiClientSystemPromptAdminService {
 
     /**
-     * 鍒涘缓绯荤粺鎻愮ず璇嶉厤缃?     * @param request 绯荤粺鎻愮ず璇嶉厤缃姹傚璞?     * @return 鎿嶄綔缁撴灉
+     * 创建系统提示词配置
+     * @param request 系统提示词配置请求对象
+     * @return 操作结果
      */
     Response<Boolean> createAiClientSystemPrompt(AiClientSystemPromptRequestDTO request);
 
     /**
-     * 鏍规嵁ID鏇存柊绯荤粺鎻愮ず璇嶉厤缃?     * @param request 绯荤粺鎻愮ず璇嶉厤缃姹傚璞?     * @return 鎿嶄綔缁撴灉
+     * 根据ID更新系统提示词配置
+     * @param request 系统提示词配置请求对象
+     * @return 操作结果
      */
     Response<Boolean> updateAiClientSystemPromptById(AiClientSystemPromptRequestDTO request);
 
     /**
-     * 鏍规嵁鎻愮ず璇岻D鏇存柊绯荤粺鎻愮ず璇嶉厤缃?     * @param request 绯荤粺鎻愮ず璇嶉厤缃姹傚璞?     * @return 鎿嶄綔缁撴灉
+     * 根据提示词ID更新系统提示词配置
+     * @param request 系统提示词配置请求对象
+     * @return 操作结果
      */
     Response<Boolean> updateAiClientSystemPromptByPromptId(AiClientSystemPromptRequestDTO request);
 
     /**
-     * 鏍规嵁ID鍒犻櫎绯荤粺鎻愮ず璇嶉厤缃?     * @param id 涓婚敭ID
-     * @return 鎿嶄綔缁撴灉
+     * 根据ID删除系统提示词配置
+     * @param id 主键ID
+     * @return 操作结果
      */
     Response<Boolean> deleteAiClientSystemPromptById(Long id);
 
     /**
-     * 鏍规嵁鎻愮ず璇岻D鍒犻櫎绯荤粺鎻愮ず璇嶉厤缃?     * @param promptId 鎻愮ず璇岻D
-     * @return 鎿嶄綔缁撴灉
+     * 根据提示词ID删除系统提示词配置
+     * @param promptId 提示词ID
+     * @return 操作结果
      */
     Response<Boolean> deleteAiClientSystemPromptByPromptId(String promptId);
 
     /**
-     * 鏍规嵁ID鏌ヨ绯荤粺鎻愮ず璇嶉厤缃?     * @param id 涓婚敭ID
-     * @return 绯荤粺鎻愮ず璇嶉厤缃俊鎭?     */
+     * 根据ID查询系统提示词配置
+     * @param id 主键ID
+     * @return 系统提示词配置信息
+     */
     Response<AiClientSystemPromptResponseDTO> queryAiClientSystemPromptById(Long id);
 
     /**
-     * 鏍规嵁鎻愮ず璇岻D鏌ヨ绯荤粺鎻愮ず璇嶉厤缃?     * @param promptId 鎻愮ず璇岻D
-     * @return 绯荤粺鎻愮ず璇嶉厤缃俊鎭?     */
+     * 根据提示词ID查询系统提示词配置
+     * @param promptId 提示词ID
+     * @return 系统提示词配置信息
+     */
     Response<AiClientSystemPromptResponseDTO> queryAiClientSystemPromptByPromptId(String promptId);
 
     /**
-     * 鏌ヨ鎵€鏈夌郴缁熸彁绀鸿瘝閰嶇疆
-     * @return 绯荤粺鎻愮ず璇嶉厤缃垪琛?     */
+     * 查询所有系统提示词配置
+     * @return 系统提示词配置列表
+     */
     Response<List<AiClientSystemPromptResponseDTO>> queryAllAiClientSystemPrompts();
 
     /**
-     * 鏌ヨ鍚敤鐨勭郴缁熸彁绀鸿瘝閰嶇疆
-     * @return 鍚敤鐨勭郴缁熸彁绀鸿瘝閰嶇疆鍒楄〃
+     * 查询启用的系统提示词配置
+     * @return 启用的系统提示词配置列表
      */
     Response<List<AiClientSystemPromptResponseDTO>> queryEnabledAiClientSystemPrompts();
 
     /**
-     * 鏍规嵁鎻愮ず璇嶅悕绉版煡璇㈢郴缁熸彁绀鸿瘝閰嶇疆
-     * @param promptName 鎻愮ず璇嶅悕绉?     * @return 绯荤粺鎻愮ず璇嶉厤缃垪琛?     */
+     * 根据提示词名称查询系统提示词配置
+     * @param promptName 提示词名称
+     * @return 系统提示词配置列表
+     */
     Response<List<AiClientSystemPromptResponseDTO>> queryAiClientSystemPromptsByPromptName(String promptName);
 
     /**
-     * 鏍规嵁鏉′欢鏌ヨ绯荤粺鎻愮ず璇嶉厤缃垪琛?     * @param request 鏌ヨ璇锋眰瀵硅薄
-     * @return 绯荤粺鎻愮ず璇嶉厤缃垪琛?     */
+     * 根据条件查询系统提示词配置列表
+     * @param request 查询请求对象
+     * @return 系统提示词配置列表
+     */
     Response<List<AiClientSystemPromptResponseDTO>> queryAiClientSystemPromptList(AiClientSystemPromptQueryRequestDTO request);
 
 }

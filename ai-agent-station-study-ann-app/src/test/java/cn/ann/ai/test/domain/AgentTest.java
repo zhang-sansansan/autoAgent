@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.test.domain;
+package cn.ann.ai.test.domain;
 
 import cn.ann.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import cn.ann.ai.domain.agent.model.valobj.AiAgentEnumVO;
@@ -46,34 +46,36 @@ public class AgentTest {
 
         OpenAiApi openAiApi = (OpenAiApi) applicationContext.getBean(AiAgentEnumVO.AI_CLIENT_API.getBeanName("1001"));
 
-        log.info("娴嬭瘯缁撴灉锛歿}", openAiApi);
+        log.info("测试结果：{}", openAiApi);
     }
 
     @Test
     public void test_aiClientModelNode() throws Exception {
         StrategyHandler<ArmoryCommandEntity, DefaultArmoryStrategyFactory.DynamicContext, String> armoryStrategyHandler =
                 defaultArmoryStrategyFactory.armoryStrategyHandler();
-        //apply鍑芥暟浼犲弬 涓€涓槸璇锋眰鍙傛暟锛屼竴涓槸鍔ㄦ€佽儗鍖呮潵鏀炬煡璇㈢粨鏋?        String apply = armoryStrategyHandler.apply(
+        //apply函数传参 一个是请求参数，一个是动态背包来放查询结果
+        String apply = armoryStrategyHandler.apply(
                 ArmoryCommandEntity.builder()
                 .commandType(AiAgentEnumVO.AI_CLIENT.getCode())
                 .commandIdList(Arrays.asList("3001")).build(),
                 new DefaultArmoryStrategyFactory.DynamicContext());
-        //缁忚繃apply鍑芥暟涔嬪悗锛宮odel鐨刡ean瀵硅薄宸茬粡瀛樺叆瀹瑰櫒涓?        OpenAiChatModel openAiChatModel = (OpenAiChatModel) applicationContext.getBean(AiAgentEnumVO.AI_CLIENT_MODEL.getBeanName("2001"));
+        //经过apply函数之后，model的bean对象已经存入容器中
+        OpenAiChatModel openAiChatModel = (OpenAiChatModel) applicationContext.getBean(AiAgentEnumVO.AI_CLIENT_MODEL.getBeanName("2001"));
 
-        log.info("妯″瀷鏋勫缓:{}", openAiChatModel);
+        log.info("模型构建:{}", openAiChatModel);
 
         Prompt prompt = Prompt.builder()
                 .messages(new UserMessage(
                         """
-                                鍦?D:/妗岄潰/鏂囨。/鏂囨。鐩?鍒涘缓 txt.md 鏂囦欢
+                                在 D:/桌面/文档/文档盘 创建 txt.md 文件
                                 """))
                 .build();
 
         ChatResponse chatResponse = openAiChatModel.call(prompt);
-        log.info("娴嬭瘯缁撴灉(call):{}", JSON.toJSONString(chatResponse));
+        log.info("测试结果(call):{}", JSON.toJSONString(chatResponse));
     }
 
-    //娴嬭瘯ai瀹㈡埛绔紝鍏堝垱寤烘牴鑺傜偣锛屼箣鍚庣粰鍑鸿鍒涘缓鐨則ype鍜屽懡浠ist锛岃繖涓槸鏍硅妭鐐硅繍琛岀殑鍏ュ弬
+    //测试ai客户端，先创建根节点，之后给出要创建的type和命令list，这个是根节点运行的入参
     @Test
     public void aiClient_test() throws Exception {
         StrategyHandler<ArmoryCommandEntity, DefaultArmoryStrategyFactory.DynamicContext, String> armoryStrategyHandler =
@@ -88,15 +90,14 @@ public class AgentTest {
 
         ChatClient chatClient = (ChatClient)applicationContext.getBean(AiAgentEnumVO.AI_CLIENT.getBeanName("3001"));
 
-        log.info("瀹㈡埛绔瀯寤?{}", chatClient);
+        log.info("客户端构建:{}", chatClient);
         String context = chatClient.prompt(Prompt.builder()
                         .messages(
-                                new UserMessage("鏈夊摢浜涘伐鍏峰彲浠ヤ娇鐢?)
+                                new UserMessage("有哪些工具可以使用")
                         )
                 .build()).call().content();
 
-        log.info("娴嬭瘯缁撴灉{}", context);
+        log.info("测试结果{}", context);
     }
 
 }
-

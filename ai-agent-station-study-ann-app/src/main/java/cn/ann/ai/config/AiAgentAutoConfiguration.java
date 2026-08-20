@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.config;
+package cn.ann.ai.config;
 
 import cn.ann.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import cn.ann.ai.domain.agent.model.valobj.AiAgentVO;
@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * AI Agent 鑷姩瑁呴厤閰嶇疆绫?
- * 鍦⊿pring Boot搴旂敤鍚姩瀹屾垚鍚庯紝鏍规嵁閰嶇疆鑷姩瑁呴厤AI瀹㈡埛绔?
+ * AI Agent 自动装配配置类
+ * 在Spring Boot应用启动完成后，根据配置自动装配AI客户端
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝?
+ * @author xiaofuge bugstack.cn @小傅哥
  * 2025/1/15 10:00
  */
 @Slf4j
@@ -48,19 +48,19 @@ public class AiAgentAutoConfiguration implements ApplicationListener<Application
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         try {
-            log.info("AI Agent 鑷姩瑁呴厤寮€濮嬶紝閰嶇疆: {}", aiAgentAutoConfigProperties);
+            log.info("AI Agent 自动装配开始，配置: {}", aiAgentAutoConfigProperties);
             
-            // 妫€鏌ラ厤缃槸鍚︽湁鏁?
+            // 检查配置是否有效
             if (!aiAgentAutoConfigProperties.isEnabled()) {
-                log.info("AI Agent 鑷姩瑁呴厤鏈惎鐢?);
+                log.info("AI Agent 自动装配未启用");
                 return;
             }
 
             List<AiAgentVO> aiAgentVOS = armoryService.acceptArmoryAllAvailableAgents();
 
-            log.info("AI Agent 鑷姩瑁呴厤瀹屾垚 {}", JSON.toJSONString(aiAgentVOS));
+            log.info("AI Agent 自动装配完成 {}", JSON.toJSONString(aiAgentVOS));
         } catch (Exception e) {
-            log.error("AI Agent 鑷姩瑁呴厤澶辫触", e);
+            log.error("AI Agent 自动装配失败", e);
         }
     }
 

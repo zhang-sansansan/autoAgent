@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao.po;
+package cn.ann.ai.infrastructure.dao.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * AI鏅鸿兘浣撴嫋鎷夋嫿閰嶇疆鍏崇郴琛? * @author bugstack铏礊鏍? * @description AI鏅鸿兘浣撴嫋鎷夋嫿閰嶇疆鍏崇郴琛?PO 瀵硅薄
+ * AI智能体拖拉拽配置关系表
+ * @author bugstack虫洞栈
+ * @description AI智能体拖拉拽配置关系表 PO 对象
  */
 @Data
 @Builder
@@ -17,71 +19,77 @@ import java.time.LocalDateTime;
 public class AiAgentDrawRelations {
 
     /**
-     * 涓婚敭ID
+     * 主键ID
      */
     private Long id;
 
     /**
-     * 閰嶇疆ID锛堝叧鑱攁i_agent_draw_config锛?     */
+     * 配置ID（关联ai_agent_draw_config）
+     */
     private String configId;
 
     /**
-     * 婧愯妭鐐笽D
+     * 源节点ID
      */
     private String sourceNodeId;
 
     /**
-     * 婧愮被鍨嬶紙model銆乧lient銆乤gent銆乸rompt銆乤dvisor銆乼ool_mcp锛?     */
+     * 源类型（model、client、agent、prompt、advisor、tool_mcp）
+     */
     private String sourceType;
 
     /**
-     * 婧愬紩鐢↖D锛堝疄闄呯殑璧勬簮ID锛?     */
+     * 源引用ID（实际的资源ID）
+     */
     private String sourceRefId;
 
     /**
-     * 鐩爣鑺傜偣ID
+     * 目标节点ID
      */
     private String targetNodeId;
 
     /**
-     * 鐩爣绫诲瀷锛坢odel銆乧lient銆乤gent銆乸rompt銆乤dvisor銆乼ool_mcp锛?     */
+     * 目标类型（model、client、agent、prompt、advisor、tool_mcp）
+     */
     private String targetType;
 
     /**
-     * 鐩爣寮曠敤ID锛堝疄闄呯殑璧勬簮ID锛?     */
+     * 目标引用ID（实际的资源ID）
+     */
     private String targetRefId;
 
     /**
-     * 鍏崇郴绫诲瀷锛坉efault銆乧onditional銆乴oop绛夛級
+     * 关系类型（default、conditional、loop等）
      */
     private String relationType;
 
     /**
-     * 鎵╁睍鍙傛暟锛圝SON鏍煎紡锛?     */
+     * 扩展参数（JSON格式）
+     */
     private String extParam;
 
     /**
-     * 鍏崇郴搴忓彿锛堢敤浜庢帓搴忥級
+     * 关系序号（用于排序）
      */
     private Integer sequence;
 
     /**
-     * 鍚屾鐘舵€?0:鏈悓姝?1:宸插悓姝ュ埌ai_client_config)
+     * 同步状态(0:未同步,1:已同步到ai_client_config)
      */
     private Integer syncStatus;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 
     /**
-     * 鍒涘缓鏃堕棿
+     * 创建时间
      */
     private LocalDateTime createTime;
 
     /**
-     * 鏇存柊鏃堕棿
+     * 更新时间
      */
     private LocalDateTime updateTime;
 

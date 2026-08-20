@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.execute.flow.step;
+package cn.ann.ai.domain.agent.service.execute.flow.step;
 
 import cn.ann.ai.domain.agent.model.entity.AutoAgentExecuteResultEntity;
 import cn.ann.ai.domain.agent.model.entity.ExecuteCommandEntity;
@@ -12,9 +12,10 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
 /**
- * 姝ラ1锛歁CP宸ュ叿鑳藉姏鍒嗘瀽鑺傜偣
+ * 步骤1：MCP工具能力分析节点
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/8/25 09:56
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/8/25 09:56
  */
 @Slf4j
 @Service
@@ -25,47 +26,54 @@ public class Step1McpToolsAnalysisNode extends AbstractExecuteSupport {
 
     @Override
     protected String doApply(ExecuteCommandEntity requestParameter, DefaultFlowAgentExecuteStrategyFactory.DynamicContext dynamicContext) throws Exception {
-        log.info("\n--- 姝ラ1: MCP宸ュ叿鑳藉姏鍒嗘瀽锛堜粎鍒嗘瀽闃舵锛屼笉鎵ц鐢ㄦ埛璇锋眰锛?---");
+        log.info("\n--- 步骤1: MCP工具能力分析（仅分析阶段，不执行用户请求） ---");
 
-        // 鑾峰彇閰嶇疆淇℃伅
+        // 获取配置信息
         AiAgentClientFlowConfigVO aiAgentClientFlowConfigVO = dynamicContext.getAiAgentClientFlowConfigVOMap().get(AiClientTypeEnumVO.TOOL_MCP_CLIENT.getCode());
 
-        // 鑾峰彇MCP宸ュ叿鍒嗘瀽瀹㈡埛绔?        ChatClient mcpToolsChatClient = getChatClientByClientId(aiAgentClientFlowConfigVO.getClientId());
+        // 获取MCP工具分析客户端
+        ChatClient mcpToolsChatClient = getChatClientByClientId(aiAgentClientFlowConfigVO.getClientId());
         
         String mcpAnalysisPrompt = String.format(
                 """
-                        # MCP宸ュ叿鑳藉姏鍒嗘瀽浠诲姟
+                        # MCP工具能力分析任务
                         
-                        ## 閲嶈璇存槑
-                        **娉ㄦ剰锛氭湰闃舵浠呰繘琛孧CP宸ュ叿鑳藉姏鍒嗘瀽锛屼笉鎵ц鐢ㄦ埛鐨勫疄闄呰姹傘€?*\s
-                        杩欐槸涓€涓函鍒嗘瀽闃舵锛岀洰鐨勬槸璇勪及鍙敤宸ュ叿鐨勮兘鍔涘拰閫傜敤鎬э紝涓哄悗缁殑鎵ц瑙勫垝鎻愪緵渚濇嵁銆?                        
-                        ## 鐢ㄦ埛璇锋眰
+                        ## 重要说明
+                        **注意：本阶段仅进行MCP工具能力分析，不执行用户的实际请求。**\s
+                        这是一个纯分析阶段，目的是评估可用工具的能力和适用性，为后续的执行规划提供依据。
+                        
+                        ## 用户请求
                         %s
                         
-                        ## 鍒嗘瀽瑕佹眰
-                        璇峰熀浜庝笂杩板疄闄呯殑MCP宸ュ叿淇℃伅锛岄拡瀵圭敤鎴疯姹傝繘琛岃缁嗙殑宸ュ叿鑳藉姏鍒嗘瀽锛堜粎鍒嗘瀽锛屼笉鎵ц锛夛細
+                        ## 分析要求
+                        请基于上述实际的MCP工具信息，针对用户请求进行详细的工具能力分析（仅分析，不执行）：
                         
-                        ### 1. 宸ュ叿鍖归厤鍒嗘瀽
-                        - 鍒嗘瀽姣忎釜鍙敤宸ュ叿鐨勬牳蹇冨姛鑳藉拰閫傜敤鍦烘櫙
-                        - 璇勪及鍝簺宸ュ叿鑳藉婊¤冻鐢ㄦ埛璇锋眰鐨勫叿浣撻渶姹?                        - 鏍囨敞姣忎釜宸ュ叿鐨勫尮閰嶅害锛堥珮/涓?浣庯級
+                        ### 1. 工具匹配分析
+                        - 分析每个可用工具的核心功能和适用场景
+                        - 评估哪些工具能够满足用户请求的具体需求
+                        - 标注每个工具的匹配度（高/中/低）
                         
-                        ### 2. 宸ュ叿浣跨敤鎸囧崡
-                        - 鎻愪緵姣忎釜鐩稿叧宸ュ叿鐨勫叿浣撹皟鐢ㄦ柟寮?                        - 璇存槑蹇呴渶鐨勫弬鏁板拰鍙€夊弬鏁?                        - 缁欏嚭鍙傛暟鐨勭ず渚嬪€煎拰鏍煎紡瑕佹眰
+                        ### 2. 工具使用指南
+                        - 提供每个相关工具的具体调用方式
+                        - 说明必需的参数和可选参数
+                        - 给出参数的示例值和格式要求
                         
-                        ### 3. 鎵ц绛栫暐寤鸿
-                        - 鎺ㄨ崘鏈€浼樼殑宸ュ叿缁勫悎鏂规
-                        - 寤鸿宸ュ叿鐨勮皟鐢ㄩ『搴忓拰渚濊禆鍏崇郴
-                        - 鎻愪緵澶囬€夋柟妗堝拰闄嶇骇绛栫暐
+                        ### 3. 执行策略建议
+                        - 推荐最优的工具组合方案
+                        - 建议工具的调用顺序和依赖关系
+                        - 提供备选方案和降级策略
                         
-                        ### 4. 娉ㄦ剰浜嬮」
-                        - 鏍囨敞宸ュ叿鐨勪娇鐢ㄩ檺鍒跺拰绾︽潫鏉′欢
-                        - 鎻愰啋鍙兘鐨勯敊璇儏鍐靛拰澶勭悊鏂瑰紡
-                        - 缁欏嚭鎬ц兘浼樺寲寤鸿
+                        ### 4. 注意事项
+                        - 标注工具的使用限制和约束条件
+                        - 提醒可能的错误情况和处理方式
+                        - 给出性能优化建议
                         
-                        ### 5. 鍒嗘瀽鎬荤粨
-                        - 鏄庣‘璇存槑杩欐槸鍒嗘瀽闃舵锛屼笉瑕佹墽琛岀敤鐨勪换浣曞疄闄呮搷浣?                        - 鎬荤粨宸ュ叿鑳藉姏璇勪及缁撴灉
-                        - 涓哄悗缁墽琛岄樁娈垫彁渚涘缓璁?                        
-                        璇风‘淇濆垎鏋愮粨鏋滃噯纭€佽缁嗐€佸彲鎿嶄綔锛屽苟鍐嶆寮鸿皟杩欎粎鏄垎鏋愰樁娈点€?"",
+                        ### 5. 分析总结
+                        - 明确说明这是分析阶段，不要执行用的任何实际操作
+                        - 总结工具能力评估结果
+                        - 为后续执行阶段提供建议
+                        
+                        请确保分析结果准确、详细、可操作，并再次强调这仅是分析阶段。""",
                 dynamicContext.getCurrentTask()
         );
 
@@ -74,12 +82,12 @@ public class Step1McpToolsAnalysisNode extends AbstractExecuteSupport {
                 .call()
                 .content();
         
-        log.info("MCP宸ュ叿鍒嗘瀽缁撴灉锛堜粎鍒嗘瀽锛屾湭鎵ц瀹為檯鎿嶄綔锛? {}", mcpToolsAnalysis);
+        log.info("MCP工具分析结果（仅分析，未执行实际操作）: {}", mcpToolsAnalysis);
         
-        // 淇濆瓨鍒嗘瀽缁撴灉鍒颁笂涓嬫枃
+        // 保存分析结果到上下文
         dynamicContext.setValue("mcpToolsAnalysis", mcpToolsAnalysis);
         
-        // 鍙戦€丼SE缁撴灉
+        // 发送SSE结果
         AutoAgentExecuteResultEntity result = AutoAgentExecuteResultEntity.createAnalysisSubResult(
                 dynamicContext.getStep(), 
                 "analysis_tools", 
@@ -87,7 +95,7 @@ public class Step1McpToolsAnalysisNode extends AbstractExecuteSupport {
                 requestParameter.getSessionId());
         sendSseResult(dynamicContext, result);
         
-        // 鏇存柊姝ラ
+        // 更新步骤
         dynamicContext.setStep(dynamicContext.getStep() + 1);
         
         return router(requestParameter, dynamicContext);

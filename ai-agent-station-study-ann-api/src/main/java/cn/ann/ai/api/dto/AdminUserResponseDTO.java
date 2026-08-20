@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.dto;
+package cn.ann.ai.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,9 +10,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 绠＄悊鍛樼敤鎴峰搷搴?DTO
+ * 管理员用户响应 DTO
  *
- * @author bugstack铏礊鏍? * @description 绠＄悊鍛樼敤鎴峰搷搴旀暟鎹紶杈撳璞? */
+ * @author bugstack虫洞栈
+ * @description 管理员用户响应数据传输对象
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -23,30 +25,32 @@ public class AdminUserResponseDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 涓婚敭ID
+     * 主键ID
      */
     private Long id;
 
     /**
-     * 鐢ㄦ埛ID锛堝敮涓€鏍囪瘑锛?     */
+     * 用户ID（唯一标识）
+     */
     private String userId;
 
     /**
-     * 鐢ㄦ埛鍚嶏紙鐧诲綍璐﹀彿锛?     */
+     * 用户名（登录账号）
+     */
     private String username;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤,2:閿佸畾)
+     * 状态(0:禁用,1:启用,2:锁定)
      */
     private Integer status;
 
     /**
-     * 鍒涘缓鏃堕棿
+     * 创建时间
      */
     private LocalDateTime createTime;
 
     /**
-     * 鏇存柊鏃堕棿
+     * 更新时间
      */
     private LocalDateTime updateTime;
 

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api;
+package cn.ann.ai.api;
 
 import cn.ann.ai.api.dto.AiClientApiQueryRequestDTO;
 import cn.ann.ai.api.dto.AiClientApiRequestDTO;
@@ -30,4 +30,3 @@ public interface IAiClientApiAdminService {
     Response<List<AiClientApiResponseDTO>> queryAllAiClientApis();
 
 }
-

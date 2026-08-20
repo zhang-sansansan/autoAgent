@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.execute.auto.step.factory;
+package cn.ann.ai.domain.agent.service.execute.auto.step.factory;
 
 import cn.ann.ai.domain.agent.model.entity.ExecuteCommandEntity;
 import cn.ann.ai.domain.agent.model.valobj.AiAgentClientFlowConfigVO;
@@ -14,8 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 宸ュ巶绫? *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/7/27 16:34
+ * 工厂类
+ *
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/7/27 16:34
  */
 @Service
 public class DefaultAutoAgentExecuteStrategyFactory {
@@ -36,10 +38,11 @@ public class DefaultAutoAgentExecuteStrategyFactory {
     @NoArgsConstructor
     public static class DynamicContext {
 
-        // 浠诲姟鎵ц姝ラ
+        // 任务执行步骤
         private int step = 1;
 
-        // 鏈€澶т换鍔℃楠?        private int maxStep = 1;
+        // 最大任务步骤
+        private int maxStep = 1;
 
         private StringBuilder executionHistory;
 
@@ -61,4 +64,3 @@ public class DefaultAutoAgentExecuteStrategyFactory {
     }
 
 }
-

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api;
+package cn.ann.ai.api;
 
 import cn.ann.ai.api.dto.AiAgentResponseDTO;
 import cn.ann.ai.api.dto.ArmoryAgentRequestDTO;
@@ -15,13 +15,12 @@ public interface IAiAgentService {
     ResponseBodyEmitter autoAgent(AutoAgentRequestDTO request, HttpServletResponse response);
 
     /**
-     * 瑁呴厤鏅鸿兘浣?
+     * 装配智能体
      */
     Response<Boolean> armoryAgent(ArmoryAgentRequestDTO request);
 
     /**
-     * 鏌ヨ鍙敤鐨勬櫤鑳戒綋鍒楄〃
+     * 查询可用的智能体列表
      */
     Response<List<AiAgentResponseDTO>> queryAvailableAgents();
 }
-

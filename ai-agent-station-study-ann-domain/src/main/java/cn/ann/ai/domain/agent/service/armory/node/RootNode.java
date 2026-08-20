@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.armory.node;
+package cn.ann.ai.domain.agent.service.armory.node;
 
 import cn.ann.ai.domain.agent.model.entity.ArmoryCommandEntity;
 
@@ -15,8 +15,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * 鏍硅妭鐐癸紝鏁版嵁鍔犺浇
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/6/27 16:47
+ * 根节点，数据加载
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/6/27 16:47
  */
 @Slf4j
 @Service
@@ -24,9 +25,11 @@ public class RootNode extends AbstractArmorySupport {
 
     @Resource
     private AiClientApiNode aiClientApiNode;
-    //绛栫暐妯″紡锛屽皢瀹炵幇绛栫暐鎺ュ彛鐨刡ean鍏ㄩ儴鑷姩娉ㄥ叆杩欎釜map涓?    private final Map<String, ILoadDataStrategy> loadDataStrategyMap;
+    //策略模式，将实现策略接口的bean全部自动注入这个map中
+    private final Map<String, ILoadDataStrategy> loadDataStrategyMap;
 
-    //閫氳繃鏋勯€犳柟娉曟敞鍏?灏嗗疄鐜版帴鍙ｇ殑bean閮藉瓨鍏ap涓?    public RootNode(Map<String, ILoadDataStrategy> loadDataStrategyMap) {
+    //通过构造方法注入 将实现接口的bean都存入map中
+    public RootNode(Map<String, ILoadDataStrategy> loadDataStrategyMap) {
         this.loadDataStrategyMap = loadDataStrategyMap;
     }
 
@@ -47,4 +50,3 @@ public class RootNode extends AbstractArmorySupport {
     }
 
 }
-

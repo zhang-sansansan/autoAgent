@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao.po;
+package cn.ann.ai.infrastructure.dao.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 鐭ヨ瘑搴撻厤缃〃
- * @author bugstack铏礊鏍? * @description 鐭ヨ瘑搴撻厤缃〃 PO 瀵硅薄
+ * 知识库配置表
+ * @author bugstack虫洞栈
+ * @description 知识库配置表 PO 对象
  */
 @Data
 @Builder
@@ -18,36 +19,37 @@ import java.time.LocalDateTime;
 public class AiClientRagOrder {
 
     /**
-     * 涓婚敭ID
+     * 主键ID
      */
     private Long id;
 
     /**
-     * 鐭ヨ瘑搴揑D
+     * 知识库ID
      */
     private String ragId;
 
     /**
-     * 鐭ヨ瘑搴撳悕绉?     */
+     * 知识库名称
+     */
     private String ragName;
 
     /**
-     * 鐭ヨ瘑鏍囩
+     * 知识标签
      */
     private String knowledgeTag;
 
     /**
-     * 鐘舵€?0:绂佺敤,1:鍚敤)
+     * 状态(0:禁用,1:启用)
      */
     private Integer status;
 
     /**
-     * 鍒涘缓鏃堕棿
+     * 创建时间
      */
     private LocalDateTime createTime;
 
     /**
-     * 鏇存柊鏃堕棿
+     * 更新时间
      */
     private LocalDateTime updateTime;
 

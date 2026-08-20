@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.adapter.repository;
+package cn.ann.ai.infrastructure.adapter.repository;
 
 import cn.ann.ai.domain.agent.adapter.repository.IAgentRepository;
 import cn.ann.ai.domain.agent.model.valobj.*;
@@ -19,9 +19,10 @@ import java.util.stream.Collectors;
 import static cn.ann.ai.domain.agent.model.valobj.enums.AiAgentEnumVO.*;
 
 /**
- * AiAgent 浠撳偍鏈嶅姟
+ * AiAgent 仓储服务
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/6/28 18:09
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/6/28 18:09
  */
 @Slf4j
 @Repository
@@ -69,22 +70,22 @@ public class AgentRepository implements IAgentRepository {
         List<AiClientApiVO> result = new ArrayList<>();
 
         for (String clientId : clientIdList) {
-            // 1. 閫氳繃clientId鏌ヨ鍏宠仈鐨刴odelId
+            // 1. 通过clientId查询关联的modelId
             List<AiClientConfig> configs = aiClientConfigDao.queryBySourceTypeAndId(AI_CLIENT.getCode(), clientId);
 
             for (AiClientConfig config : configs) {
                 if (AI_CLIENT_MODEL.getCode().equals(config.getTargetType()) && config.getStatus() == 1) {
                     String modelId = config.getTargetId();
 
-                    // 2. 閫氳繃modelId鏌ヨ妯″瀷閰嶇疆锛岃幏鍙朼piId
+                    // 2. 通过modelId查询模型配置，获取apiId
                     AiClientModel model = aiClientModelDao.queryByModelId(modelId);
                     if (model != null && model.getStatus() == 1) {
                         String apiId = model.getApiId();
 
-                        // 3. 閫氳繃apiId鏌ヨAPI閰嶇疆淇℃伅
+                        // 3. 通过apiId查询API配置信息
                         AiClientApi apiConfig = aiClientApiDao.queryByApiId(apiId);
                         if (apiConfig != null && apiConfig.getStatus() == 1) {
-                            // 4. 杞崲涓篤O瀵硅薄
+                            // 4. 转换为VO对象
                             AiClientApiVO apiVO = AiClientApiVO.builder()
                                     .apiId(apiConfig.getApiId())
                                     .baseUrl(apiConfig.getBaseUrl())
@@ -93,7 +94,7 @@ public class AgentRepository implements IAgentRepository {
                                     .embeddingsPath(apiConfig.getEmbeddingsPath())
                                     .build();
 
-                            // 閬垮厤閲嶅娣诲姞鐩稿悓鐨凙PI閰嶇疆
+                            // 避免重复添加相同的API配置
                             if (result.stream().noneMatch(vo -> vo.getApiId().equals(apiVO.getApiId()))) {
                                 result.add(apiVO);
                             }
@@ -115,18 +116,18 @@ public class AgentRepository implements IAgentRepository {
         List<AiClientModelVO> result = new ArrayList<>();
 
         for (String clientId : clientIdList) {
-            // 1. 閫氳繃clientId鏌ヨ鍏宠仈鐨刴odelId
+            // 1. 通过clientId查询关联的modelId
             List<AiClientConfig> configs = aiClientConfigDao.queryBySourceTypeAndId(AI_CLIENT.getCode(), clientId);
 
             for (AiClientConfig config : configs) {
                 if (AI_CLIENT_MODEL.getCode().equals(config.getTargetType()) && config.getStatus() == 1) {
                     String modelId = config.getTargetId();
 
-                    // 2. 閫氳繃modelId鏌ヨ妯″瀷閰嶇疆
+                    // 2. 通过modelId查询模型配置
                     AiClientModel model = aiClientModelDao.queryByModelId(modelId);
                     if (model != null && model.getStatus() == 1) {
 
-                        // 3. 鏌ヨ璇ユā鍨嬪叧鑱旂殑tool_mcp閰嶇疆
+                        // 3. 查询该模型关联的tool_mcp配置
                         List<AiClientConfig> toolMcpConfigs = aiClientConfigDao.queryBySourceTypeAndId(AI_CLIENT_MODEL.getCode(), modelId);
                         List<String> toolMcpIds = new ArrayList<>();
 
@@ -136,7 +137,7 @@ public class AgentRepository implements IAgentRepository {
                             }
                         }
 
-                        // 4. 杞崲涓篤O瀵硅薄
+                        // 4. 转换为VO对象
                         AiClientModelVO modelVO = AiClientModelVO.builder()
                                 .modelId(model.getModelId())
                                 .apiId(model.getApiId())
@@ -145,7 +146,8 @@ public class AgentRepository implements IAgentRepository {
                                 .toolMcpIds(toolMcpIds)
                                 .build();
 
-                        // 閬垮厤閲嶅娣诲姞鐩稿悓鐨勬ā鍨嬮厤缃?                        if (result.stream().noneMatch(vo -> vo.getModelId().equals(modelVO.getModelId()))) {
+                        // 避免重复添加相同的模型配置
+                        if (result.stream().noneMatch(vo -> vo.getModelId().equals(modelVO.getModelId()))) {
                             result.add(modelVO);
                         }
                     }
@@ -166,30 +168,30 @@ public class AgentRepository implements IAgentRepository {
         Set<String> processedMcpIds = new HashSet<>();
 
         for (String clientId : clientIdList) {
-            // 1. 閫氳繃clientId鏌ヨ鍏宠仈鐨刴odel閰嶇疆
+            // 1. 通过clientId查询关联的model配置
             List<AiClientConfig> clientConfigs = aiClientConfigDao.queryBySourceTypeAndId(AI_CLIENT.getCode(), clientId);
 
             for (AiClientConfig clientConfig : clientConfigs) {
                 if (AI_CLIENT_MODEL.getCode().equals(clientConfig.getTargetType()) && clientConfig.getStatus() == 1) {
                     String modelId = clientConfig.getTargetId();
 
-                    // 2. 閫氳繃modelId鏌ヨ鍏宠仈鐨則ool_mcp閰嶇疆
+                    // 2. 通过modelId查询关联的tool_mcp配置
                     List<AiClientConfig> modelConfigs = aiClientConfigDao.queryBySourceTypeAndId(AI_CLIENT_MODEL.getCode(), modelId);
 
                     for (AiClientConfig modelConfig : modelConfigs) {
                         if (AI_CLIENT_TOOL_MCP.getCode().equals(modelConfig.getTargetType()) && modelConfig.getStatus() == 1) {
                             String mcpId = modelConfig.getTargetId();
 
-                            // 閬垮厤閲嶅澶勭悊鐩稿悓鐨刴cpId
+                            // 避免重复处理相同的mcpId
                             if (processedMcpIds.contains(mcpId)) {
                                 continue;
                             }
                             processedMcpIds.add(mcpId);
 
-                            // 3. 閫氳繃mcpId鏌ヨai_client_tool_mcp琛ㄨ幏鍙朚CP宸ュ叿閰嶇疆
+                            // 3. 通过mcpId查询ai_client_tool_mcp表获取MCP工具配置
                             AiClientToolMcp toolMcp = aiClientToolMcpDao.queryByMcpId(mcpId);
                             if (toolMcp != null && toolMcp.getStatus() == 1) {
-                                // 4. 杞崲涓篤O瀵硅薄
+                                // 4. 转换为VO对象
                                 AiClientToolMcpVO mcpVO = AiClientToolMcpVO.builder()
                                         .mcpId(toolMcp.getMcpId())
                                         .mcpName(toolMcp.getMcpName())
@@ -203,12 +205,12 @@ public class AgentRepository implements IAgentRepository {
 
                                 try {
                                     if ("sse".equals(transportType)) {
-                                        // 瑙ｆ瀽SSE閰嶇疆
+                                        // 解析SSE配置
                                         ObjectMapper objectMapper = new ObjectMapper();
                                         AiClientToolMcpVO.TransportConfigSse transportConfigSse = objectMapper.readValue(transportConfig, AiClientToolMcpVO.TransportConfigSse.class);
                                         mcpVO.setTransportConfigSse(transportConfigSse);
                                     } else if ("stdio".equals(transportType)) {
-                                        // 瑙ｆ瀽STDIO閰嶇疆
+                                        // 解析STDIO配置
                                         Map<String, AiClientToolMcpVO.TransportConfigStdio.Stdio> stdio = JSON.parseObject(transportConfig,
                                                 new TypeReference<>() {
                                                 });
@@ -219,7 +221,7 @@ public class AgentRepository implements IAgentRepository {
                                         mcpVO.setTransportConfigStdio(transportConfigStdio);
                                     }
                                 } catch (Exception e) {
-                                    log.error("瑙ｆ瀽浼犺緭閰嶇疆澶辫触: {}", e.getMessage(), e);
+                                    log.error("解析传输配置失败: {}", e.getMessage(), e);
                                 }
                                 result.add(mcpVO);
                             }
@@ -242,23 +244,23 @@ public class AgentRepository implements IAgentRepository {
         Set<String> processedPromptIds = new HashSet<>();
 
         for (String clientId : clientIdList) {
-            // 1. 閫氳繃clientId鏌ヨ鍏宠仈鐨刾rompt閰嶇疆
+            // 1. 通过clientId查询关联的prompt配置
             List<AiClientConfig> configs = aiClientConfigDao.queryBySourceTypeAndId(AI_CLIENT.getCode(), clientId);
 
             for (AiClientConfig config : configs) {
                 if ("prompt".equals(config.getTargetType()) && config.getStatus() == 1) {
                     String promptId = config.getTargetId();
 
-                    // 閬垮厤閲嶅澶勭悊鐩稿悓鐨刾romptId
+                    // 避免重复处理相同的promptId
                     if (processedPromptIds.contains(promptId)) {
                         continue;
                     }
                     processedPromptIds.add(promptId);
 
-                    // 2. 閫氳繃promptId鏌ヨai_client_system_prompt琛ㄨ幏鍙栫郴缁熸彁绀鸿瘝閰嶇疆
+                    // 2. 通过promptId查询ai_client_system_prompt表获取系统提示词配置
                     AiClientSystemPrompt systemPrompt = aiClientSystemPromptDao.queryByPromptId(promptId);
                     if (systemPrompt != null && systemPrompt.getStatus() == 1) {
-                        // 3. 杞崲涓篤O瀵硅薄
+                        // 3. 转换为VO对象
                         AiClientSystemPromptVO promptVO = AiClientSystemPromptVO.builder()
                                 .promptId(systemPrompt.getPromptId())
                                 .promptName(systemPrompt.getPromptName())
@@ -283,7 +285,7 @@ public class AgentRepository implements IAgentRepository {
             return Collections.emptyMap();
         }
 
-        // 灏哖O瀵硅薄杞崲涓篤O瀵硅薄锛屽苟鏋勫缓Map缁撴瀯
+        // 将PO对象转换为VO对象，并构建Map结构
         return aiClientSystemPrompts.stream()
                 .map(prompt -> AiClientSystemPromptVO.builder()
                         .promptId(prompt.getPromptId())
@@ -291,8 +293,9 @@ public class AgentRepository implements IAgentRepository {
                         .build())
                 .collect(Collectors.toMap(
                         AiClientSystemPromptVO::getPromptId,  // key: id
-                        prompt -> prompt,               // value: AiClientSystemPromptVO瀵硅薄
-                        (existing, replacement) -> existing  // 濡傛灉鏈夐噸澶峩ey锛屼繚鐣欑涓€涓?                ));
+                        prompt -> prompt,               // value: AiClientSystemPromptVO对象
+                        (existing, replacement) -> existing  // 如果有重复key，保留第一个
+                ));
     }
 
     @Override
@@ -305,7 +308,7 @@ public class AgentRepository implements IAgentRepository {
         Set<String> processedAdvisorIds = new HashSet<>();
 
         for (String clientId : clientIdList) {
-            // 1. 鏌ヨ瀹㈡埛绔浉鍏崇殑advisor閰嶇疆
+            // 1. 查询客户端相关的advisor配置
             List<AiClientConfig> configs = aiClientConfigDao.queryBySourceTypeAndId("client", clientId);
 
             for (AiClientConfig config : configs) {
@@ -319,13 +322,13 @@ public class AgentRepository implements IAgentRepository {
                 }
                 processedAdvisorIds.add(advisorId);
 
-                // 2. 鏌ヨadvisor璇︾粏淇℃伅
+                // 2. 查询advisor详细信息
                 AiClientAdvisor aiClientAdvisor = aiClientAdvisorDao.queryByAdvisorId(advisorId);
                 if (aiClientAdvisor == null || aiClientAdvisor.getStatus() != 1) {
                     continue;
                 }
 
-                // 3. 瑙ｆ瀽extParam涓殑閰嶇疆
+                // 3. 解析extParam中的配置
                 AiClientAdvisorVO.ChatMemory chatMemory = null;
                 AiClientAdvisorVO.RagAnswer ragAnswer = null;
 
@@ -333,18 +336,18 @@ public class AgentRepository implements IAgentRepository {
                 if (extParam != null && !extParam.trim().isEmpty()) {
                     try {
                         if ("ChatMemory".equals(aiClientAdvisor.getAdvisorType())) {
-                            // 瑙ｆ瀽chatMemory閰嶇疆
+                            // 解析chatMemory配置
                             chatMemory = JSON.parseObject(extParam, AiClientAdvisorVO.ChatMemory.class);
                         } else if ("RagAnswer".equals(aiClientAdvisor.getAdvisorType())) {
-                            // 瑙ｆ瀽ragAnswer閰嶇疆
+                            // 解析ragAnswer配置
                             ragAnswer = JSON.parseObject(extParam, AiClientAdvisorVO.RagAnswer.class);
                         }
                     } catch (Exception e) {
-                        // 瑙ｆ瀽澶辫触鏃跺拷鐣ワ紝浣跨敤榛樿鍊糿ull
+                        // 解析失败时忽略，使用默认值null
                     }
                 }
 
-                // 4. 鏋勫缓AiClientAdvisorVO瀵硅薄
+                // 4. 构建AiClientAdvisorVO对象
                 AiClientAdvisorVO advisorVO = AiClientAdvisorVO.builder()
                         .advisorId(aiClientAdvisor.getAdvisorId())
                         .advisorName(aiClientAdvisor.getAdvisorName())
@@ -376,12 +379,14 @@ public class AgentRepository implements IAgentRepository {
             }
             processedClientIds.add(clientId);
 
-            // 1. 鏌ヨ瀹㈡埛绔熀鏈俊鎭?            AiClient aiClient = aiClientDao.queryByClientId(clientId);
+            // 1. 查询客户端基本信息
+            AiClient aiClient = aiClientDao.queryByClientId(clientId);
             if (aiClient == null || aiClient.getStatus() != 1) {
                 continue;
             }
 
-            // 2. 鏌ヨ瀹㈡埛绔浉鍏抽厤缃?            List<AiClientConfig> configs = aiClientConfigDao.queryBySourceTypeAndId("client", clientId);
+            // 2. 查询客户端相关配置
+            List<AiClientConfig> configs = aiClientConfigDao.queryBySourceTypeAndId("client", clientId);
 
             String modelId = null;
             List<String> promptIdList = new ArrayList<>();
@@ -409,7 +414,7 @@ public class AgentRepository implements IAgentRepository {
                 }
             }
 
-            // 3. 鏋勫缓AiClientVO瀵硅薄
+            // 3. 构建AiClientVO对象
             AiClientVO aiClientVO = AiClientVO.builder()
                     .clientId(aiClient.getClientId())
                     .clientName(aiClient.getClientName())
@@ -435,15 +440,15 @@ public class AgentRepository implements IAgentRepository {
         List<AiClientApiVO> result = new ArrayList<>();
 
         for (String modelId : modelIdList) {
-            // 1. 閫氳繃modelId鏌ヨ妯″瀷閰嶇疆锛岃幏鍙朼piId
+            // 1. 通过modelId查询模型配置，获取apiId
             AiClientModel model = aiClientModelDao.queryByModelId(modelId);
             if (model != null && model.getStatus() == 1) {
                 String apiId = model.getApiId();
 
-                // 2. 閫氳繃apiId鏌ヨAPI閰嶇疆淇℃伅
+                // 2. 通过apiId查询API配置信息
                 AiClientApi apiConfig = aiClientApiDao.queryByApiId(apiId);
                 if (apiConfig != null && apiConfig.getStatus() == 1) {
-                    // 3. 杞崲涓篤O瀵硅薄
+                    // 3. 转换为VO对象
                     AiClientApiVO apiVO = AiClientApiVO.builder()
                             .apiId(apiConfig.getApiId())
                             .baseUrl(apiConfig.getBaseUrl())
@@ -452,7 +457,7 @@ public class AgentRepository implements IAgentRepository {
                             .embeddingsPath(apiConfig.getEmbeddingsPath())
                             .build();
 
-                    // 閬垮厤閲嶅娣诲姞鐩稿悓鐨凙PI閰嶇疆
+                    // 避免重复添加相同的API配置
                     if (result.stream().noneMatch(vo -> vo.getApiId().equals(apiVO.getApiId()))) {
                         result.add(apiVO);
                     }
@@ -472,10 +477,10 @@ public class AgentRepository implements IAgentRepository {
         List<AiClientModelVO> result = new ArrayList<>();
 
         for (String modelId : modelIdList) {
-            // 閫氳繃modelId鏌ヨ妯″瀷閰嶇疆
+            // 通过modelId查询模型配置
             AiClientModel model = aiClientModelDao.queryByModelId(modelId);
             if (model != null && model.getStatus() == 1) {
-                // 杞崲涓篤O瀵硅薄
+                // 转换为VO对象
                 AiClientModelVO modelVO = AiClientModelVO.builder()
                         .modelId(model.getModelId())
                         .apiId(model.getApiId())
@@ -483,7 +488,8 @@ public class AgentRepository implements IAgentRepository {
                         .modelType(model.getModelType())
                         .build();
 
-                // 閬垮厤閲嶅娣诲姞鐩稿悓鐨勬ā鍨嬮厤缃?                if (result.stream().noneMatch(vo -> vo.getModelId().equals(modelVO.getModelId()))) {
+                // 避免重复添加相同的模型配置
+                if (result.stream().noneMatch(vo -> vo.getModelId().equals(modelVO.getModelId()))) {
                     result.add(modelVO);
                 }
             }
@@ -499,14 +505,14 @@ public class AgentRepository implements IAgentRepository {
         }
 
         try {
-            // 鏍规嵁鏅鸿兘浣揑D鏌ヨ娴佺▼閰嶇疆鍒楄〃
+            // 根据智能体ID查询流程配置列表
             List<AiAgentFlowConfig> flowConfigs = aiAgentFlowConfigDao.queryByAgentId(aiAgentId);
 
             if (flowConfigs == null || flowConfigs.isEmpty()) {
                 return Map.of();
             }
 
-            // 杞崲涓篗ap缁撴瀯锛宬ey涓篶lientId锛寁alue涓篈iAgentClientFlowConfigVO
+            // 转换为Map结构，key为clientId，value为AiAgentClientFlowConfigVO
             Map<String, AiAgentClientFlowConfigVO> result = new HashMap<>();
 
             for (AiAgentFlowConfig flowConfig : flowConfigs) {
@@ -535,7 +541,7 @@ public class AgentRepository implements IAgentRepository {
     public AiAgentVO queryAiAgentByAgentId(String aiAgentId) {
         AiAgent aiAgent = aiAgentDao.queryByAgentId(aiAgentId);
         if (aiAgent == null) {
-            throw new BizException(ResponseCode.ILLEGAL_PARAMETER.getCode(), "aiAgent涓嶅瓨鍦紝aiAgentId=" + aiAgentId);
+            throw new BizException(ResponseCode.ILLEGAL_PARAMETER.getCode(), "aiAgent不存在，aiAgentId=" + aiAgentId);
         }
 
         return AiAgentVO.builder()
@@ -619,4 +625,3 @@ public class AgentRepository implements IAgentRepository {
     }
 
 }
-

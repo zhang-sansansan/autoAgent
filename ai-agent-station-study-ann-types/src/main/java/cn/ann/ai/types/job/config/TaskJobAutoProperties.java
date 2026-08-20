@@ -1,31 +1,33 @@
-﻿package cn.ann.ai.types.job.config;
+package cn.ann.ai.types.job.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 浠诲姟璋冨害鍣ㄩ厤缃睘鎬? * @author Fuzhengwei bugstack.cn @灏忓倕鍝? */
+ * 任务调度器配置属性
+ * @author Fuzhengwei bugstack.cn @小傅哥
+ */
 @ConfigurationProperties(prefix = "xfg.wrench.task.job", ignoreInvalidFields = true)
 public class TaskJobAutoProperties {
 
-    /** 鏄惁鍚敤浠诲姟璋冨害鍣?*/
+    /** 是否启用任务调度器 */
     private boolean enabled = true;
     
-    /** 绾跨▼姹犲ぇ灏?*/
+    /** 线程池大小 */
     private int poolSize = 10;
     
-    /** 绾跨▼鍚嶇О鍓嶇紑 */
-    private String threadNamePrefix = "xfg-ta${OPENAI_API_KEY}";
+    /** 线程名称前缀 */
+    private String threadNamePrefix = "xfg-task-scheduler-";
     
-    /** 鍏抽棴鏃剁瓑寰呬换鍔″畬鎴?*/
+    /** 关闭时等待任务完成 */
     private boolean waitForTasksToCompleteOnShutdown = true;
     
-    /** 绛夊緟缁堟鏃堕棿锛堢锛?*/
+    /** 等待终止时间（秒） */
     private int awaitTerminationSeconds = 60;
     
-    /** 浠诲姟鍒锋柊闂撮殧锛堟绉掞級 */
+    /** 任务刷新间隔（毫秒） */
     private long refreshInterval = 60000;
     
-    /** 娓呯悊鏃犳晥浠诲姟鐨刢ron琛ㄨ揪寮?*/
+    /** 清理无效任务的cron表达式 */
     private String cleanInvalidTasksCron = "0 0/10 * * * ?";
 
     public boolean isEnabled() {

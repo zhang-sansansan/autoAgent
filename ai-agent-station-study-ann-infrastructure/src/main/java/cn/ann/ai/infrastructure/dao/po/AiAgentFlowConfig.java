@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao.po;
+package cn.ann.ai.infrastructure.dao.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 鏅鸿兘浣?瀹㈡埛绔叧鑱旇〃
- * @author bugstack铏礊鏍? * @description 鏅鸿兘浣?瀹㈡埛绔叧鑱旇〃 PO 瀵硅薄
+ * 智能体-客户端关联表
+ * @author bugstack虫洞栈
+ * @description 智能体-客户端关联表 PO 对象
  */
 @Data
 @Builder
@@ -18,39 +19,42 @@ import java.time.LocalDateTime;
 public class AiAgentFlowConfig {
 
     /**
-     * 涓婚敭ID
+     * 主键ID
      */
     private Long id;
 
     /**
-     * 鏅鸿兘浣揑D
+     * 智能体ID
      */
     private String agentId;
 
     /**
-     * 瀹㈡埛绔疘D
+     * 客户端ID
      */
     private String clientId;
 
     /**
-     * 瀹㈡埛绔悕绉?     */
+     * 客户端名称
+     */
     private String clientName;
 
     /**
-     * 瀹㈡埛绔灇涓?     */
+     * 客户端枚举
+     */
     private String clientType;
 
     /**
-     * 搴忓垪鍙?鎵ц椤哄簭)
+     * 序列号(执行顺序)
      */
     private Integer sequence;
 
     /**
-     * 鎵ц姝ラ鎻愮ず璇?     */
+     * 执行步骤提示词
+     */
     private String stepPrompt;
 
     /**
-     * 鍒涘缓鏃堕棿
+     * 创建时间
      */
     private LocalDateTime createTime;
 

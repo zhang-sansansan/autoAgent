@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.trigger.http.admin;
+package cn.ann.ai.trigger.http.admin;
 
 import cn.ann.ai.api.IAdminUserAdminService;
 import cn.ann.ai.api.dto.AdminUserLoginRequestDTO;
@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 绠＄悊鍛樼敤鎴风鐞嗘帶鍒跺櫒
+ * 管理员用户管理控制器
  *
- * @author bugstack铏礊鏍?
- * @description 绠＄悊鍛樼敤鎴风鐞嗘帶鍒跺櫒
+ * @author bugstack虫洞栈
+ * @description 管理员用户管理控制器
  */
 @Slf4j
 @RestController
@@ -39,9 +39,9 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @PostMapping("/create")
     public Response<Boolean> createAdminUser(@RequestBody AdminUserRequestDTO request) {
         try {
-            log.info("鍒涘缓绠＄悊鍛樼敤鎴疯姹傦細{}", request);
+            log.info("创建管理员用户请求：{}", request);
             
-            // DTO杞琍O
+            // DTO转PO
             AdminUser adminUser = convertToAdminUser(request);
             adminUser.setCreateTime(LocalDateTime.now());
             adminUser.setUpdateTime(LocalDateTime.now());
@@ -54,7 +54,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鍒涘缓绠＄悊鍛樼敤鎴峰け璐?, e);
+            log.error("创建管理员用户失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -67,17 +67,17 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @PutMapping("/update-by-id")
     public Response<Boolean> updateAdminUserById(@RequestBody AdminUserRequestDTO request) {
         try {
-            log.info("鏍规嵁ID鏇存柊绠＄悊鍛樼敤鎴疯姹傦細{}", request);
+            log.info("根据ID更新管理员用户请求：{}", request);
             
             if (request.getId() == null) {
                 return Response.<Boolean>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("ID涓嶈兘涓虹┖")
+                        .info("ID不能为空")
                         .data(false)
                         .build();
             }
             
-            // DTO杞琍O
+            // DTO转PO
             AdminUser adminUser = convertToAdminUser(request);
             adminUser.setUpdateTime(LocalDateTime.now());
             
@@ -89,7 +89,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁ID鏇存柊绠＄悊鍛樼敤鎴峰け璐?, e);
+            log.error("根据ID更新管理员用户失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -102,17 +102,17 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @PutMapping("/update-by-user-id")
     public Response<Boolean> updateAdminUserByUserId(@RequestBody AdminUserRequestDTO request) {
         try {
-            log.info("鏍规嵁鐢ㄦ埛ID鏇存柊绠＄悊鍛樼敤鎴疯姹傦細{}", request);
+            log.info("根据用户ID更新管理员用户请求：{}", request);
             
             if (!StringUtils.hasText(request.getUserId())) {
                 return Response.<Boolean>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("鐢ㄦ埛ID涓嶈兘涓虹┖")
+                        .info("用户ID不能为空")
                         .data(false)
                         .build();
             }
             
-            // DTO杞琍O
+            // DTO转PO
             AdminUser adminUser = convertToAdminUser(request);
             adminUser.setUpdateTime(LocalDateTime.now());
             
@@ -124,7 +124,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鐢ㄦ埛ID鏇存柊绠＄悊鍛樼敤鎴峰け璐?, e);
+            log.error("根据用户ID更新管理员用户失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -137,7 +137,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @DeleteMapping("/delete-by-id/{id}")
     public Response<Boolean> deleteAdminUserById(@PathVariable("id") Long id) {
         try {
-            log.info("鏍规嵁ID鍒犻櫎绠＄悊鍛樼敤鎴疯姹傦細{}", id);
+            log.info("根据ID删除管理员用户请求：{}", id);
             
             int result = adminUserDao.deleteById(id);
             
@@ -147,7 +147,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁ID鍒犻櫎绠＄悊鍛樼敤鎴峰け璐?, e);
+            log.error("根据ID删除管理员用户失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -160,7 +160,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @DeleteMapping("/delete-by-user-id/{userId}")
     public Response<Boolean> deleteAdminUserByUserId(@PathVariable("userId") String userId) {
         try {
-            log.info("鏍规嵁鐢ㄦ埛ID鍒犻櫎绠＄悊鍛樼敤鎴疯姹傦細{}", userId);
+            log.info("根据用户ID删除管理员用户请求：{}", userId);
             
             int result = adminUserDao.deleteByUserId(userId);
             
@@ -170,7 +170,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鐢ㄦ埛ID鍒犻櫎绠＄悊鍛樼敤鎴峰け璐?, e);
+            log.error("根据用户ID删除管理员用户失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -183,7 +183,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @GetMapping("/query-by-id/{id}")
     public Response<AdminUserResponseDTO> queryAdminUserById(@PathVariable("id") Long id) {
         try {
-            log.info("鏍规嵁ID鏌ヨ绠＄悊鍛樼敤鎴疯姹傦細{}", id);
+            log.info("根据ID查询管理员用户请求：{}", id);
             
             AdminUser adminUser = adminUserDao.queryById(id);
             if (adminUser == null) {
@@ -202,7 +202,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(responseDTO)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁ID鏌ヨ绠＄悊鍛樼敤鎴峰け璐?, e);
+            log.error("根据ID查询管理员用户失败", e);
             return Response.<AdminUserResponseDTO>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -215,7 +215,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @GetMapping("/query-by-user-id/{userId}")
     public Response<AdminUserResponseDTO> queryAdminUserByUserId(@PathVariable("userId") String userId) {
         try {
-            log.info("鏍规嵁鐢ㄦ埛ID鏌ヨ绠＄悊鍛樼敤鎴疯姹傦細{}", userId);
+            log.info("根据用户ID查询管理员用户请求：{}", userId);
             
             AdminUser adminUser = adminUserDao.queryByUserId(userId);
             if (adminUser == null) {
@@ -234,7 +234,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(responseDTO)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鐢ㄦ埛ID鏌ヨ绠＄悊鍛樼敤鎴峰け璐?, e);
+            log.error("根据用户ID查询管理员用户失败", e);
             return Response.<AdminUserResponseDTO>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -247,7 +247,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @GetMapping("/query-by-username/{username}")
     public Response<AdminUserResponseDTO> queryAdminUserByUsername(@PathVariable("username") String username) {
         try {
-            log.info("鏍规嵁鐢ㄦ埛鍚嶆煡璇㈢鐞嗗憳鐢ㄦ埛璇锋眰锛歿}", username);
+            log.info("根据用户名查询管理员用户请求：{}", username);
             
             AdminUser adminUser = adminUserDao.queryByUsername(username);
             if (adminUser == null) {
@@ -266,7 +266,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(responseDTO)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鐢ㄦ埛鍚嶆煡璇㈢鐞嗗憳鐢ㄦ埛澶辫触", e);
+            log.error("根据用户名查询管理员用户失败", e);
             return Response.<AdminUserResponseDTO>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -279,7 +279,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @GetMapping("/query-enabled")
     public Response<List<AdminUserResponseDTO>> queryEnabledAdminUsers() {
         try {
-            log.info("鏌ヨ鍚敤鐘舵€佺殑绠＄悊鍛樼敤鎴峰垪琛?);
+            log.info("查询启用状态的管理员用户列表");
             
             List<AdminUser> adminUsers = adminUserDao.queryEnabledUsers();
             List<AdminUserResponseDTO> responseDTOs = adminUsers.stream()
@@ -292,7 +292,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏌ヨ鍚敤鐘舵€佺殑绠＄悊鍛樼敤鎴峰垪琛ㄥけ璐?, e);
+            log.error("查询启用状态的管理员用户列表失败", e);
             return Response.<List<AdminUserResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -305,7 +305,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @GetMapping("/query-by-status/{status}")
     public Response<List<AdminUserResponseDTO>> queryAdminUsersByStatus(@PathVariable("status") Integer status) {
         try {
-            log.info("鏍规嵁鐘舵€佹煡璇㈢鐞嗗憳鐢ㄦ埛鍒楄〃璇锋眰锛歿}", status);
+            log.info("根据状态查询管理员用户列表请求：{}", status);
             
             List<AdminUser> adminUsers = adminUserDao.queryByStatus(status);
             List<AdminUserResponseDTO> responseDTOs = adminUsers.stream()
@@ -318,7 +318,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鐘舵€佹煡璇㈢鐞嗗憳鐢ㄦ埛鍒楄〃澶辫触", e);
+            log.error("根据状态查询管理员用户列表失败", e);
             return Response.<List<AdminUserResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -331,12 +331,12 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @PostMapping("/query-list")
     public Response<List<AdminUserResponseDTO>> queryAdminUserList(@RequestBody AdminUserQueryRequestDTO request) {
         try {
-            log.info("鏍规嵁鏉′欢鏌ヨ绠＄悊鍛樼敤鎴峰垪琛ㄨ姹傦細{}", request);
+            log.info("根据条件查询管理员用户列表请求：{}", request);
             
-            // 杩欓噷鍙互鏍规嵁鏌ヨ鏉′欢杩涜杩囨护锛屾殏鏃跺厛鏌ヨ鎵€鏈?
+            // 这里可以根据查询条件进行过滤，暂时先查询所有
             List<AdminUser> adminUsers = adminUserDao.queryAll();
             
-            // 鏍规嵁鏌ヨ鏉′欢杩涜杩囨护
+            // 根据查询条件进行过滤
             List<AdminUser> filteredUsers = adminUsers.stream()
                     .filter(user -> {
                         boolean match = true;
@@ -353,7 +353,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     })
                     .collect(Collectors.toList());
             
-            // 鍒嗛〉澶勭悊
+            // 分页处理
             int pageNum = request.getPageNum() != null ? request.getPageNum() : 1;
             int pageSize = request.getPageSize() != null ? request.getPageSize() : 10;
             int startIndex = (pageNum - 1) * pageSize;
@@ -370,7 +370,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鏉′欢鏌ヨ绠＄悊鍛樼敤鎴峰垪琛ㄥけ璐?, e);
+            log.error("根据条件查询管理员用户列表失败", e);
             return Response.<List<AdminUserResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -383,7 +383,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @GetMapping("/query-all")
     public Response<List<AdminUserResponseDTO>> queryAllAdminUsers() {
         try {
-            log.info("鏌ヨ鎵€鏈夌鐞嗗憳鐢ㄦ埛");
+            log.info("查询所有管理员用户");
             
             List<AdminUser> adminUsers = adminUserDao.queryAll();
             List<AdminUserResponseDTO> responseDTOs = adminUsers.stream()
@@ -396,7 +396,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏌ヨ鎵€鏈夌鐞嗗憳鐢ㄦ埛澶辫触", e);
+            log.error("查询所有管理员用户失败", e);
             return Response.<List<AdminUserResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -409,22 +409,22 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @PostMapping("/login")
     public Response<AdminUserResponseDTO> loginAdminUser(@RequestBody AdminUserLoginRequestDTO request) {
         try {
-            log.info("绠＄悊鍛樼敤鎴风櫥褰曡姹傦細{}", request.getUsername());
+            log.info("管理员用户登录请求：{}", request.getUsername());
             
             AdminUser adminUser = adminUserDao.queryByUsernameAndPassword(request.getUsername(), request.getPassword());
             if (adminUser == null) {
                 return Response.<AdminUserResponseDTO>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒")
+                        .info("用户名或密码错误")
                         .data(null)
                         .build();
             }
             
-            // 妫€鏌ョ敤鎴风姸鎬?
+            // 检查用户状态
             if (adminUser.getStatus() == 0) {
                 return Response.<AdminUserResponseDTO>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("鐢ㄦ埛宸茶绂佺敤")
+                        .info("用户已被禁用")
                         .data(null)
                         .build();
             }
@@ -432,7 +432,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
             if (adminUser.getStatus() == 2) {
                 return Response.<AdminUserResponseDTO>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("鐢ㄦ埛宸茶閿佸畾")
+                        .info("用户已被锁定")
                         .data(null)
                         .build();
             }
@@ -445,7 +445,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                     .data(responseDTO)
                     .build();
         } catch (Exception e) {
-            log.error("绠＄悊鍛樼敤鎴风櫥褰曞け璐?, e);
+            log.error("管理员用户登录失败", e);
             return Response.<AdminUserResponseDTO>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -458,18 +458,18 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     @PostMapping("/validate-login")
     public Response<Boolean> validateAdminUserLogin(@RequestBody AdminUserLoginRequestDTO request) {
         try {
-            log.info("绠＄悊鍛樼敤鎴风櫥褰曟牎楠岃姹傦細{}", request.getUsername());
+            log.info("管理员用户登录校验请求：{}", request.getUsername());
             
-            // 鍙傛暟鏍￠獙
+            // 参数校验
             if (!StringUtils.hasText(request.getUsername()) || !StringUtils.hasText(request.getPassword())) {
                 return Response.<Boolean>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("鐢ㄦ埛鍚嶆垨瀵嗙爜涓嶈兘涓虹┖")
+                        .info("用户名或密码不能为空")
                         .data(false)
                         .build();
             }
             
-            // 鏌ヨ鐢ㄦ埛
+            // 查询用户
             AdminUser adminUser = adminUserDao.queryByUsernameAndPassword(request.getUsername(), request.getPassword());
             if (adminUser == null) {
                 return Response.<Boolean>builder()
@@ -479,11 +479,11 @@ public class AdminUserAdminController implements IAdminUserAdminService {
                         .build();
             }
             
-            // 妫€鏌ョ敤鎴风姸鎬?
+            // 检查用户状态
             if (adminUser.getStatus() == 0) {
                 return Response.<Boolean>builder()
                         .code(ResponseCode.LOGIN_FAILED.getCode())
-                        .info("鐢ㄦ埛宸茶绂佺敤")
+                        .info("用户已被禁用")
                         .data(false)
                         .build();
             }
@@ -491,19 +491,19 @@ public class AdminUserAdminController implements IAdminUserAdminService {
             if (adminUser.getStatus() == 2) {
                 return Response.<Boolean>builder()
                         .code(ResponseCode.LOGIN_FAILED.getCode())
-                        .info("鐢ㄦ埛宸茶閿佸畾")
+                        .info("用户已被锁定")
                         .data(false)
                         .build();
             }
             
-            // 鐧诲綍鏍￠獙鎴愬姛
+            // 登录校验成功
             return Response.<Boolean>builder()
                     .code(ResponseCode.SUCCESS.getCode())
                     .info(ResponseCode.SUCCESS.getInfo())
                     .data(true)
                     .build();
         } catch (Exception e) {
-            log.error("绠＄悊鍛樼敤鎴风櫥褰曟牎楠屽け璐?, e);
+            log.error("管理员用户登录校验失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -513,7 +513,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     }
 
     /**
-     * DTO杞琍O
+     * DTO转PO
      */
     private AdminUser convertToAdminUser(AdminUserRequestDTO requestDTO) {
         AdminUser adminUser = new AdminUser();
@@ -522,7 +522,7 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     }
 
     /**
-     * PO杞珼TO
+     * PO转DTO
      */
     private AdminUserResponseDTO convertToAdminUserResponseDTO(AdminUser adminUser) {
         AdminUserResponseDTO responseDTO = new AdminUserResponseDTO();
@@ -531,4 +531,3 @@ public class AdminUserAdminController implements IAdminUserAdminService {
     }
 
 }
-

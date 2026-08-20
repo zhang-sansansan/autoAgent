@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.config;
+package cn.ann.ai.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -37,14 +37,14 @@ public class DataSourceConfig {
                     connectionTimeout,
             @Value("${spring.datasource.mysql.hikari.max-lifetime:1800000}") long maxLifetime) {
 
-        //HikariCP鏄洰鍓嶆€ц兘鏈€浼樼殑Java杩炴帴姹狅紝Spring Boot 2.x榛樿浣跨敤
-        //maximumPoolSize(10) 锛氫笟鍔″満鏅笅璁剧疆杈冨ぇ杩炴帴鏁帮紝鏀寔楂樺苟鍙戣闂?
-        //minimumIdle(5) 锛氫繚鎸佷竴瀹氭暟閲忕殑绌洪棽杩炴帴锛屾彁鍗囧搷搴旈€熷害
-        //idleTimeout(30绉? 锛氱┖闂茶繛鎺ヨ秴鏃堕噴鏀撅紝閬垮厤璧勬簮娴垂
-        //connectionTimeout(30绉? 锛氳幏鍙栬繛鎺ョ殑鏈€澶х瓑寰呮椂闂?
-        //maxLifetime(30鍒嗛挓) 锛氳繛鎺ョ殑鏈€澶у瓨娲绘椂闂达紝闃叉闀胯繛鎺ラ棶棰?
-        //鐪佸幓浜嗘彙鎵嬪拰楠岃瘉鐨勬椂闂达紝澶嶇敤杩炴帴
-        // 鍒涘缓HikariCP杩炴帴姹?
+        //HikariCP是目前性能最优的Java连接池，Spring Boot 2.x默认使用
+        //maximumPoolSize(10) ：业务场景下设置较大连接数，支持高并发访问
+        //minimumIdle(5) ：保持一定数量的空闲连接，提升响应速度
+        //idleTimeout(30秒) ：空闲连接超时释放，避免资源浪费
+        //connectionTimeout(30秒) ：获取连接的最大等待时间
+        //maxLifetime(30分钟) ：连接的最大存活时间，防止长连接问题
+        //省去了握手和验证的时间，复用连接
+        // 创建HikariCP连接池
 
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName(driverClassName);
@@ -52,26 +52,26 @@ public class DataSourceConfig {
         dataSource.setUsername(username);
         dataSource.setPassword(password);
 
-        // 杩炴帴姹犲弬鏁伴厤缃?
-        dataSource.setMaximumPoolSize(maximumPoolSize);     // 鏈€澶ц繛鎺ユ暟锛?0
-        dataSource.setMinimumIdle(minimumIdle);             // 鏈€灏忕┖闂茶繛鎺ユ暟锛?
-        dataSource.setIdleTimeout(idleTimeout);             // 绌洪棽瓒呮椂鏃堕棿锛?0绉?
-        dataSource.setConnectionTimeout(connectionTimeout); // 杩炴帴瓒呮椂鏃堕棿锛?0绉?
-        dataSource.setMaxLifetime(maxLifetime);             // 杩炴帴鏈€澶х敓鍛藉懆鏈燂細30鍒嗛挓
-        dataSource.setPoolName("MainHikariPool");           // 杩炴帴姹犲悕绉?
+        // 连接池参数配置
+        dataSource.setMaximumPoolSize(maximumPoolSize);     // 最大连接数：10
+        dataSource.setMinimumIdle(minimumIdle);             // 最小空闲连接数：5
+        dataSource.setIdleTimeout(idleTimeout);             // 空闲超时时间：30秒
+        dataSource.setConnectionTimeout(connectionTimeout); // 连接超时时间：30秒
+        dataSource.setMaxLifetime(maxLifetime);             // 连接最大生命周期：30分钟
+        dataSource.setPoolName("MainHikariPool");           // 连接池名称
 
         return dataSource;
     }
 
-    //@Qualifier("mysqlDataSource") 锛氭槑纭寚瀹氭敞鍏ュ悕涓?mysqlDataSource"鐨凚ean
-    //SqlSessionFactoryBean 锛歁yBatis涓嶴pring闆嗘垚鐨勬牳蹇冨伐鍘傜被
+    //@Qualifier("mysqlDataSource") ：明确指定注入名为"mysqlDataSource"的Bean
+    //SqlSessionFactoryBean ：MyBatis与Spring集成的核心工厂类
     @Bean("sqlSessionFactory")
     public SqlSessionFactoryBean sqlSessionFactory(@Qualifier("mysqlDataSource")DataSource mysqlDataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(mysqlDataSource);
 
-        //璁剧疆mybatis閰嶇疆鏂囦欢浣嶇疆鍜寈ml鏂囦欢浣嶇疆
-        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();//瑙ｆ瀽璺緞
+        //设置mybatis配置文件位置和xml文件位置
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();//解析路径
         sqlSessionFactoryBean.setConfigLocation(resolver.getResource("classpath:mybatis/config/mybatis-config.xml"));
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mybatis/mapper/*.xml"));
         return sqlSessionFactoryBean;
@@ -83,19 +83,19 @@ public class DataSourceConfig {
     }
 
 
-//    杩炴帴姹犱紭鍖栫瓥鐣ワ細
+//    连接池优化策略：
 //
-//    杩炴帴鏁拌缃緝灏忥紙鏈€澶?涓級锛屽洜涓哄悜閲忔煡璇㈤€氬父鏄绠楀瘑闆嗗瀷锛屼笉闇€瑕佸ぇ閲忓苟鍙戣繛鎺?
+//    连接数设置较小（最大5个），因为向量查询通常是计算密集型，不需要大量并发连接
 //
-//    閽堝AI鏌ヨ鍦烘櫙鐨勭壒鐐硅繘琛屼紭鍖栵紝閬垮厤璧勬簮娴垂
+//    针对AI查询场景的特点进行优化，避免资源浪费
 //
-//    蹇€熷け璐ユ満鍒讹細
+//    快速失败机制：
 //
-//    setInitializationFailTimeout(1) 锛氳缃?姣蹇€熷け璐?
+//    setInitializationFailTimeout(1) ：设置1毫秒快速失败
 //
-//    閬垮厤鍦ㄥ悜閲忓簱涓嶅彲鐢ㄦ椂闀挎椂闂寸瓑寰咃紝蹇€熷彂鐜伴棶棰?
+//    避免在向量库不可用时长时间等待，快速发现问题
 //
-//    setConnectionTestQuery("SELECT 1") 锛氱畝鍗曠殑杩炴帴鍋ュ悍妫€鏌?
+//    setConnectionTestQuery("SELECT 1") ：简单的连接健康检查
     @Bean("pgVectorDataSource")
     public DataSource pgVectorDataSource(
             @Value("${spring.datasource.pgvector.driver-class-name}") String driverClassName,
@@ -113,17 +113,17 @@ public class DataSourceConfig {
         dataSource.setUsername(username);
         dataSource.setPassword(password);
 
-        // 鍚戦噺搴撲笓鐢ㄨ繛鎺ユ睜閰嶇疆
-        dataSource.setMaximumPoolSize(maximumPoolSize);     // 杈冨皬杩炴帴鏁帮細5
-        dataSource.setMinimumIdle(minimumIdle);             // 杈冨皯绌洪棽杩炴帴锛?
+        // 向量库专用连接池配置
+        dataSource.setMaximumPoolSize(maximumPoolSize);     // 较小连接数：5
+        dataSource.setMinimumIdle(minimumIdle);             // 较少空闲连接：2
         dataSource.setIdleTimeout(idleTimeout);
         dataSource.setConnectionTimeout(connectionTimeout);
 
-        // 鍚戦噺搴撶壒娈婇厤缃?
-        dataSource.setInitializationFailTimeout(1);        // 1ms蹇€熷け璐?
-        dataSource.setConnectionTestQuery("SELECT 1");      // 杩炴帴娴嬭瘯鏌ヨ
-        dataSource.setAutoCommit(true);                     // 鑷姩鎻愪氦浜嬪姟
-        dataSource.setPoolName("PgVectorHikariPool");       // 杩炴帴姹犲悕绉?
+        // 向量库特殊配置
+        dataSource.setInitializationFailTimeout(1);        // 1ms快速失败
+        dataSource.setConnectionTestQuery("SELECT 1");      // 连接测试查询
+        dataSource.setAutoCommit(true);                     // 自动提交事务
+        dataSource.setPoolName("PgVectorHikariPool");       // 连接池名称
 
         return dataSource;
     }
@@ -133,4 +133,3 @@ public class DataSourceConfig {
         return new JdbcTemplate(dataSource);
     }
 }
-

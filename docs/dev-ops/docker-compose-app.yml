@@ -1,11 +1,11 @@
-﻿# /usr/local/bin/docker-compose -f /docs/dev-ops/environment/environment-docker-compose-2.4.yml up -d
+# /usr/local/bin/docker-compose -f /docs/dev-ops/environment/environment-docker-compose-2.4.yml up -d
 version: '3.8'
 # docker-compose -f docker-compose-app.yml up -d
-# 浣犻渶瑕佷慨鏀箂ystem涓轰綘鑷韩绯荤粺鐨勪粨搴撳悕
+# 你需要修改system为你自身系统的仓库名
 services:
-  # MCP 鏈嶅姟锛孋SDN 鍙戝笘锛屾敞鎰?CSDN_API_COOKIE 淇敼涓轰綘鐨勩€?
+  # MCP 服务，CSDN 发帖，注意 CSDN_API_COOKIE 修改为你的。
   mcp-server-csdn-app:
-    # 璇剧▼浠ｇ爜锛歨ttps://gitcode.net/KnowledgePlanet/mcp-server-csdn
+    # 课程代码：https://gitcode.net/KnowledgePlanet/mcp-server-csdn
     #    image: fuzhengwei/mcp-server-csdn-app:1.1
     image: registry.cn-hangzhou.aliyuncs.com/fuzhengwei/mcp-server-csdn-app:1.1
     container_name: mcp-server-csdn-app
@@ -17,8 +17,8 @@ services:
     environment:
       - TZ=PRC
       - SERVER_PORT=8101
-      - CSDN_API_CATEGORIES=Java鍦烘櫙闈㈣瘯瀹濆吀
-      - CSDN_API_COOKIE=${CSDN_API_COOKIE:}
+      - CSDN_API_CATEGORIES=Java场景面试宝典
+      - CSDN_API_COOKIE=uuid_tt_dd=10_20450780660-1736164896218-108686; UN=zhangsi0; fid=20_74966094115-1757920553847-899688; csdn_newcert_zhangsi0=1; c_dl_prid=1763354654044_971470; c_dl_rid=1764643984694_447086; c_dl_fref=https://blog.csdn.net/qy8189/article/details/135401947; c_dl_fpage=/download/weixin_38723753/14109286; c_dl_um=distribute.pc_search_result.none-task-blog-2%7Eall%7Efirst_rank_ecpm_v1%7Erank_v31_ecpm-1-135401947-null-null.142%5Ev102%5Econtrol; _clck=ti4656%5E2%5Eg29%5E0%5E1520; __gads=ID=92821a975a294305:T=1742900994:RT=1767014546:S=ALNI_MbRtYm_yXAkzWVlCli6xi25Z5CfJw; __gpi=UID=0000107345213107:T=1742900994:RT=1767014546:S=ALNI_MYfpsC2roqnwUfldr2B-U0n7a2T-Q; __eoi=ID=2318a2c9ea96c5ad:T=1757467282:RT=1767014546:S=AA-AfjZRQOUkc0jgPaxXWU6tD8hZ; FCCDCF=%5Bnull%2Cnull%2Cnull%2Cnull%2Cnull%2Cnull%2C%5B%5B32%2C%22%5B%5C%221960a60e-1b1b-46fb-ba51-6c055e6949cc%5C%22%2C%5B1763352363%2C764000000%5D%5D%22%5D%5D%5D; FCNEC=%5B%5B%22AKsRol95YwbFuJntMOv0iiiBHBrdXWrD9V_U0utDg9NTxmXCdQAYLKa9vA87Ew64MR5BK5WtlbTfJucBOTIFmnODH4ZYB0NWOyyc0eMhGJ3TIDQO2IXTIyd3twZH3izum_rQrWn3HCXBj9vlIxiQSNHE8o-uxzMEDg%3D%3D%22%5D%5D; dc_session_id=10_1768375409980.218182; c_pref=; c_ref=https%3A//www.bing.com/; c_first_ref=www.bing.com; c_first_page=https%3A//www.csdn.net/; c_dsid=11_1768375411760.723917; c_segment=14; c_page_id=default; c-sidebar-collapse=0; user_page_view_times=1; Hm_lvt_6bcd52f51e9b3dce32bec4a3997715ac=1767010195,1767014243,1767055133,1768375413; HMACCOUNT=44CF623267980854; hide_login=1; dc_sid=59d6d6d72965c81f9561b5e3854201e6; c_ab_test=1; loginbox_strategy=%7B%22taskId%22%3A317%2C%22abCheckTime%22%3A1768375418351%2C%22version%22%3A%22ExpA%22%2C%22nickName%22%3A%22yiann00%22%7D; SESSION=3a2bb3c9-f106-4c37-847f-0ed7fdb92dac; tfstk=gOUZfQ_7SNQai-6ua70V8wXOxLutAqW7IrMjiSVm1ADilGHmnSeKGENcBxc4LvibfxginZyudP41X-1q0-wx5-PA6jD0n-kbfM_7653xoTMVPaNO1v-JIRoim2v39j-GOc2y3s7ooT65RjXuP_001RZxfWVnpjlDsh2D-BDK_F0mImvHxbDnnq2mjwvngjJDIcciK6lxKx0mo-VhTjMnnq00nWD9Bq0JFbmG9EUIuT_ALzkusv8DzQhjjTPkc3xu8foay5DE_fzE_ckoASeCyP2QiPatvMKIkWZz3o2ldhMg4byEVlWy78ytiJu_rsItvm44uXEd3nkzm5Z8mD5GSWuZQ8zLKIxZ7o2TucEwM_FnSJE-ecjdpXz_Pmk-YpXgOWki4oy1pED_4W2EVy9BP4q8Lroorg-9HXmWmrEwnnoi9Xk5T67yvPW9lLBO4nKxXBhEF1nDDnni9Xk5T6-vDcdKTY1tm; creative_btn_mp=3; UserName=zhangsi0; UserInfo=1c54f6f6460a4c6290abd7f652976488; UserToken=1c54f6f6460a4c6290abd7f652976488; UserNick=yiann00; AU=461; BT=1768376987497; p_uid=U010000; log_Id_click=6; SESSION=ZDNkODAyNjUtZDU2YS00MWU0LWJiZDAtYzEyNWM0ZjJmY2E4; Hm_lpvt_6bcd52f51e9b3dce32bec4a3997715ac=1768377056; log_Id_view=135; dc_tos=t8ugi6; log_Id_pv=7
     logging:
       driver: "json-file"
       options:
@@ -27,8 +27,8 @@ services:
     networks:
       - my-network
 
-  # 璇剧▼浠ｇ爜锛歨ttps://gitcode.net/KnowledgePlanet/mcp-server-weixin
-  # MCP 鏈嶅姟锛屽井淇″叕浼楀彿閫氱煡锛屾敞鎰?environment 涓嬬殑寰俊閰嶇疆淇敼涓轰綘鐨?https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index
+  # 课程代码：https://gitcode.net/KnowledgePlanet/mcp-server-weixin
+  # MCP 服务，微信公众号通知，注意 environment 下的微信配置修改为你的 https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index
   mcp-server-weixin-app:
     #    image: fuzhengwei/mcp-server-weixin-app:1.1
     image: registry.cn-hangzhou.aliyuncs.com/fuzhengwei/mcp-server-weixin-app:1.1
@@ -43,7 +43,7 @@ services:
       - SERVER_PORT=8102
       - WEIXIN_API_ORIGINAL_ID=gh_e067c267e056
       - WEIXIN_API_APP_ID=wx5a228ff69e28a91f
-      - WEIXIN_API_APP_SECRET=${WEIXIN_API_APP_SECRET}
+      - WEIXIN_API_APP_SECRET=0bea03aa1310bac050aae79dd8703928
       - WEIXIN_API_TEMPLATE_ID=O8qI6gy75F-bXfPiQugInTMLA0MRzaMff9WSBb16cFk
       - WEIXIN_API_TOUSER=or0Ab6ivwmypESVp_bYuk92T6SvU
     logging:
@@ -57,4 +57,3 @@ services:
 networks:
   my-network:
     driver: bridge
-

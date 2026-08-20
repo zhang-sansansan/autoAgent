@@ -1,12 +1,12 @@
-﻿package cn.ann.ai.domain.agent.service;
+package cn.ann.ai.domain.agent.service;
 
 import cn.ann.ai.domain.agent.model.valobj.AiAgentTaskScheduleVO;
 
 import java.util.List;
 
 /**
- * 鏅鸿兘浣撴墽琛屼换鍔?
- * @author xiaofuge bugstack.cn @灏忓倕鍝?
+ * 智能体执行任务
+ * @author xiaofuge bugstack.cn @小傅哥
  * 2025/9/13 16:08
  */
 public interface ITaskService {
@@ -16,4 +16,3 @@ public interface ITaskService {
     List<Long> queryAllInvalidTaskScheduleIds();
 
 }
-

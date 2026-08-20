@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.armory.node;
+package cn.ann.ai.domain.agent.service.armory.node;
 
 import cn.ann.ai.domain.agent.adapter.repository.IAgentRepository;
 import cn.ann.ai.domain.agent.model.entity.ArmoryCommandEntity;
@@ -22,42 +22,42 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * @author zhang san
- * @description瑁呴厤鏀拺绫伙紝涓哄瓙绫绘暟鎹姞杞芥壙涓婂惎涓? 灏哛equest銆丆ontext銆丷esult閮界粰鍏蜂綋鐨勬寚瀹氬嚭鏉ヤ簡
- * 涓斿瓙绫绘湁鐨勫彧闇€瑕佺畝鍗曡绠椾笉闇€瑕佸紑鍚绾跨▼锛屾墍浠ョ粰multiThread浼犵┖
+ * @description装配支撑类，为子类数据加载承上启下  将Request、Context、Result都给具体的指定出来了
+ * 且子类有的只需要简单计算不需要开启多线程，所以给multiThread传空
  * @create 2026/1/16 11:22
  */
 public abstract class AbstractArmorySupport extends AbstractMultiThreadStrategyRouter<ArmoryCommandEntity, DefaultArmoryStrategyFactory.DynamicContext, String> {
     private final Logger log = LoggerFactory.getLogger(AbstractArmorySupport.class);
 
-    //灏嗛€氱敤璧勬簮娉ㄥ叆锛屽噺灏戦噸澶嶄唬鐮?
+    //将通用资源注入，减少重复代码
     @Resource
-    protected ApplicationContext applicationContext;//鍔ㄦ€佽幏鍙朆ean  spring瀹瑰櫒
+    protected ApplicationContext applicationContext;//动态获取Bean  spring容器
 
     @Resource
-    protected ThreadPoolExecutor threadPoolExecutor;//澶氱嚎绋嬪苟鍙?
+    protected ThreadPoolExecutor threadPoolExecutor;//多线程并发
 
     @Resource
-    protected IAgentRepository repository;//瀛愮被鏌ユ暟鎹簱
+    protected IAgentRepository repository;//子类查数据库
 
     @Override
     protected void multiThread(ArmoryCommandEntity requestParameter, DefaultArmoryStrategyFactory.DynamicContext dynamicContext) throws ExecutionException, InterruptedException, TimeoutException {
-        // 缂虹渷鐨?
+        // 缺省的
     }
 
-    //鍦ㄥ熀绫诲垱寤轰竴涓敞鍐宐ean鐨勬柟娉曪紝鍥犱负鍦ㄦ墽琛屽畬涓氬姟閫昏緫涔嬪悗锛岄渶瑕佽皟鐢ㄧ埗绫荤殑router鏂规硶锛屼笉鑳借繑鍥炵粨鏋滄敞鍐宐ean
+    //在基类创建一个注册bean的方法，因为在执行完业务逻辑之后，需要调用父类的router方法，不能返回结果注册bean
     protected synchronized <T> void registerBean(String beanName,Class<T>beanClass,T beanInstance){
         DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory)applicationContext.getAutowireCapableBeanFactory();
-        //浠庡鍣ㄤ腑鑾峰彇bean宸ュ巶
+        //从容器中获取bean工厂
         BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(beanClass, () -> beanInstance);
         AbstractBeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
-        //灏哹eanDefinition瀵硅薄鎷垮嚭鏉ョ洿鎺?
+        //将beanDefinition对象拿出来直接
         beanDefinition.setScope(BeanDefinition.SCOPE_SINGLETON);
         if(beanFactory.containsBeanDefinition(beanName)){
             beanFactory.removeBeanDefinition(beanName);
         }
         beanFactory.registerBeanDefinition(beanName, beanDefinition);
 
-        log.info("鎴愬姛娉ㄥ唽Bean: {}", beanName);
+        log.info("成功注册Bean: {}", beanName);
     }
 
     protected <T> T getBean(String beanName) {
@@ -65,7 +65,7 @@ public abstract class AbstractArmorySupport extends AbstractMultiThreadStrategyR
     }
 
     protected String beanName(String beanId){
-        //灏佽锛屾牴鎹産eanId鐩存帴浠庢灇涓剧被鑾峰緱baenName
+        //封装，根据beanId直接从枚举类获得baenName
         return null;
     }
 
@@ -76,4 +76,3 @@ public abstract class AbstractArmorySupport extends AbstractMultiThreadStrategyR
 
 
 }
-

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.trigger.http.admin;
+package cn.ann.ai.trigger.http.admin;
 
 import cn.ann.ai.api.IAiClientSystemPromptAdminService;
 import cn.ann.ai.api.dto.AiClientSystemPromptQueryRequestDTO;
@@ -19,9 +19,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 绯荤粺鎻愮ず璇嶉厤缃鐞嗘帶鍒跺櫒
+ * 系统提示词配置管理控制器
  *
- * @author bugstack铏礊鏍? * @description 绯荤粺鎻愮ず璇嶉厤缃鐞嗘帶鍒跺櫒
+ * @author bugstack虫洞栈
+ * @description 系统提示词配置管理控制器
  */
 @Slf4j
 @RestController
@@ -36,9 +37,9 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     @PostMapping("/create")
     public Response<Boolean> createAiClientSystemPrompt(@RequestBody AiClientSystemPromptRequestDTO request) {
         try {
-            log.info("鍒涘缓绯荤粺鎻愮ず璇嶉厤缃姹傦細{}", request);
+            log.info("创建系统提示词配置请求：{}", request);
             
-            // DTO杞琍O
+            // DTO转PO
             AiClientSystemPrompt aiClientSystemPrompt = convertToAiClientSystemPrompt(request);
             aiClientSystemPrompt.setCreateTime(LocalDateTime.now());
             aiClientSystemPrompt.setUpdateTime(LocalDateTime.now());
@@ -51,7 +52,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
                     .data(true)
                     .build();
         } catch (Exception e) {
-            log.error("鍒涘缓绯荤粺鎻愮ず璇嶉厤缃け璐?, e);
+            log.error("创建系统提示词配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -64,17 +65,17 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     @PutMapping("/update-by-id")
     public Response<Boolean> updateAiClientSystemPromptById(@RequestBody AiClientSystemPromptRequestDTO request) {
         try {
-            log.info("鏍规嵁ID鏇存柊绯荤粺鎻愮ず璇嶉厤缃姹傦細{}", request);
+            log.info("根据ID更新系统提示词配置请求：{}", request);
             
             if (request.getId() == null) {
                 return Response.<Boolean>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("ID涓嶈兘涓虹┖")
+                        .info("ID不能为空")
                         .data(false)
                         .build();
             }
             
-            // DTO杞琍O
+            // DTO转PO
             AiClientSystemPrompt aiClientSystemPrompt = convertToAiClientSystemPrompt(request);
             aiClientSystemPrompt.setUpdateTime(LocalDateTime.now());
             
@@ -86,7 +87,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁ID鏇存柊绯荤粺鎻愮ず璇嶉厤缃け璐?, e);
+            log.error("根据ID更新系统提示词配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -99,17 +100,17 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     @PutMapping("/update-by-prompt-id")
     public Response<Boolean> updateAiClientSystemPromptByPromptId(@RequestBody AiClientSystemPromptRequestDTO request) {
         try {
-            log.info("鏍规嵁鎻愮ず璇岻D鏇存柊绯荤粺鎻愮ず璇嶉厤缃姹傦細{}", request);
+            log.info("根据提示词ID更新系统提示词配置请求：{}", request);
             
             if (!StringUtils.hasText(request.getPromptId())) {
                 return Response.<Boolean>builder()
                         .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
-                        .info("鎻愮ず璇岻D涓嶈兘涓虹┖")
+                        .info("提示词ID不能为空")
                         .data(false)
                         .build();
             }
             
-            // DTO杞琍O
+            // DTO转PO
             AiClientSystemPrompt aiClientSystemPrompt = convertToAiClientSystemPrompt(request);
             aiClientSystemPrompt.setUpdateTime(LocalDateTime.now());
             
@@ -121,7 +122,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鎻愮ず璇岻D鏇存柊绯荤粺鎻愮ず璇嶉厤缃け璐?, e);
+            log.error("根据提示词ID更新系统提示词配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -134,7 +135,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     @DeleteMapping("/delete-by-id/{id}")
     public Response<Boolean> deleteAiClientSystemPromptById(@PathVariable("id") Long id) {
         try {
-            log.info("鏍规嵁ID鍒犻櫎绯荤粺鎻愮ず璇嶉厤缃細{}", id);
+            log.info("根据ID删除系统提示词配置：{}", id);
             
             int result = aiClientSystemPromptDao.deleteById(id);
             
@@ -144,7 +145,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁ID鍒犻櫎绯荤粺鎻愮ず璇嶉厤缃け璐?, e);
+            log.error("根据ID删除系统提示词配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -157,7 +158,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     @DeleteMapping("/delete-by-prompt-id/{promptId}")
     public Response<Boolean> deleteAiClientSystemPromptByPromptId(@PathVariable("promptId") String promptId) {
         try {
-            log.info("鏍规嵁鎻愮ず璇岻D鍒犻櫎绯荤粺鎻愮ず璇嶉厤缃細{}", promptId);
+            log.info("根据提示词ID删除系统提示词配置：{}", promptId);
             
             int result = aiClientSystemPromptDao.deleteByPromptId(promptId);
             
@@ -167,7 +168,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
                     .data(result > 0)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鎻愮ず璇岻D鍒犻櫎绯荤粺鎻愮ず璇嶉厤缃け璐?, e);
+            log.error("根据提示词ID删除系统提示词配置失败", e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -180,14 +181,14 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     @GetMapping("/query-by-id/{id}")
     public Response<AiClientSystemPromptResponseDTO> queryAiClientSystemPromptById(@PathVariable("id") Long id) {
         try {
-            log.info("鏍规嵁ID鏌ヨ绯荤粺鎻愮ず璇嶉厤缃細{}", id);
+            log.info("根据ID查询系统提示词配置：{}", id);
             
             AiClientSystemPrompt aiClientSystemPrompt = aiClientSystemPromptDao.queryById(id);
             
             if (aiClientSystemPrompt == null) {
                 return Response.<AiClientSystemPromptResponseDTO>builder()
                         .code(ResponseCode.UN_ERROR.getCode())
-                        .info("鏁版嵁涓嶅瓨鍦?)
+                        .info("数据不存在")
                         .data(null)
                         .build();
             }
@@ -200,7 +201,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
                     .data(responseDTO)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁ID鏌ヨ绯荤粺鎻愮ず璇嶉厤缃け璐?, e);
+            log.error("根据ID查询系统提示词配置失败", e);
             return Response.<AiClientSystemPromptResponseDTO>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -213,14 +214,14 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     @GetMapping("/query-by-prompt-id/{promptId}")
     public Response<AiClientSystemPromptResponseDTO> queryAiClientSystemPromptByPromptId(@PathVariable("promptId") String promptId) {
         try {
-            log.info("鏍规嵁鎻愮ず璇岻D鏌ヨ绯荤粺鎻愮ず璇嶉厤缃細{}", promptId);
+            log.info("根据提示词ID查询系统提示词配置：{}", promptId);
             
             AiClientSystemPrompt aiClientSystemPrompt = aiClientSystemPromptDao.queryByPromptId(promptId);
             
             if (aiClientSystemPrompt == null) {
                 return Response.<AiClientSystemPromptResponseDTO>builder()
                         .code(ResponseCode.UN_ERROR.getCode())
-                        .info("绯荤粺鎻愮ず璇嶉厤缃笉瀛樺湪")
+                        .info("系统提示词配置不存在")
                         .data(null)
                         .build();
             }
@@ -233,7 +234,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
                     .data(responseDTO)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鎻愮ず璇岻D鏌ヨ绯荤粺鎻愮ず璇嶉厤缃け璐?, e);
+            log.error("根据提示词ID查询系统提示词配置失败", e);
             return Response.<AiClientSystemPromptResponseDTO>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -246,7 +247,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     @GetMapping("/query-all")
     public Response<List<AiClientSystemPromptResponseDTO>> queryAllAiClientSystemPrompts() {
         try {
-            log.info("鏌ヨ鎵€鏈夌郴缁熸彁绀鸿瘝閰嶇疆");
+            log.info("查询所有系统提示词配置");
             
             List<AiClientSystemPrompt> aiClientSystemPrompts = aiClientSystemPromptDao.queryAll();
             
@@ -260,7 +261,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏌ヨ鎵€鏈夌郴缁熸彁绀鸿瘝閰嶇疆澶辫触", e);
+            log.error("查询所有系统提示词配置失败", e);
             return Response.<List<AiClientSystemPromptResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -273,7 +274,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     @GetMapping("/query-enabled")
     public Response<List<AiClientSystemPromptResponseDTO>> queryEnabledAiClientSystemPrompts() {
         try {
-            log.info("鏌ヨ鍚敤鐨勭郴缁熸彁绀鸿瘝閰嶇疆");
+            log.info("查询启用的系统提示词配置");
             
             List<AiClientSystemPrompt> aiClientSystemPrompts = aiClientSystemPromptDao.queryEnabledPrompts();
             
@@ -287,7 +288,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏌ヨ鍚敤鐨勭郴缁熸彁绀鸿瘝閰嶇疆澶辫触", e);
+            log.error("查询启用的系统提示词配置失败", e);
             return Response.<List<AiClientSystemPromptResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -300,7 +301,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     @GetMapping("/query-by-prompt-name/{promptName}")
     public Response<List<AiClientSystemPromptResponseDTO>> queryAiClientSystemPromptsByPromptName(@PathVariable("promptName") String promptName) {
         try {
-            log.info("鏍规嵁鎻愮ず璇嶅悕绉版煡璇㈢郴缁熸彁绀鸿瘝閰嶇疆锛歿}", promptName);
+            log.info("根据提示词名称查询系统提示词配置：{}", promptName);
             
             List<AiClientSystemPrompt> aiClientSystemPrompts = aiClientSystemPromptDao.queryByPromptName(promptName);
             
@@ -314,7 +315,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鎻愮ず璇嶅悕绉版煡璇㈢郴缁熸彁绀鸿瘝閰嶇疆澶辫触", e);
+            log.error("根据提示词名称查询系统提示词配置失败", e);
             return Response.<List<AiClientSystemPromptResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -327,30 +328,34 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     @PostMapping("/query-list")
     public Response<List<AiClientSystemPromptResponseDTO>> queryAiClientSystemPromptList(@RequestBody AiClientSystemPromptQueryRequestDTO request) {
         try {
-            log.info("鏍规嵁鏉′欢鏌ヨ绯荤粺鎻愮ず璇嶉厤缃垪琛細{}", request);
+            log.info("根据条件查询系统提示词配置列表：{}", request);
             
-            // 鏍规嵁鏌ヨ鏉′欢鏋勫缓鏌ヨ閫昏緫
+            // 根据查询条件构建查询逻辑
             List<AiClientSystemPrompt> aiClientSystemPrompts;
             
             if (StringUtils.hasText(request.getPromptId())) {
-                // 鏍规嵁鎻愮ず璇岻D鏌ヨ
+                // 根据提示词ID查询
                 AiClientSystemPrompt prompt = aiClientSystemPromptDao.queryByPromptId(request.getPromptId());
                 aiClientSystemPrompts = prompt != null ? List.of(prompt) : List.of();
             } else if (StringUtils.hasText(request.getPromptName())) {
-                // 鏍规嵁鎻愮ず璇嶅悕绉版煡璇?                aiClientSystemPrompts = aiClientSystemPromptDao.queryByPromptName(request.getPromptName());
+                // 根据提示词名称查询
+                aiClientSystemPrompts = aiClientSystemPromptDao.queryByPromptName(request.getPromptName());
             } else if (request.getStatus() != null) {
-                // 鏍规嵁鐘舵€佹煡璇?                if (request.getStatus() == 1) {
+                // 根据状态查询
+                if (request.getStatus() == 1) {
                     aiClientSystemPrompts = aiClientSystemPromptDao.queryEnabledPrompts();
                 } else {
-                    // 鏌ヨ鎵€鏈夌劧鍚庤繃婊?                    aiClientSystemPrompts = aiClientSystemPromptDao.queryAll().stream()
+                    // 查询所有然后过滤
+                    aiClientSystemPrompts = aiClientSystemPromptDao.queryAll().stream()
                             .filter(prompt -> prompt.getStatus().equals(request.getStatus()))
                             .collect(Collectors.toList());
                 }
             } else {
-                // 鏌ヨ鎵€鏈?                aiClientSystemPrompts = aiClientSystemPromptDao.queryAll();
+                // 查询所有
+                aiClientSystemPrompts = aiClientSystemPromptDao.queryAll();
             }
             
-            // 搴旂敤鐘舵€佽繃婊わ紙濡傛灉鏈夊叾浠栨潯浠剁殑璇濓級
+            // 应用状态过滤（如果有其他条件的话）
             if (request.getStatus() != null && !StringUtils.hasText(request.getPromptId()) && !StringUtils.hasText(request.getPromptName())) {
                 aiClientSystemPrompts = aiClientSystemPrompts.stream()
                         .filter(prompt -> prompt.getStatus().equals(request.getStatus()))
@@ -367,7 +372,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
                     .data(responseDTOs)
                     .build();
         } catch (Exception e) {
-            log.error("鏍规嵁鏉′欢鏌ヨ绯荤粺鎻愮ず璇嶉厤缃垪琛ㄥけ璐?, e);
+            log.error("根据条件查询系统提示词配置列表失败", e);
             return Response.<List<AiClientSystemPromptResponseDTO>>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -377,7 +382,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     }
 
     /**
-     * DTO杞琍O瀵硅薄
+     * DTO转PO对象
      */
     private AiClientSystemPrompt convertToAiClientSystemPrompt(AiClientSystemPromptRequestDTO requestDTO) {
         AiClientSystemPrompt aiClientSystemPrompt = new AiClientSystemPrompt();
@@ -386,7 +391,7 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     }
 
     /**
-     * PO杞珼TO瀵硅薄
+     * PO转DTO对象
      */
     private AiClientSystemPromptResponseDTO convertToAiClientSystemPromptResponseDTO(AiClientSystemPrompt aiClientSystemPrompt) {
         AiClientSystemPromptResponseDTO responseDTO = new AiClientSystemPromptResponseDTO();
@@ -395,4 +400,3 @@ public class AiClientSystemPromptAdminController implements IAiClientSystemPromp
     }
 
 }
-

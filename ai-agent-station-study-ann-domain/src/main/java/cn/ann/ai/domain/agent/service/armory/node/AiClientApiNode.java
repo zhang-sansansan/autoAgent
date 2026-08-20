@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.armory.node;
+package cn.ann.ai.domain.agent.service.armory.node;
 
 import cn.ann.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import cn.ann.ai.domain.agent.model.valobj.AiClientApiVO;
@@ -23,17 +23,17 @@ public class AiClientApiNode extends AbstractArmorySupport{
     private AiClientToolMcpNode aiClientToolMcpNode;
     @Override
     protected String doApply(ArmoryCommandEntity requestParameter, DefaultArmoryStrategyFactory.DynamicContext dynamicContext) throws Exception {
-        log.info("Ai Agent 鏋勫缓锛孉PI 鏋勫缓鑺傜偣 {}", JSON.toJSONString(requestParameter));
+        log.info("Ai Agent 构建，API 构建节点 {}", JSON.toJSONString(requestParameter));
 
         List<AiClientApiVO> aiClientApiList = dynamicContext.getValue(AiAgentEnumVO.AI_CLIENT_API.getDataName());
 
         if (aiClientApiList == null || aiClientApiList.isEmpty()) {
-            log.warn("娌℃湁闇€瑕佽鍒濆鍖栫殑 ai client api");
+            log.warn("没有需要被初始化的 ai client api");
             return null;
         }
 
         for (AiClientApiVO aiClientApiVO : aiClientApiList) {
-            // 鏋勫缓 OpenAiApi
+            // 构建 OpenAiApi
             OpenAiApi openAiApi = OpenAiApi.builder()
                     .baseUrl(aiClientApiVO.getBaseUrl())
                     .apiKey(aiClientApiVO.getApiKey())
@@ -41,7 +41,7 @@ public class AiClientApiNode extends AbstractArmorySupport{
                     .embeddingsPath(aiClientApiVO.getEmbeddingsPath())
                     .build();
 
-            // 娉ㄥ唽 OpenAiApi Bean 瀵硅薄
+            // 注册 OpenAiApi Bean 对象
             registerBean(AiAgentEnumVO.AI_CLIENT_API.getBeanName(aiClientApiVO.getApiId()), OpenAiApi.class, openAiApi);
         }
 
@@ -63,4 +63,3 @@ public class AiClientApiNode extends AbstractArmorySupport{
         return aiClientToolMcpNode;
     }
 }
-

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.dto;
+package cn.ann.ai.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,4 +24,3 @@ public class AiClientApiQueryRequestDTO implements Serializable {
     private Integer status;
 
 }
-

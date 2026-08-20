@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.infrastructure.dao;
+package cn.ann.ai.infrastructure.dao;
 
 import cn.ann.ai.infrastructure.dao.po.AiAgentTaskSchedule;
 import org.apache.ibatis.annotations.Mapper;
@@ -6,70 +6,83 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * 鏅鸿兘浣撲换鍔¤皟搴﹂厤缃〃 DAO
- * @author bugstack铏礊鏍? * @description 鏅鸿兘浣撲换鍔¤皟搴﹂厤缃〃鏁版嵁璁块棶瀵硅薄
+ * 智能体任务调度配置表 DAO
+ * @author bugstack虫洞栈
+ * @description 智能体任务调度配置表数据访问对象
  */
 @Mapper
 public interface IAiAgentTaskScheduleDao {
 
     /**
-     * 鎻掑叆鏅鸿兘浣撲换鍔¤皟搴﹂厤缃?     * @param aiAgentTaskSchedule 鏅鸿兘浣撲换鍔¤皟搴﹂厤缃璞?     * @return 褰卞搷琛屾暟
+     * 插入智能体任务调度配置
+     * @param aiAgentTaskSchedule 智能体任务调度配置对象
+     * @return 影响行数
      */
     int insert(AiAgentTaskSchedule aiAgentTaskSchedule);
 
     /**
-     * 鏍规嵁ID鏇存柊鏅鸿兘浣撲换鍔¤皟搴﹂厤缃?     * @param aiAgentTaskSchedule 鏅鸿兘浣撲换鍔¤皟搴﹂厤缃璞?     * @return 褰卞搷琛屾暟
+     * 根据ID更新智能体任务调度配置
+     * @param aiAgentTaskSchedule 智能体任务调度配置对象
+     * @return 影响行数
      */
     int updateById(AiAgentTaskSchedule aiAgentTaskSchedule);
 
     /**
-     * 鏍规嵁ID鍒犻櫎鏅鸿兘浣撲换鍔¤皟搴﹂厤缃?     * @param id 涓婚敭ID
-     * @return 褰卞搷琛屾暟
+     * 根据ID删除智能体任务调度配置
+     * @param id 主键ID
+     * @return 影响行数
      */
     int deleteById(Long id);
 
     /**
-     * 鏍规嵁鏅鸿兘浣揑D鍒犻櫎浠诲姟璋冨害閰嶇疆
-     * @param agentId 鏅鸿兘浣揑D
-     * @return 褰卞搷琛屾暟
+     * 根据智能体ID删除任务调度配置
+     * @param agentId 智能体ID
+     * @return 影响行数
      */
     int deleteByAgentId(Long agentId);
 
     /**
-     * 鏍规嵁ID鏌ヨ鏅鸿兘浣撲换鍔¤皟搴﹂厤缃?     * @param id 涓婚敭ID
-     * @return 鏅鸿兘浣撲换鍔¤皟搴﹂厤缃璞?     */
+     * 根据ID查询智能体任务调度配置
+     * @param id 主键ID
+     * @return 智能体任务调度配置对象
+     */
     AiAgentTaskSchedule queryById(Long id);
 
     /**
-     * 鏍规嵁鏅鸿兘浣揑D鏌ヨ浠诲姟璋冨害閰嶇疆鍒楄〃
-     * @param agentId 鏅鸿兘浣揑D
-     * @return 鏅鸿兘浣撲换鍔¤皟搴﹂厤缃垪琛?     */
+     * 根据智能体ID查询任务调度配置列表
+     * @param agentId 智能体ID
+     * @return 智能体任务调度配置列表
+     */
     List<AiAgentTaskSchedule> queryByAgentId(Long agentId);
 
     /**
-     * 鏌ヨ鎵€鏈夋湁鏁堢殑浠诲姟璋冨害閰嶇疆
-     * @return 鏅鸿兘浣撲换鍔¤皟搴﹂厤缃垪琛?     */
+     * 查询所有有效的任务调度配置
+     * @return 智能体任务调度配置列表
+     */
     List<AiAgentTaskSchedule> queryEnabledTasks();
 
     /**
-     * 鏍规嵁浠诲姟鍚嶇О鏌ヨ浠诲姟璋冨害閰嶇疆
-     * @param taskName 浠诲姟鍚嶇О
-     * @return 鏅鸿兘浣撲换鍔¤皟搴﹂厤缃璞?     */
+     * 根据任务名称查询任务调度配置
+     * @param taskName 任务名称
+     * @return 智能体任务调度配置对象
+     */
     AiAgentTaskSchedule queryByTaskName(String taskName);
 
     /**
-     * 鏌ヨ鎵€鏈夋櫤鑳戒綋浠诲姟璋冨害閰嶇疆
-     * @return 鏅鸿兘浣撲换鍔¤皟搴﹂厤缃垪琛?     */
+     * 查询所有智能体任务调度配置
+     * @return 智能体任务调度配置列表
+     */
     List<AiAgentTaskSchedule> queryAll();
 
     /**
-     * 鏌ヨ鎵€鏈夋湁鏁堢殑浠诲姟璋冨害閰嶇疆
-     * @return 鏅鸿兘浣撲换鍔¤皟搴﹂厤缃垪琛?     */
+     * 查询所有有效的任务调度配置
+     * @return 智能体任务调度配置列表
+     */
     List<AiAgentTaskSchedule> queryAllValidTaskSchedule();
 
     /**
-     * 鏌ヨ鎵€鏈夋棤鏁堢殑浠诲姟璋冨害閰嶇疆ID
-     * @return 鏃犳晥浠诲姟璋冨害閰嶇疆ID鍒楄〃
+     * 查询所有无效的任务调度配置ID
+     * @return 无效任务调度配置ID列表
      */
     List<Long> queryAllInvalidTaskScheduleIds();
 

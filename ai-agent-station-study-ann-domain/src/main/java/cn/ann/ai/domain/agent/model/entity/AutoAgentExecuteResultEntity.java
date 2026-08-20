@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.entity;
+package cn.ann.ai.domain.agent.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,9 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * AutoAgent 鎵ц缁撴灉瀹炰綋
+ * AutoAgent 执行结果实体
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? */
+ * @author xiaofuge bugstack.cn @小傅哥
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -16,43 +17,58 @@ import lombok.NoArgsConstructor;
 public class AutoAgentExecuteResultEntity {
 
     /**
-     * 鏁版嵁绫诲瀷锛歛nalysis(鍒嗘瀽闃舵), execution(鎵ц闃舵), supervision(鐩戠潱闃舵), summary(鎬荤粨闃舵), error(閿欒淇℃伅), complete(瀹屾垚鏍囪瘑)
-     * 缁嗗垎绫诲瀷锛歛nalysis_status(浠诲姟鐘舵€佸垎鏋?, analysis_history(鎵ц鍘嗗彶璇勪及), analysis_strategy(涓嬩竴姝ョ瓥鐣?, analysis_progress(瀹屾垚搴﹁瘎浼?
-     *          execution_target(鎵ц鐩爣), execution_process(鎵ц杩囩▼), execution_result(鎵ц缁撴灉), execution_quality(璐ㄩ噺妫€鏌?
-     *          supervision_assessment(璐ㄩ噺璇勪及), supervision_issues(闂璇嗗埆), supervision_suggestions(鏀硅繘寤鸿), supervision_score(璐ㄩ噺璇勫垎)
+     * 数据类型：content(回答增量), analysis(分析阶段), execution(执行阶段), supervision(监督阶段), summary(总结阶段), error(错误信息), complete(完成标识)
+     * 细分类型：analysis_status(任务状态分析), analysis_history(执行历史评估), analysis_strategy(下一步策略), analysis_progress(完成度评估)
+     *          execution_target(执行目标), execution_process(执行过程), execution_result(执行结果), execution_quality(质量检查)
+     *          supervision_assessment(质量评估), supervision_issues(问题识别), supervision_suggestions(改进建议), supervision_score(质量评分)
      */
     private String type;
 
     /**
-     * 瀛愮被鍨嬫爣璇嗭紝鐢ㄤ簬鍓嶇缁嗙矑搴﹀睍绀?     */
+     * 子类型标识，用于前端细粒度展示
+     */
     private String subType;
 
     /**
-     * 褰撳墠姝ラ
+     * 当前步骤
      */
     private Integer step;
 
     /**
-     * 鏁版嵁鍐呭
+     * 数据内容
      */
     private String content;
 
     /**
-     * 鏄惁瀹屾垚
+     * 是否完成
      */
     private Boolean completed;
 
     /**
-     * 鏃堕棿鎴?     */
+     * 时间戳
+     */
     private Long timestamp;
 
     /**
-     * 浼氳瘽ID
+     * 会话ID
      */
     private String sessionId;
 
     /**
-     * 鍒涘缓鍒嗘瀽闃舵缁撴灉
+     * 创建回答内容增量
+     */
+    public static AutoAgentExecuteResultEntity createContentResult(String content, String sessionId) {
+        return AutoAgentExecuteResultEntity.builder()
+                .type("content")
+                .content(content)
+                .completed(false)
+                .timestamp(System.currentTimeMillis())
+                .sessionId(sessionId)
+                .build();
+    }
+
+    /**
+     * 创建分析阶段结果
      */
     public static AutoAgentExecuteResultEntity createAnalysisResult(Integer step, String content, String sessionId) {
         return AutoAgentExecuteResultEntity.builder()
@@ -66,7 +82,7 @@ public class AutoAgentExecuteResultEntity {
     }
 
     /**
-     * 鍒涘缓鍒嗘瀽闃舵缁嗗垎缁撴灉
+     * 创建分析阶段细分结果
      */
     public static AutoAgentExecuteResultEntity createAnalysisSubResult(Integer step, String subType, String content, String sessionId) {
         return AutoAgentExecuteResultEntity.builder()
@@ -81,7 +97,7 @@ public class AutoAgentExecuteResultEntity {
     }
 
     /**
-     * 鍒涘缓鎵ц闃舵缁撴灉
+     * 创建执行阶段结果
      */
     public static AutoAgentExecuteResultEntity createExecutionResult(Integer step, String content, String sessionId) {
         return AutoAgentExecuteResultEntity.builder()
@@ -95,7 +111,7 @@ public class AutoAgentExecuteResultEntity {
     }
 
     /**
-     * 鍒涘缓鎵ц闃舵缁嗗垎缁撴灉
+     * 创建执行阶段细分结果
      */
     public static AutoAgentExecuteResultEntity createExecutionSubResult(Integer step, String subType, String content, String sessionId) {
         return AutoAgentExecuteResultEntity.builder()
@@ -110,7 +126,7 @@ public class AutoAgentExecuteResultEntity {
     }
 
     /**
-     * 鍒涘缓鐩戠潱闃舵缁撴灉
+     * 创建监督阶段结果
      */
     public static AutoAgentExecuteResultEntity createSupervisionResult(Integer step, String content, String sessionId) {
         return AutoAgentExecuteResultEntity.builder()
@@ -124,7 +140,7 @@ public class AutoAgentExecuteResultEntity {
     }
 
     /**
-     * 鍒涘缓鐩戠潱闃舵缁嗗垎缁撴灉
+     * 创建监督阶段细分结果
      */
     public static AutoAgentExecuteResultEntity createSupervisionSubResult(Integer step, String subType, String content, String sessionId) {
         return AutoAgentExecuteResultEntity.builder()
@@ -139,7 +155,8 @@ public class AutoAgentExecuteResultEntity {
     }
 
     /**
-     * 鍒涘缓鎬荤粨闃舵缁嗗垎鐨勭粨鏋?     */
+     * 创建总结阶段细分的结果
+     */
     public static AutoAgentExecuteResultEntity createSummarySubResult(String subType, String content, String sessionId) {
         return AutoAgentExecuteResultEntity.builder()
                 .type("summary")
@@ -153,7 +170,7 @@ public class AutoAgentExecuteResultEntity {
     }
 
     /**
-     * 鍒涘缓鎬荤粨闃舵缁撴灉
+     * 创建总结阶段结果
      */
     public static AutoAgentExecuteResultEntity createSummaryResult(String content, String sessionId) {
         return AutoAgentExecuteResultEntity.builder()
@@ -167,7 +184,7 @@ public class AutoAgentExecuteResultEntity {
     }
 
     /**
-     * 鍒涘缓閿欒缁撴灉
+     * 创建错误结果
      */
     public static AutoAgentExecuteResultEntity createErrorResult(String content, String sessionId) {
         return AutoAgentExecuteResultEntity.builder()
@@ -181,13 +198,13 @@ public class AutoAgentExecuteResultEntity {
     }
 
     /**
-     * 鍒涘缓瀹屾垚鏍囪瘑
+     * 创建完成标识
      */
     public static AutoAgentExecuteResultEntity createCompleteResult(String sessionId) {
         return AutoAgentExecuteResultEntity.builder()
                 .type("complete")
                 .step(null)
-                .content("鎵ц瀹屾垚")
+                .content("执行完成")
                 .completed(true)
                 .timestamp(System.currentTimeMillis())
                 .sessionId(sessionId)

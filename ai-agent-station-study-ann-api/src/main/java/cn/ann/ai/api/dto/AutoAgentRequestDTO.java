@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.dto;
+package cn.ann.ai.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,23 +22,22 @@ public class AutoAgentRequestDTO {
     private static final long serialVersionUID = 1L;
 
     /**
-     * AI鏅鸿兘浣揑D
+     * AI智能体ID
      */
     private String aiAgentId;
 
     /**
-     * 鐢ㄦ埛娑堟伅
+     * 用户消息
      */
     private String message;
 
     /**
-     * 浼氳瘽ID
+     * 会话ID
      */
     private String sessionId;
 
     /**
-     * 鏈€澶ф墽琛屾鏁?
+     * 最大执行步数
      */
     private Integer maxStep;
 }
-

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.armory;
+package cn.ann.ai.domain.agent.service.armory;
 
 import cn.ann.ai.domain.agent.adapter.repository.IAgentRepository;
 import cn.ann.ai.domain.agent.model.entity.ArmoryCommandEntity;
@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 瑁呴厤鏈嶅姟
+ * 装配服务
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝?
+ * @author xiaofuge bugstack.cn @小傅哥
  * 2025/10/3 12:50
  */
 @Service
@@ -44,7 +44,7 @@ public class ArmoryService implements IArmoryService {
         List<AiAgentClientFlowConfigVO> aiAgentClientFlowConfigVOS = repository.queryAiAgentClientsByAgentId(agentId);
         if (aiAgentClientFlowConfigVOS.isEmpty()) return;
 
-        // 鑾峰彇瀹㈡埛绔泦鍚?
+        // 获取客户端集合
         List<String> commandIdList = aiAgentClientFlowConfigVOS.stream()
                 .map(AiAgentClientFlowConfigVO::getClientId)
                 .collect(Collectors.toList());
@@ -60,7 +60,7 @@ public class ArmoryService implements IArmoryService {
                             .build(),
                     new DefaultArmoryStrategyFactory.DynamicContext());
         } catch (Exception e) {
-            throw new RuntimeException("瑁呴厤鏅鸿兘浣撳け璐?, e);
+            throw new RuntimeException("装配智能体失败", e);
         }
     }
 
@@ -70,4 +70,3 @@ public class ArmoryService implements IArmoryService {
     }
 
 }
-

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.execute.auto.step;
+package cn.ann.ai.domain.agent.service.execute.auto.step;
 
 import cn.ann.ai.domain.agent.adapter.repository.IAgentRepository;
 import cn.ann.ai.domain.agent.model.entity.AutoAgentExecuteResultEntity;
@@ -19,7 +19,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/7/27 16:48
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/7/27 16:48
  */
 public abstract class AbstractExecuteSupport extends AbstractMultiThreadStrategyRouter<ExecuteCommandEntity, DefaultAutoAgentExecuteStrategyFactory.DynamicContext, String> {
 
@@ -48,21 +49,22 @@ public abstract class AbstractExecuteSupport extends AbstractMultiThreadStrategy
     }
 
     /**
-     * 閫氱敤鐨凷SE缁撴灉鍙戦€佹柟娉?     * @param dynamicContext 鍔ㄦ€佷笂涓嬫枃
-     * @param result 瑕佸彂閫佺殑缁撴灉瀹炰綋
+     * 通用的SSE结果发送方法
+     * @param dynamicContext 动态上下文
+     * @param result 要发送的结果实体
      */
     protected void sendSseResult(DefaultAutoAgentExecuteStrategyFactory.DynamicContext dynamicContext, 
                                 AutoAgentExecuteResultEntity result) {
         try {
             ResponseBodyEmitter emitter = dynamicContext.getValue("emitter");
             if (emitter != null) {
-                // 鍙戦€丼SE鏍煎紡鐨勬暟鎹?                String sseData = "data: " + JSON.toJSONString(result) + "\n\n";
+                // 发送SSE格式的数据
+                String sseData = "data: " + JSON.toJSONString(result) + "\n\n";
                 emitter.send(sseData);
             }
         } catch (IOException e) {
-            log.error("鍙戦€丼SE缁撴灉澶辫触锛歿}", e.getMessage(), e);
+            log.error("发送SSE结果失败：{}", e.getMessage(), e);
         }
     }
 
 }
-

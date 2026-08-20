@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.valobj;
+package cn.ann.ai.domain.agent.model.valobj;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,8 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * AI 鎻愮ず璇?鍔ㄦ€佽鍒掞紝鍊煎璞? *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/6/27 18:45
+ * AI 提示词&动态规划，值对象
+ *
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/6/27 18:45
  */
 @Data
 @Builder
@@ -16,23 +18,24 @@ import lombok.NoArgsConstructor;
 public class AiClientSystemPromptVO {
 
     /**
-     * 鎻愮ず璇岻D
+     * 提示词ID
      */
     private String promptId;
 
     /**
-     * 鎻愮ず璇嶅悕绉?     */
+     * 提示词名称
+     */
     private String promptName;
 
     /**
-     * 鎻愮ず璇嶅唴瀹?     */
+     * 提示词内容
+     */
     private String promptContent;
 
     /**
-     * 鎻忚堪
+     * 描述
      */
     private String description;
 
 
 }
-

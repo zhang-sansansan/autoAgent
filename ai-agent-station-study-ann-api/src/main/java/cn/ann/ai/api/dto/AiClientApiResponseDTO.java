@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.api.dto;
+package cn.ann.ai.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,4 +37,3 @@ public class AiClientApiResponseDTO implements Serializable {
     private LocalDateTime updateTime;
 
 }
-

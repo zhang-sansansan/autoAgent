@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.trigger.job;
+package cn.ann.ai.trigger.job;
 
 import cn.ann.ai.domain.agent.model.entity.ExecuteCommandEntity;
 import cn.ann.ai.domain.agent.model.valobj.AiAgentTaskScheduleVO;
@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 鏅鸿兘浣撲换鍔?
+ * 智能体任务
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝?
+ * @author xiaofuge bugstack.cn @小傅哥
  * 2025/9/13 15:52
  */
 @Slf4j
@@ -49,7 +49,7 @@ public class AgentTaskJob implements ITaskDataProvider {
                                     .maxStep(1)
                                     .build(), new ResponseBodyEmitter());
                 } catch (Exception e) {
-                    log.error("浠诲姟鎵ц澶辫触", e);
+                    log.error("任务执行失败", e);
                 }
 
             });
@@ -65,4 +65,3 @@ public class AgentTaskJob implements ITaskDataProvider {
     }
 
 }
-

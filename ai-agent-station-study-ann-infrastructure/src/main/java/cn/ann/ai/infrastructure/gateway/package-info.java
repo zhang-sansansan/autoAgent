@@ -1,4 +1,4 @@
-﻿/**
- * 瀹氫箟http銆乺pc鎺ュ彛锛岃皟鐢ㄥ閮ㄣ€傚湪 adapter 涓皟鐢ㄨ繖閮ㄥ垎鍐呭銆?
+/**
+ * 定义http、rpc接口，调用外部。在 adapter 中调用这部分内容。
  */
 package cn.ann.ai.infrastructure.gateway;

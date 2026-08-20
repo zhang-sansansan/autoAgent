@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.types.job.service;
+package cn.ann.ai.types.job.service;
 
 import cn.ann.ai.types.job.model.TaskScheduleVO;
 import cn.ann.ai.types.job.provider.ITaskDataProvider;
@@ -15,8 +15,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
 /**
- * 浠诲姟璋冨害鏈嶅姟瀹炵幇绫? *
- * @author @灏忓倕鍝? */
+ * 任务调度服务实现类
+ *
+ * @author @小傅哥
+ */
 public class TaskJobService implements ITaskJobService, DisposableBean {
 
     private final Logger log = LoggerFactory.getLogger(TaskJobService.class);
@@ -25,12 +27,12 @@ public class TaskJobService implements ITaskJobService, DisposableBean {
     private final List<ITaskDataProvider> taskDataProviders;
 
     /**
-     * 浠诲姟ID涓庝换鍔℃墽琛屽櫒鐨勬槧灏勶紝鐢ㄤ簬璁板綍宸叉坊鍔犵殑浠诲姟
+     * 任务ID与任务执行器的映射，用于记录已添加的任务
      */
     private final Map<Long, ScheduledFuture<?>> scheduledTasks = new ConcurrentHashMap<>();
 
     /**
-     * 鏂扮殑鏋勯€犲嚱鏁帮紝涓嶄緷璧朓TaskExecutor
+     * 新的构造函数，不依赖ITaskExecutor
      */
     public TaskJobService(TaskScheduler taskScheduler,
                          List<ITaskDataProvider> taskDataProviders) {
@@ -40,9 +42,9 @@ public class TaskJobService implements ITaskJobService, DisposableBean {
     
     @Override
     public void initializeTasks() {
-        log.info("寮€濮嬪垵濮嬪寲浠诲姟璋冨害閰嶇疆");
+        log.info("开始初始化任务调度配置");
         try {
-            // 鑱氬悎鎵€鏈夋暟鎹彁渚涜€呯殑浠诲姟璋冨害閰嶇疆
+            // 聚合所有数据提供者的任务调度配置
             List<TaskScheduleVO> allTaskSchedules = new ArrayList<>();
             for (ITaskDataProvider provider : taskDataProviders) {
                 List<TaskScheduleVO> taskSchedules = provider.queryAllValidTaskSchedule();
@@ -51,15 +53,15 @@ public class TaskJobService implements ITaskJobService, DisposableBean {
                 }
             }
             
-            // 澶勭悊姣忎釜浠诲姟璋冨害閰嶇疆
+            // 处理每个任务调度配置
             for (TaskScheduleVO task : allTaskSchedules) {
-                // 鍒涘缓骞惰皟搴︽柊浠诲姟
+                // 创建并调度新任务
                 scheduleTask(task);
             }
             
-            log.info("浠诲姟璋冨害閰嶇疆鍒濆鍖栧畬鎴愶紝宸插姞杞戒换鍔℃暟: {}", scheduledTasks.size());
+            log.info("任务调度配置初始化完成，已加载任务数: {}", scheduledTasks.size());
         } catch (Exception e) {
-            log.error("鍒濆鍖栦换鍔¤皟搴﹂厤缃椂鍙戠敓閿欒", e);
+            log.error("初始化任务调度配置时发生错误", e);
         }
     }
 
@@ -67,22 +69,23 @@ public class TaskJobService implements ITaskJobService, DisposableBean {
     public boolean addTask(TaskScheduleVO task) {
         try {
             if (task == null || task.getId() == null) {
-                log.warn("浠诲姟閰嶇疆涓虹┖鎴栦换鍔D涓虹┖锛屾棤娉曟坊鍔犱换鍔?);
+                log.warn("任务配置为空或任务ID为空，无法添加任务");
                 return false;
             }
 
-            // 濡傛灉浠诲姟宸插瓨鍦紝鍏堢Щ闄ゆ棫浠诲姟
+            // 如果任务已存在，先移除旧任务
             if (scheduledTasks.containsKey(task.getId())) {
-                log.info("浠诲姟宸插瓨鍦紝鍏堢Щ闄ゆ棫浠诲姟锛孖D: {}", task.getId());
+                log.info("任务已存在，先移除旧任务，ID: {}", task.getId());
                 removeTask(task.getId());
             }
 
-            // 璋冨害鏂颁换鍔?            scheduleTask(task);
+            // 调度新任务
+            scheduleTask(task);
 
-            log.info("浠诲姟娣诲姞鎴愬姛锛孖D: {}, 鎻忚堪: {}", task.getId(), task.getDescription());
+            log.info("任务添加成功，ID: {}, 描述: {}", task.getId(), task.getDescription());
             return true;
         } catch (Exception e) {
-            log.error("娣诲姞浠诲姟鏃跺彂鐢熼敊璇紝ID: {}", task != null ? task.getId() : "null", e);
+            log.error("添加任务时发生错误，ID: {}", task != null ? task.getId() : "null", e);
             return false;
         }
     }
@@ -91,65 +94,68 @@ public class TaskJobService implements ITaskJobService, DisposableBean {
     public boolean removeTask(Long taskId) {
         try {
             if (taskId == null) {
-                log.warn("浠诲姟ID涓虹┖锛屾棤娉曠Щ闄や换鍔?);
+                log.warn("任务ID为空，无法移除任务");
                 return false;
             }
 
             ScheduledFuture<?> future = scheduledTasks.remove(taskId);
             if (future != null) {
                 future.cancel(true);
-                log.info("浠诲姟绉婚櫎鎴愬姛锛孖D: {}", taskId);
+                log.info("任务移除成功，ID: {}", taskId);
                 return true;
             } else {
-                log.warn("鏈壘鍒拌绉婚櫎鐨勪换鍔★紝ID: {}", taskId);
+                log.warn("未找到要移除的任务，ID: {}", taskId);
                 return false;
             }
         } catch (Exception e) {
-            log.error("绉婚櫎浠诲姟鏃跺彂鐢熼敊璇紝ID: {}", taskId, e);
+            log.error("移除任务时发生错误，ID: {}", taskId, e);
             return false;
         }
     }
 
     /**
-     * 璋冨害鍗曚釜浠诲姟
+     * 调度单个任务
      */
     private void scheduleTask(TaskScheduleVO task) {
         try {
-            log.info("寮€濮嬭皟搴︿换鍔★紝ID: {}, 鎻忚堪: {}, Cron琛ㄨ揪寮? {}", task.getId(), task.getDescription(), task.getCronExpression());
+            log.info("开始调度任务，ID: {}, 描述: {}, Cron表达式: {}", task.getId(), task.getDescription(), task.getCronExpression());
 
-            // 浣跨敤鏂扮殑鍑芥暟寮忕紪绋嬫柟寮?            ScheduledFuture<?> future = taskScheduler.schedule(
+            // 使用新的函数式编程方式
+            ScheduledFuture<?> future = taskScheduler.schedule(
                     () -> executeTaskWithFunction(task),
                     new CronTrigger(task.getCronExpression())
             );
 
             scheduledTasks.put(task.getId(), future);
 
-            log.info("浠诲姟璋冨害鎴愬姛锛堝嚱鏁板紡锛夛紝ID: {}", task.getId());
+            log.info("任务调度成功（函数式），ID: {}", task.getId());
         } catch (Exception e) {
-            log.error("璋冨害浠诲姟鏃跺彂鐢熼敊璇紝ID: {}", task.getId(), e);
+            log.error("调度任务时发生错误，ID: {}", task.getId(), e);
         }
     }
 
     /**
-     * 浣跨敤鍑芥暟寮忕紪绋嬫柟寮忔墽琛屼换鍔?     */
+     * 使用函数式编程方式执行任务
+     */
     private void executeTaskWithFunction(TaskScheduleVO task) {
         try {
-            log.info("寮€濮嬫墽琛屼换鍔★紙鍑芥暟寮忥級锛孖D: {}, 鎻忚堪: {}", task.getId(), task.getDescription());
+            log.info("开始执行任务（函数式），ID: {}, 描述: {}", task.getId(), task.getDescription());
 
-            // 鑾峰彇骞舵墽琛屼换鍔?            Runnable taskRunnable = task.getTaskExecutor().get();
+            // 获取并执行任务
+            Runnable taskRunnable = task.getTaskExecutor().get();
             taskRunnable.run();
 
-            log.info("浠诲姟鎵ц瀹屾垚锛堝嚱鏁板紡锛夛紝ID: {}", task.getId());
+            log.info("任务执行完成（函数式），ID: {}", task.getId());
         } catch (Exception e) {
-            log.error("鎵ц浠诲姟鏃跺彂鐢熼敊璇紙鍑芥暟寮忥級锛孖D: {}", task.getId(), e);
+            log.error("执行任务时发生错误（函数式），ID: {}", task.getId(), e);
         }
     }
     
     @Override
     public void refreshTasks() {
-        log.info("寮€濮嬪埛鏂颁换鍔¤皟搴﹂厤缃紙鍔ㄦ€佹洿鏂帮級");
+        log.info("开始刷新任务调度配置（动态更新）");
         try {
-            // 鑱氬悎鎵€鏈夋暟鎹彁渚涜€呯殑浠诲姟璋冨害閰嶇疆
+            // 聚合所有数据提供者的任务调度配置
             List<TaskScheduleVO> allTaskSchedules = new ArrayList<>();
             for (ITaskDataProvider provider : taskDataProviders) {
                 List<TaskScheduleVO> taskSchedules = provider.queryAllValidTaskSchedule();
@@ -158,46 +164,47 @@ public class TaskJobService implements ITaskJobService, DisposableBean {
                 }
             }
 
-            // 璁板綍褰撳墠閰嶇疆涓殑浠诲姟ID
+            // 记录当前配置中的任务ID
             Map<Long, Boolean> currentTaskIds = new ConcurrentHashMap<>();
 
-            // 澶勭悊姣忎釜浠诲姟璋冨害閰嶇疆
+            // 处理每个任务调度配置
             for (TaskScheduleVO task : allTaskSchedules) {
                 Long taskId = task.getId();
                 currentTaskIds.put(taskId, true);
 
-                // 濡傛灉浠诲姟宸茬粡瀛樺湪锛屽垯璺宠繃
+                // 如果任务已经存在，则跳过
                 if (scheduledTasks.containsKey(taskId)) {
                     continue;
                 }
 
-                // 鍒涘缓骞惰皟搴︽柊浠诲姟
+                // 创建并调度新任务
                 scheduleTask(task);
             }
 
-            // 绉婚櫎宸蹭笉瀛樺湪鐨勪换鍔?            scheduledTasks.keySet().removeIf(taskId -> {
+            // 移除已不存在的任务
+            scheduledTasks.keySet().removeIf(taskId -> {
                 if (!currentTaskIds.containsKey(taskId)) {
                     ScheduledFuture<?> future = scheduledTasks.remove(taskId);
                     if (future != null) {
                         future.cancel(true);
-                        log.info("宸茬Щ闄や换鍔★紝ID: {}", taskId);
+                        log.info("已移除任务，ID: {}", taskId);
                     }
                     return true;
                 }
                 return false;
             });
 
-            log.info("浠诲姟璋冨害閰嶇疆鍒锋柊瀹屾垚锛屽綋鍓嶆椿璺冧换鍔℃暟: {}", scheduledTasks.size());
+            log.info("任务调度配置刷新完成，当前活跃任务数: {}", scheduledTasks.size());
         } catch (Exception e) {
-            log.error("鍒锋柊浠诲姟璋冨害閰嶇疆鏃跺彂鐢熼敊璇?, e);
+            log.error("刷新任务调度配置时发生错误", e);
         }
     }
 
     @Override
     public void cleanInvalidTasks() {
-        log.info("寮€濮嬫竻鐞嗘棤鏁堢殑浠诲姟");
+        log.info("开始清理无效的任务");
         try {
-            // 鑱氬悎鎵€鏈夋暟鎹彁渚涜€呯殑鏃犳晥浠诲姟ID
+            // 聚合所有数据提供者的无效任务ID
             List<Long> allInvalidTaskIds = new ArrayList<>();
             for (ITaskDataProvider provider : taskDataProviders) {
                 List<Long> invalidTaskIds = provider.queryAllInvalidTaskScheduleIds();
@@ -207,37 +214,38 @@ public class TaskJobService implements ITaskJobService, DisposableBean {
             }
             
             if (allInvalidTaskIds.isEmpty()) {
-                log.info("娌℃湁鍙戠幇鏃犳晥鐨勪换鍔￠渶瑕佹竻鐞?);
+                log.info("没有发现无效的任务需要清理");
                 return;
             }
             
-            log.info("鍙戠幇{}涓棤鏁堜换鍔￠渶瑕佹竻鐞?, allInvalidTaskIds.size());
+            log.info("发现{}个无效任务需要清理", allInvalidTaskIds.size());
             
-            // 浠庤皟搴﹀櫒涓Щ闄よ繖浜涗换鍔?            for (Long taskId : allInvalidTaskIds) {
+            // 从调度器中移除这些任务
+            for (Long taskId : allInvalidTaskIds) {
                 ScheduledFuture<?> future = scheduledTasks.remove(taskId);
                 if (future != null) {
                     future.cancel(true);
-                    log.info("宸茬Щ闄ゆ棤鏁堜换鍔★紝ID: {}", taskId);
+                    log.info("已移除无效任务，ID: {}", taskId);
                 }
             }
             
-            log.info("鏃犳晥浠诲姟娓呯悊瀹屾垚锛屽綋鍓嶆椿璺冧换鍔℃暟: {}", scheduledTasks.size());
+            log.info("无效任务清理完成，当前活跃任务数: {}", scheduledTasks.size());
         } catch (Exception e) {
-            log.error("娓呯悊鏃犳晥浠诲姟鏃跺彂鐢熼敊璇?, e);
+            log.error("清理无效任务时发生错误", e);
         }
     }
 
     @Override
     public void stopAllTasks() {
-        log.info("寮€濮嬪仠姝㈡墍鏈変换鍔?);
+        log.info("开始停止所有任务");
         scheduledTasks.forEach((id, future) -> {
             if (future != null) {
                 future.cancel(true);
-                log.info("宸插彇娑堜换鍔★紝ID: {}", id);
+                log.info("已取消任务，ID: {}", id);
             }
         });
         scheduledTasks.clear();
-        log.info("鎵€鏈変换鍔″凡鍋滄");
+        log.info("所有任务已停止");
     }
 
     @Override

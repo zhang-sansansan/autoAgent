@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.model.valobj.enums;
+package cn.ann.ai.domain.agent.model.valobj.enums;
 
 
 import cn.ann.ai.domain.agent.model.valobj.AiClientAdvisorVO;
@@ -16,16 +16,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 椤鹃棶绫诲瀷鏋氫妇
+ * 顾问类型枚举
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝? * 2025/7/19 09:02
+ * @author xiaofuge bugstack.cn @小傅哥
+ * 2025/7/19 09:02
  */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public enum AiClientAdvisorTypeEnumVO {
 
-    CHAT_MEMORY("ChatMemory", "涓婁笅鏂囪蹇嗭紙鍐呭瓨妯″紡锛?) {
+    CHAT_MEMORY("ChatMemory", "上下文记忆（内存模式）") {
         @Override
         public Advisor createAdvisor(AiClientAdvisorVO aiClientAdvisorVO, VectorStore vectorStore) {
             AiClientAdvisorVO.ChatMemory chatMemory = aiClientAdvisorVO.getChatMemory();
@@ -37,7 +38,7 @@ public enum AiClientAdvisorTypeEnumVO {
         }
     },
     
-    RAG_ANSWER("RagAnswer", "鐭ヨ瘑搴?) {
+    RAG_ANSWER("RagAnswer", "知识库") {
         @Override
         public Advisor createAdvisor(AiClientAdvisorVO aiClientAdvisorVO, VectorStore vectorStore) {
             AiClientAdvisorVO.RagAnswer ragAnswer = aiClientAdvisorVO.getRagAnswer();
@@ -53,9 +54,10 @@ public enum AiClientAdvisorTypeEnumVO {
     private String code;
     private String info;
     
-    // 闈欐€丮ap缂撳瓨锛岀敤浜庡揩閫熸煡鎵?    private static final Map<String, AiClientAdvisorTypeEnumVO> CODE_MAP = new HashMap<>();
+    // 静态Map缓存，用于快速查找
+    private static final Map<String, AiClientAdvisorTypeEnumVO> CODE_MAP = new HashMap<>();
     
-    // 闈欐€佸垵濮嬪寲鍧楋紝鍦ㄧ被鍔犺浇鏃跺垵濮嬪寲Map
+    // 静态初始化块，在类加载时初始化Map
     static {
         for (AiClientAdvisorTypeEnumVO enumVO : values()) {
             CODE_MAP.put(enumVO.getCode(), enumVO);
@@ -63,16 +65,17 @@ public enum AiClientAdvisorTypeEnumVO {
     }
     
     /**
-     * 绛栫暐鏂规硶锛氬垱寤洪【闂璞?     * @param aiClientAdvisorVO 椤鹃棶閰嶇疆瀵硅薄
-     * @param vectorStore 鍚戦噺瀛樺偍
-     * @return 椤鹃棶瀵硅薄
+     * 策略方法：创建顾问对象
+     * @param aiClientAdvisorVO 顾问配置对象
+     * @param vectorStore 向量存储
+     * @return 顾问对象
      */
     public abstract Advisor createAdvisor(AiClientAdvisorVO aiClientAdvisorVO, VectorStore vectorStore);
     
     /**
-     * 鏍规嵁code鑾峰彇鏋氫妇
-     * @param code 缂栫爜
-     * @return 鏋氫妇瀵硅薄
+     * 根据code获取枚举
+     * @param code 编码
+     * @return 枚举对象
      */
     public static AiClientAdvisorTypeEnumVO getByCode(String code) {
         AiClientAdvisorTypeEnumVO enumVO = CODE_MAP.get(code);
@@ -83,4 +86,3 @@ public enum AiClientAdvisorTypeEnumVO {
     }
 
 }
-

@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.armory.node;
+package cn.ann.ai.domain.agent.service.armory.node;
 
 import cn.ann.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import cn.ann.ai.domain.agent.model.valobj.AiAgentEnumVO;
@@ -33,20 +33,20 @@ public class AiClientToolMcpNode extends AbstractArmorySupport {
     private AiClientModelNode aiClientModelNode;
     @Override
     protected String doApply(ArmoryCommandEntity requestParameter, DefaultArmoryStrategyFactory.DynamicContext dynamicContext) throws Exception {
-        log.info("Ai Agent 鏋勫缓鑺傜偣锛孴ool MCP 宸ュ叿閰嶇疆{}", JSON.toJSONString(requestParameter));
+        log.info("Ai Agent 构建节点，Tool MCP 工具配置{}", JSON.toJSONString(requestParameter));
 
-        //鍏堜粠鍔ㄦ€佽儗鍖呬腑鑾峰彇琚煡璇㈠埌鐨勬暟鎹?
+        //先从动态背包中获取被查询到的数据
         List<AiClientToolMcpVO> aiClientToolMcpList = dynamicContext.getValue(dataName());
         if (aiClientToolMcpList == null || aiClientToolMcpList.isEmpty()) {
-            log.warn("娌℃湁闇€瑕佽鍒濆鍖栫殑 ai client tool mcp");
+            log.warn("没有需要被初始化的 ai client tool mcp");
             return router(requestParameter, dynamicContext);
         }
 
         for (AiClientToolMcpVO mcpVO : aiClientToolMcpList) {
-            // 鍒涘缓 MCP 鏈嶅姟
+            // 创建 MCP 服务
             McpSyncClient mcpSyncClient = createMcpSyncClient(mcpVO);
 
-            // 娉ㄥ唽 MCP 瀵硅薄
+            // 注册 MCP 对象
             registerBean(beanName(mcpVO.getMcpId()), McpSyncClient.class, mcpSyncClient);
         }
         return router(requestParameter, dynamicContext);
@@ -67,14 +67,14 @@ public class AiClientToolMcpNode extends AbstractArmorySupport {
     }
 
     private McpSyncClient createMcpSyncClient(AiClientToolMcpVO aiClientToolMcpVO) {
-        //瀹炰緥鍖杕cp瀹㈡埛绔?
-        //鍏堝垽鏂被鍨?
+        //实例化mcp客户端
+        //先判断类型
         String transportType = aiClientToolMcpVO.getTransportType();
 
         switch (transportType) {
             case "sse" -> {
-                AiClientToolMcpVO.TransportConfigSse transportConfigSse = aiClientToolMcpVO.getTransportConfigSse();//鑾峰彇閰嶇疆锛岃繖涓暟鎹瓨鍦ㄦ暟鎹簱涓?
-                //閰嶇疆涓寘鎷瑄ri鍜宔ndpoint
+                AiClientToolMcpVO.TransportConfigSse transportConfigSse = aiClientToolMcpVO.getTransportConfigSse();//获取配置，这个数据存在数据库中
+                //配置中包括uri和endpoint
                 String originalBaseUri = transportConfigSse.getBaseUri();
                 String baseUri;
                 String sseEndpoint;
@@ -96,14 +96,14 @@ public class AiClientToolMcpNode extends AbstractArmorySupport {
                         .build();
 
                 McpSyncClient mcpSyncClient = McpClient.sync(sseClientTransport).requestTimeout(Duration.ofMinutes(aiClientToolMcpVO.getRequestTimeout())).build();
-                var init_sse = mcpSyncClient.initialize();//瀹㈡埛绔垵濮嬪寲锛屽缓绔嬭繛鎺?
-//                寤虹珛杩炴帴锛欳lient 鍚?baseUri + sseEndpoint 鍙戣捣 GET 璇锋眰锛屽缓绔?SSE 闀胯繛鎺ャ€?
+                var init_sse = mcpSyncClient.initialize();//客户端初始化，建立连接
+//                建立连接：Client 向 baseUri + sseEndpoint 发起 GET 请求，建立 SSE 长连接。
 //
-//                鍙戦€侀棶鍊欙細Client 鍙戦€?initialize JSON-RPC 娑堟伅銆?
+//                发送问候：Client 发送 initialize JSON-RPC 消息。
 //
-//                鑾峰彇鑳藉姏锛歋erver 杩斿洖瀹冩敮鎸佺殑宸ュ叿鍒楄〃锛圱ools锛夈€佽祫婧愶紙Resources锛夌瓑銆?
+//                获取能力：Server 返回它支持的工具列表（Tools）、资源（Resources）等。
 //
-//                杩斿洖缁撴灉锛氬彉閲?init_sse 閲屽氨鎷跨潃瀵规柟閫掕繃鏉ョ殑鈥滆兘鍔涙竻鍗曗€?
+//                返回结果：变量 init_sse 里就拿着对方递过来的“能力清单”
 
                 log.info("Tool SSE MCP Initialized {}", init_sse);
                 return mcpSyncClient;
@@ -119,7 +119,7 @@ public class AiClientToolMcpNode extends AbstractArmorySupport {
                         .build();
 
                 McpSyncClient mcpSyncClient = McpClient.sync(new StdioClientTransport(stdioParameters))
-                        .requestTimeout(Duration.ofSeconds(aiClientToolMcpVO.getRequestTimeout())).build();//鍒涘缓mcp瀹㈡埛绔?
+                        .requestTimeout(Duration.ofSeconds(aiClientToolMcpVO.getRequestTimeout())).build();//创建mcp客户端
 
                 var init_stdio = mcpSyncClient.initialize();
                 log.info("Tool Stdio MCP Initialized {}", init_stdio);
@@ -129,4 +129,3 @@ public class AiClientToolMcpNode extends AbstractArmorySupport {
         throw new RuntimeException("err! transportType " + transportType + " not exist!");
     }
 }
-

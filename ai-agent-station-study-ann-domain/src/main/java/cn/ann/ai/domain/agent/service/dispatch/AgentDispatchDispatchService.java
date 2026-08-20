@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.domain.agent.service.dispatch;
+package cn.ann.ai.domain.agent.service.dispatch;
 
 import cn.ann.ai.domain.agent.adapter.repository.IAgentRepository;
 import cn.ann.ai.domain.agent.model.entity.ExecuteCommandEntity;
@@ -15,9 +15,9 @@ import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Agent 鏈嶅姟鎺ュ彛
+ * Agent 服务接口
  *
- * @author xiaofuge bugstack.cn @灏忓倕鍝?
+ * @author xiaofuge bugstack.cn @小傅哥
  * 2025/9/6 06:55
  */
 @Slf4j
@@ -40,25 +40,25 @@ public class AgentDispatchDispatchService implements IAgentDispatchService {
         String strategy = aiAgentVO.getStrategy();
         IExecuteStrategy executeStrategy = executeStrategyMap.get(strategy);
         if (null == executeStrategy) {
-            throw new BizException("涓嶅瓨鍦ㄧ殑鎵ц绛栫暐绫诲瀷 strategy:" + strategy);
+            throw new BizException("不存在的执行策略类型 strategy:" + strategy);
         }
 
-        // 3. 寮傛鎵цAutoAgent
+        // 3. 异步执行AutoAgent
         threadPoolExecutor.execute(() -> {
             try {
                 executeStrategy.execute(requestParameter, emitter);
             } catch (Exception e) {
-                log.error("AutoAgent鎵ц寮傚父锛歿}", e.getMessage(), e);
+                log.error("AutoAgent执行异常：{}", e.getMessage(), e);
                 try {
-                    emitter.send("鎵ц寮傚父锛? + e.getMessage());
+                    emitter.send("执行异常：" + e.getMessage());
                 } catch (Exception ex) {
-                    log.error("鍙戦€佸紓甯镐俊鎭け璐ワ細{}", ex.getMessage(), ex);
+                    log.error("发送异常信息失败：{}", ex.getMessage(), ex);
                 }
             } finally {
                 try {
                     emitter.complete();
                 } catch (Exception e) {
-                    log.error("瀹屾垚娴佸紡杈撳嚭澶辫触锛歿}", e.getMessage(), e);
+                    log.error("完成流式输出失败：{}", e.getMessage(), e);
                 }
             }
         });
@@ -66,4 +66,3 @@ public class AgentDispatchDispatchService implements IAgentDispatchService {
     }
 
 }
-

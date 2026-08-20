@@ -1,4 +1,4 @@
-﻿package cn.ann.ai.types.job.config;
+package cn.ann.ai.types.job.config;
 
 import cn.ann.ai.types.job.TaskJob;
 import cn.ann.ai.types.job.provider.ITaskDataProvider;
@@ -17,9 +17,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import java.util.List;
 
 /**
- * 浠诲姟璋冨害鍣ㄨ嚜鍔ㄩ厤缃被
+ * 任务调度器自动配置类
  *
- * @author @灏忓倕鍝? */
+ * @author @小傅哥
+ */
 @Configuration
 @EnableScheduling
 @EnableConfigurationProperties(TaskJobAutoProperties.class)
@@ -29,7 +30,7 @@ public class TaskJobAutoConfig {
     private final Logger log = LoggerFactory.getLogger(TaskJobAutoConfig.class);
 
     /**
-     * 鍒涘缓绾跨▼姹犱换鍔¤皟搴﹀櫒瀹炰緥锛岀敤浜庢墽琛屽畾鏃朵换鍔″拰寮傛浠诲姟璋冨害
+     * 创建线程池任务调度器实例，用于执行定时任务和异步任务调度
      */
     @Bean("xfgWrenchTaskScheduler")
     public TaskScheduler taskScheduler(TaskJobAutoProperties properties) {
@@ -40,7 +41,7 @@ public class TaskJobAutoConfig {
         scheduler.setAwaitTerminationSeconds(properties.getAwaitTerminationSeconds());
         scheduler.initialize();
         
-        log.info("xfg-wrench锛屼换鍔¤皟搴﹀櫒鍒濆鍖栧畬鎴愩€傜嚎绋嬫睜澶у皬: {}, 绾跨▼鍚嶅墠缂€: {}", 
+        log.info("xfg-wrench，任务调度器初始化完成。线程池大小: {}, 线程名前缀: {}", 
                 properties.getPoolSize(), properties.getThreadNamePrefix());
         
         return scheduler;
@@ -48,17 +49,19 @@ public class TaskJobAutoConfig {
 
     @Bean
     public ITaskJobService taskJobService(TaskScheduler xfgWrenchTaskScheduler, List<ITaskDataProvider> taskDataProviders) {
-        // 瀹炰緥鍖栦换鍔″苟鍒濆鍖栬皟搴?        TaskJobService taskJobService = new TaskJobService(xfgWrenchTaskScheduler, taskDataProviders);
+        // 实例化任务并初始化调度
+        TaskJobService taskJobService = new TaskJobService(xfgWrenchTaskScheduler, taskDataProviders);
         taskJobService.initializeTasks();
 
         return taskJobService;
     }
 
     /**
-     * 鑷姩妫€娴嬩换鍔?     */
+     * 自动检测任务
+     */
     @Bean
     public TaskJob taskJob(TaskJobAutoProperties properties, ITaskJobService taskJobService) {
-        log.info("xfg-wrench锛屼换鍔¤皟搴︿綔涓氬垵濮嬪寲瀹屾垚銆傚埛鏂伴棿闅? {}ms, 娓呯悊cron: {}", 
+        log.info("xfg-wrench，任务调度作业初始化完成。刷新间隔: {}ms, 清理cron: {}", 
                 properties.getRefreshInterval(), properties.getCleanInvalidTasksCron());
         return new TaskJob(properties, taskJobService);
     }
